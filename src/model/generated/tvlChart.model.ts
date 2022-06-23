@@ -26,11 +26,17 @@ export class TVLChart {
   })
   currentTimestamp!: bigint;
 
-  // @Column_("numeric", {
-  //   transformer: marshal.bigintTransformer,
-  //   nullable: false,
-  // })
-  // amount!: bigint;
+  @Column_("numeric", {
+    transformer: marshal.bigintTransformer,
+    nullable: false,
+  })
+  endTimestamp!: bigint;
+
+  @Column_("numeric", {
+    transformer: marshal.bigintTransformer,
+    nullable: false,
+  })
+  amount!: bigint;
 
   @Column_("numeric", { nullable: false })
   value!: number;

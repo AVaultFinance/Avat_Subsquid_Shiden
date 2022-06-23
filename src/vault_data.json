@@ -1,0 +1,560 @@
+{
+  "data": [
+    {
+      "contractAddress": {
+        "82": "0x9A6080753a35dCd8e77102aE83A93170A831393e",
+        "336": "0x9A6080753a35dCd8e77102aE83A93170A831393e"
+      },
+      "fromSource": "Kacoswap",
+      "abiType": 0,
+      "swapLink": "https://shiden.kaco.finance/add/SDN/0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+      "online_at": 1648396800,
+      "lpDetail": {
+        "symbol": "KAC-wSDN LP",
+        "address": {
+          "82": "0x456C0082DE0048EE883881fF61341177FA1FEF40",
+          "336": "0x456C0082DE0048EE883881fF61341177FA1FEF40"
+        },
+        "decimals": 18
+      },
+      "isLoading": false,
+      "vault": {
+        "symbol": "aKKS",
+        "name": "avault Kaco KAC-wSDN LP",
+        "masterChef": "0x293A7824582C56B0842535f94F6E3841888168C8",
+        "token0Address": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "token1Address": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "fromSource": "Kacoswap",
+        "wantAddress": "0x456C0082DE0048EE883881fF61341177FA1FEF40",
+        "earnedAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "wantLockedTotal": "48516587679729011464632",
+        "totalSupply": "40495388456154560782147",
+        "AVAAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "decimals": "18",
+        "lpToCLpRate": "1.198076855893337456",
+        "liquidity": "4,043.58"
+      },
+      "farm": {
+        "pid": 1,
+        "lpSymbol": "Kaco-LP",
+        "lpAddresses": "0x456C0082DE0048EE883881fF61341177FA1FEF40",
+        "token": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "quoteToken": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "tokenAmountMc": "682167.6436147681356992301234026960013456542268447604609449087060327157320612720892630106519228849090624",
+        "quoteTokenAmountMc": "15380.53031343066289343768483024211339278481391370756570451838204100316010153878214160444824695592115316",
+        "tokenAmountTotal": "694166.80130836169949664",
+        "quoteTokenAmountTotal": "15651.069982629882589926",
+        "lpTotalInQuoteToken": "30761.06062686132578687536966048422678556962782741513140903676408200632020307756428320889649391184230632",
+        "lpTotalSupply": "103278513736911518363486",
+        "tokenPriceVsQuote": "0.02254655502558006741155519603210500244016606369477848069120179141503993734920235",
+        "poolWeight": "0.60606060606060606060606060606060606060606060606060606060606060606060606060606061",
+        "multiplier": "20X",
+        "quoteTokenDecimals": 18,
+        "liquidity": "8530.04",
+        "lpTokenPrice": "0.08334423129045594456487658496526065227609410974837138700128941245617884848940895",
+        "lpAddressDecimals": 18,
+        "apr": "1.0022767454700383",
+        "apy": "129.35",
+        "userData": {
+          "-336": {
+            "account": "",
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "0"
+          },
+          "0x2E1C9Adc548963273d9e767413403719019bd639-336": {
+            "account": "0x2E1C9Adc548963273d9e767413403719019bd639",
+            "pid": 1,
+            "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+            "stakingTokenBalance": "20329331024148285",
+            "stakedBalance": "10000000000000",
+            "pendingReward": "11956778522880",
+            "avaultAddressBalance": "255338378422",
+            "userVaultSupply": "40495388456154560782147",
+            "vaultWantLockedTotal": "48516587679729011464632"
+          }
+        }
+      }
+    },
+    {
+      "contractAddress": {
+        "82": "0xc5b8D0eC15984653A7554878eE9b4212EA059Fd2",
+        "336": "0xc5b8D0eC15984653A7554878eE9b4212EA059Fd2"
+      },
+      "fromSource": "Kacoswap",
+      "abiType": 0,
+      "swapLink": "https://shiden.kaco.finance/add/0xfa9343c3897324496a05fc75abed6bac29f8a40f/SDN",
+      "online_at": 1648396800,
+      "lpDetail": {
+        "symbol": "wSDN-USDC LP",
+        "address": {
+          "82": "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020",
+          "336": "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020"
+        },
+        "decimals": 18
+      },
+      "isLoading": false,
+      "vault": {
+        "symbol": "aKSU",
+        "name": "avault Kaco wSDN-USDC LP",
+        "masterChef": "0x293A7824582C56B0842535f94F6E3841888168C8",
+        "token0Address": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "token1Address": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "fromSource": "Kacoswap",
+        "wantAddress": "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020",
+        "earnedAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "wantLockedTotal": "543927074222335",
+        "totalSupply": "448097943478132",
+        "AVAAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "decimals": "18",
+        "lpToCLpRate": "1.213857555337965133",
+        "liquidity": "636.26"
+      },
+      "farm": {
+        "pid": 2,
+        "lpSymbol": "Kaco-LP",
+        "lpAddresses": "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020",
+        "token": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "quoteToken": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "tokenAmountMc": "1282.9470179965899974530886076469529559901929200076029136335860217400557457249265945559098183691654908",
+        "quoteTokenAmountMc": "356.88943549721780735769798800685047817762942040819291142076189151421916053932240922697692",
+        "tokenAmountTotal": "2516.13322751102416511",
+        "quoteTokenAmountTotal": "699.936439",
+        "lpTotalInQuoteToken": "713.77887099443561471539597601370095635525884081638582284152378302843832107864481845395384",
+        "lpTotalSupply": "1192934605824545",
+        "tokenPriceVsQuote": "0.27817940296125806173415507990787586444396666308123214559108903762718751978505354",
+        "poolWeight": "0.09090909090909090909090909090909090909090909090909090909090909090909090909090909",
+        "multiplier": "3X",
+        "quoteTokenDecimals": 6,
+        "liquidity": "713.56",
+        "lpTokenPrice": "1169760.2543880383392982559404614803303255577040048335448792974906931295287023998375469",
+        "lpAddressDecimals": 18,
+        "apr": "1.0024581328199766",
+        "apy": "145.01",
+        "userData": {
+          "-336": {
+            "account": "",
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "0"
+          },
+          "0x2E1C9Adc548963273d9e767413403719019bd639-336": {
+            "account": "0x2E1C9Adc548963273d9e767413403719019bd639",
+            "pid": 2,
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "436161703",
+            "pendingReward": "12258293509107118",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "448097943478132",
+            "vaultWantLockedTotal": "543927074222335"
+          }
+        }
+      }
+    },
+    {
+      "contractAddress": {
+        "82": "0x0Aaf347F50b766cA85dB70f9e2B0E178E9a16F4D",
+        "336": "0x0Aaf347F50b766cA85dB70f9e2B0E178E9a16F4D"
+      },
+      "fromSource": "Kacoswap",
+      "abiType": 0,
+      "swapLink": "https://shiden.kaco.finance/add/SDN/0x765277eebeca2e31912c9946eae1021199b39c61",
+      "online_at": 1648396800,
+      "lpDetail": {
+        "symbol": "ETH-wSDN LP",
+        "address": {
+          "82": "0xeb2C6d3F1bbe9DA50A0272E80fAA89354630DE88",
+          "336": "0xeb2C6d3F1bbe9DA50A0272E80fAA89354630DE88"
+        },
+        "decimals": 18
+      },
+      "isLoading": false,
+      "vault": {
+        "symbol": "aKES",
+        "name": "avault Kaco ETH-wSDN LP",
+        "masterChef": "0x293A7824582C56B0842535f94F6E3841888168C8",
+        "token0Address": "0x765277EebeCA2e31912C9946eAe1021199B39C61",
+        "token1Address": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "fromSource": "Kacoswap",
+        "wantAddress": "0xeb2C6d3F1bbe9DA50A0272E80fAA89354630DE88",
+        "earnedAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "wantLockedTotal": "15471694823548643799",
+        "totalSupply": "14040673913872741043",
+        "AVAAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "decimals": "18",
+        "lpToCLpRate": "1.101919674116353942",
+        "liquidity": "208.39"
+      },
+      "farm": {
+        "pid": 3,
+        "lpSymbol": "Kaco-LP",
+        "lpAddresses": "0xeb2C6d3F1bbe9DA50A0272E80fAA89354630DE88",
+        "token": "0x765277EebeCA2e31912C9946eAe1021199B39C61",
+        "quoteToken": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "tokenAmountMc": "0.46355320746194094809545114588779298851458822899980296677670542381737597862711320365429733345394772",
+        "quoteTokenAmountMc": "1817.10965991232981499340479952308036926877362438590732776775512099360530763768032217843054500508768504",
+        "tokenAmountTotal": "0.491500751152785326",
+        "quoteTokenAmountTotal": "1926.662890898493789332",
+        "lpTotalInQuoteToken": "3634.21931982465962998680959904616073853754724877181465553551024198721061527536064435686109001017537008",
+        "lpTotalSupply": "29713024494429107878",
+        "tokenPriceVsQuote": "3919.9591992069642741491254036838135016059964336329697924155345714164335489324001429",
+        "poolWeight": "0.09090909090909090909090909090909090909090909090909090909090909090909090909090909",
+        "multiplier": "3X",
+        "quoteTokenDecimals": 18,
+        "liquidity": "1007.77",
+        "lpTokenPrice": "13.46921687865894243700314427254459732691123780220192909899008500702331473262631001",
+        "lpAddressDecimals": 18,
+        "apr": "1.0011714905070845",
+        "apy": "53.32",
+        "userData": {
+          "-336": {
+            "account": "",
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "0"
+          },
+          "0x2E1C9Adc548963273d9e767413403719019bd639-336": {
+            "account": "0x2E1C9Adc548963273d9e767413403719019bd639",
+            "pid": 3,
+            "allowance": "0",
+            "stakingTokenBalance": "100647468889",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "14040673913872741043",
+            "vaultWantLockedTotal": "15471694823548643799"
+          }
+        }
+      }
+    },
+    {
+      "contractAddress": {
+        "82": "0xCA9b609b7a0Bc46CcF744B2e0261B9Afd14f81C0",
+        "336": "0xCA9b609b7a0Bc46CcF744B2e0261B9Afd14f81C0"
+      },
+      "fromSource": "Kacoswap",
+      "abiType": 0,
+      "swapLink": "https://shiden.kaco.finance/add/0xfa9343c3897324496a05fc75abed6bac29f8a40f/0x765277eebeca2e31912c9946eae1021199b39c61",
+      "online_at": 1648396800,
+      "lpDetail": {
+        "symbol": "ETH-USDC LP",
+        "address": {
+          "82": "0xcfb0e95a3A68E3574C73a3C6985D56B7c03b6348",
+          "336": "0xcfb0e95a3A68E3574C73a3C6985D56B7c03b6348"
+        },
+        "decimals": 18
+      },
+      "isLoading": false,
+      "vault": {
+        "symbol": "aKEU",
+        "name": "avault Kaco ETH-USDC LP",
+        "masterChef": "0x293A7824582C56B0842535f94F6E3841888168C8",
+        "token0Address": "0x765277EebeCA2e31912C9946eAe1021199B39C61",
+        "token1Address": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "fromSource": "Kacoswap",
+        "wantAddress": "0xcfb0e95a3A68E3574C73a3C6985D56B7c03b6348",
+        "earnedAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "wantLockedTotal": "578055637600",
+        "totalSupply": "561079543983",
+        "AVAAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "decimals": "18",
+        "lpToCLpRate": "1.030256126424588192",
+        "liquidity": "14.45"
+      },
+      "farm": {
+        "pid": 4,
+        "lpSymbol": "Kaco-LP",
+        "lpAddresses": "0xcfb0e95a3A68E3574C73a3C6985D56B7c03b6348",
+        "token": "0x765277EebeCA2e31912C9946eAe1021199B39C61",
+        "quoteToken": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "tokenAmountMc": "0.6738670469232692677973923996747601814744588822564932643474259814691617188778479724221149299522428",
+        "quoteTokenAmountMc": "727.65579878817460684495559956093885732140213048762508044478383948038786583755144874334",
+        "tokenAmountTotal": "0.688921348498663435",
+        "quoteTokenAmountTotal": "743.91175",
+        "lpTotalInQuoteToken": "1455.31159757634921368991119912187771464280426097525016088956767896077573167510289748668",
+        "lpTotalSupply": "22447317837950",
+        "tokenPriceVsQuote": "1079.82101530337936824049365519888857879145967925148774411394040972546759271131038203",
+        "poolWeight": "0.03030303030303030303030303030303030303030303030303030303030303030303030303030303",
+        "multiplier": "1X",
+        "quoteTokenDecimals": 6,
+        "liquidity": "1454.88",
+        "lpTokenPrice": "24990227.40244703774134658162659848952067615502331151193775713025108580709679682178672414",
+        "lpAddressDecimals": 18,
+        "apr": "1.0003477715680986",
+        "apy": "13.53",
+        "userData": {
+          "-336": {
+            "account": "",
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "0"
+          },
+          "0x2E1C9Adc548963273d9e767413403719019bd639-336": {
+            "account": "0x2E1C9Adc548963273d9e767413403719019bd639",
+            "pid": 4,
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "561079543983",
+            "vaultWantLockedTotal": "578055637600"
+          }
+        }
+      }
+    },
+    {
+      "contractAddress": {
+        "82": "0x8fcbe72710185dd34a8bBBA1Cc05eB2628945FEC",
+        "336": "0x8fcbe72710185dd34a8bBBA1Cc05eB2628945FEC"
+      },
+      "fromSource": "Kacoswap",
+      "abiType": 0,
+      "swapLink": "https://shiden.kaco.finance/add/0xfa9343c3897324496a05fc75abed6bac29f8a40f/0x65e66a61d0a8f1e686c2d6083ad611a10d84d97a",
+      "online_at": 1648396800,
+      "lpDetail": {
+        "symbol": "BUSD-USDC LP",
+        "address": {
+          "82": "0x8644e9AC84273cA0609F2A2B09b2ED2A5aD2e9DD",
+          "336": "0x8644e9AC84273cA0609F2A2B09b2ED2A5aD2e9DD"
+        },
+        "decimals": 18
+      },
+      "isLoading": false,
+      "vault": {
+        "symbol": "aKBU",
+        "name": "avault Kaco BUSD-USDC LP",
+        "masterChef": "0x293A7824582C56B0842535f94F6E3841888168C8",
+        "token0Address": "0x65e66a61D0a8F1e686C2D6083ad611a10D84D97A",
+        "token1Address": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "fromSource": "Kacoswap",
+        "wantAddress": "0x8644e9AC84273cA0609F2A2B09b2ED2A5aD2e9DD",
+        "earnedAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "wantLockedTotal": "3400643572766739",
+        "totalSupply": "3363321600078564",
+        "AVAAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "decimals": "18",
+        "lpToCLpRate": "1.011096760026547248",
+        "liquidity": "35.54"
+      },
+      "farm": {
+        "pid": 5,
+        "lpSymbol": "Kaco-LP",
+        "lpAddresses": "0x8644e9AC84273cA0609F2A2B09b2ED2A5aD2e9DD",
+        "token": "0x65e66a61D0a8F1e686C2D6083ad611a10D84D97A",
+        "quoteToken": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "tokenAmountMc": "5158.33384288313311512872988793692492050127675959210850825401454971459280847802813847651129356935620051",
+        "quoteTokenAmountMc": "5146.10585862417988683088640157395739973853151761438606208915310887238497964094369541546513",
+        "tokenAmountTotal": "5456.538907260169333113",
+        "quoteTokenAmountTotal": "5443.604019",
+        "lpTotalInQuoteToken": "10292.21171724835977366177280314791479947706303522877212417830621774476995928188739083093026",
+        "lpTotalSupply": "5324984785848153",
+        "tokenPriceVsQuote": "0.99762947016780932595897011524142564056995214495985205905899561574142024537551124",
+        "poolWeight": "0.06060606060606060606060606060606060606060606060606060606060606060606060606060606",
+        "multiplier": "2X",
+        "quoteTokenDecimals": 6,
+        "liquidity": "10289.12",
+        "lpTokenPrice": "10451.99171309723076895402705486215489559140566423974533697340268986515002566017724505",
+        "lpAddressDecimals": 18,
+        "apr": "1.0001275489658223",
+        "apy": "4.77",
+        "userData": {
+          "-336": {
+            "account": "",
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "0"
+          },
+          "0x2E1C9Adc548963273d9e767413403719019bd639-336": {
+            "account": "0x2E1C9Adc548963273d9e767413403719019bd639",
+            "pid": 5,
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "3363321600078564",
+            "vaultWantLockedTotal": "3400643572766739"
+          }
+        }
+      }
+    },
+    {
+      "contractAddress": {
+        "82": "0x5167E12139Ee4b2F6590F3C95E56B29d408a9048",
+        "336": "0x5167E12139Ee4b2F6590F3C95E56B29d408a9048"
+      },
+      "fromSource": "Kacoswap",
+      "abiType": 0,
+      "swapLink": "https://shiden.kaco.finance/add/SDN/0x735abe48e8782948a37c7765ecb76b98cde97b0f",
+      "online_at": 1648396800,
+      "lpDetail": {
+        "symbol": "wSDN-JPYC LP",
+        "address": {
+          "82": "0x1Ba530cf929ea5bc7f1Af241495C97331Ddb4f70",
+          "336": "0x1Ba530cf929ea5bc7f1Af241495C97331Ddb4f70"
+        },
+        "decimals": 18
+      },
+      "isLoading": false,
+      "vault": {
+        "symbol": "aKSJ",
+        "name": "avault Kaco wSDN-JPYC LP",
+        "masterChef": "0x293A7824582C56B0842535f94F6E3841888168C8",
+        "token0Address": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "token1Address": "0x735aBE48e8782948a37C7765ECb76b98CdE97B0F",
+        "fromSource": "Kacoswap",
+        "wantAddress": "0x1Ba530cf929ea5bc7f1Af241495C97331Ddb4f70",
+        "earnedAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "wantLockedTotal": "19309509901612778057597",
+        "totalSupply": "19228949446919521040832",
+        "AVAAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "decimals": "18",
+        "lpToCLpRate": "1.004189540095034250",
+        "liquidity": "1,809.26"
+      },
+      "farm": {
+        "pid": 6,
+        "lpSymbol": "Kaco-LP",
+        "lpAddresses": "0x1Ba530cf929ea5bc7f1Af241495C97331Ddb4f70",
+        "token": "0x0f933Dc137D21cA519ae4C7E93f87a4C8EF365Ef",
+        "quoteToken": "0x735aBE48e8782948a37C7765ECb76b98CdE97B0F",
+        "tokenAmountMc": "37907.3266164952842136302588934977997237356340789853177228127110537372279910693587412094134895944419894",
+        "quoteTokenAmountMc": "1371888.9519883075821013213524415737213381638310756920641562044796114797088808290728233494537371469564061",
+        "tokenAmountTotal": "38097.519988209241006346",
+        "quoteTokenAmountTotal": "1378772.164514359004066499",
+        "lpTotalInQuoteToken": "2743777.9039766151642026427048831474426763276621513841283124089592229594177616581456466989074742939128122",
+        "lpTotalSupply": "225500140950312139120756",
+        "tokenPriceVsQuote": "36.19060151267257460164838067774849651340897153465510334869264819194547818472728222",
+        "poolWeight": "0.06060606060606060606060606060606060606060606060606060606060606060606060606060606",
+        "multiplier": "2X",
+        "quoteTokenDecimals": 18,
+        "liquidity": "20852.71",
+        "lpTokenPrice": "0.09369787751093464799458044451035716880955424283690348740524190627709537878011327",
+        "lpAddressDecimals": 18,
+        "apr": "1.0000481556332763",
+        "apy": "1.77",
+        "userData": {
+          "-336": {
+            "account": "",
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "0"
+          },
+          "0x2E1C9Adc548963273d9e767413403719019bd639-336": {
+            "account": "0x2E1C9Adc548963273d9e767413403719019bd639",
+            "pid": 6,
+            "allowance": "0",
+            "stakingTokenBalance": "648522971315",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "19228949446919521040832",
+            "vaultWantLockedTotal": "19309509901612778057597"
+          }
+        }
+      }
+    },
+    {
+      "contractAddress": {
+        "82": "0x9d03BfE2e0BEDA103f1961A8595bF5d8b1F6FD18",
+        "336": "0x9d03BfE2e0BEDA103f1961A8595bF5d8b1F6FD18"
+      },
+      "fromSource": "Kacoswap",
+      "abiType": 0,
+      "swapLink": "https://shiden.kaco.finance/add/0xfa9343c3897324496a05fc75abed6bac29f8a40f/0x735abe48e8782948a37c7765ecb76b98cde97b0f",
+      "online_at": 1648396800,
+      "lpDetail": {
+        "symbol": "JPYC-USDC LP",
+        "address": {
+          "82": "0xE2c19EB0f91c80275cc254f90Ed0f18F26650ec5",
+          "336": "0xE2c19EB0f91c80275cc254f90Ed0f18F26650ec5"
+        },
+        "decimals": 18
+      },
+      "isLoading": false,
+      "vault": {
+        "symbol": "aKJU",
+        "name": "avault Kaco JPYC-USDC LP",
+        "masterChef": "0x293A7824582C56B0842535f94F6E3841888168C8",
+        "token0Address": "0x735aBE48e8782948a37C7765ECb76b98CdE97B0F",
+        "token1Address": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "fromSource": "Kacoswap",
+        "wantAddress": "0xE2c19EB0f91c80275cc254f90Ed0f18F26650ec5",
+        "earnedAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "wantLockedTotal": "15894975297187",
+        "totalSupply": "15791641984380",
+        "AVAAddress": "0xb12c13e66AdE1F72f71834f2FC5082Db8C091358",
+        "decimals": "18",
+        "lpToCLpRate": "1.006543544547755742",
+        "liquidity": "504.16"
+      },
+      "farm": {
+        "pid": 7,
+        "lpSymbol": "Kaco-LP",
+        "lpAddresses": "0xE2c19EB0f91c80275cc254f90Ed0f18F26650ec5",
+        "token": "0x735aBE48e8782948a37C7765ECb76b98CdE97B0F",
+        "quoteToken": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+        "tokenAmountMc": "203377.4933807333968518082950209283539061390581685980189849246427691729734258424586470254139017113567694",
+        "quoteTokenAmountMc": "1556.02147404642552851967967287648206216523496908974184066968458694750316091523119482854022",
+        "tokenAmountTotal": "224096.45648524621863327",
+        "quoteTokenAmountTotal": "1714.540251",
+        "lpTotalInQuoteToken": "3112.04294809285105703935934575296412433046993817948368133936917389500632183046238965708044",
+        "lpTotalSupply": "107392485860329",
+        "tokenPriceVsQuote": "0.00765090299905246270641534619323009670658402596767983853609493043904570791484161",
+        "poolWeight": "0.06060606060606060606060606060606060606060606060606060606060606060606060606060606",
+        "multiplier": "2X",
+        "quoteTokenDecimals": 6,
+        "liquidity": "3111.11",
+        "lpTokenPrice": "31717918.72855812230626773553448349160887144149454444238291044693819160713258989050515101",
+        "lpAddressDecimals": 18,
+        "apr": "1.0000752131557213",
+        "apy": "2.78",
+        "userData": {
+          "-336": {
+            "account": "",
+            "allowance": "0",
+            "stakingTokenBalance": "0",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "0"
+          },
+          "0x2E1C9Adc548963273d9e767413403719019bd639-336": {
+            "account": "0x2E1C9Adc548963273d9e767413403719019bd639",
+            "pid": 7,
+            "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+            "stakingTokenBalance": "374853086",
+            "stakedBalance": "0",
+            "pendingReward": "0",
+            "avaultAddressBalance": "0",
+            "userVaultSupply": "15791641984380",
+            "vaultWantLockedTotal": "15894975297187"
+          }
+        }
+      }
+    }
+  ],
+  "allLiquidity": "7251.638459275437264",
+  "isUserLoaded": true,
+  "userDataLoaded": true
+}
