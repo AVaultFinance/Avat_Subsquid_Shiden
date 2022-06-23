@@ -25,14 +25,14 @@ processor.addEvmLogHandler(
   tvlIncLogsHandler
 );
 
-// processor.addEvmLogHandler(
-//   wSDN_USDC_LP,
-//   {
-//     filter: [events["Mint(address,uint256,uint256)"].topic],
-//     range: { from: 1471437, to: 1733149 },
-//   },
-//   tvlIncLogsHandler
-// );
+processor.addEvmLogHandler(
+  wSDN_USDC_LP,
+  {
+    filter: [events["Mint(address,uint256,uint256)"].topic],
+    range: { from: 1471437, to: 1733149 },
+  },
+  tvlIncLogsHandler
+);
 
 // processor.addEvmLogHandler(
 //   wSDN_USDC_LP,

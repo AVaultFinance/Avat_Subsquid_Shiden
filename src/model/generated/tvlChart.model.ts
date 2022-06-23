@@ -14,11 +14,11 @@ export class TVLChart {
   @PrimaryColumn_()
   id!: string;
 
-  @Column_("text", { nullable: false })
-  from!: string;
+  // @Column_("text", { nullable: false })
+  // from!: string;
 
-  @Column_("text", { nullable: false })
-  to!: string;
+  // @Column_("text", { nullable: false })
+  // to!: string;
 
   @Column_("numeric", {
     transformer: marshal.bigintTransformer,
@@ -32,11 +32,11 @@ export class TVLChart {
   })
   endTimestamp!: bigint;
 
-  @Column_("numeric", {
-    transformer: marshal.bigintTransformer,
-    nullable: false,
-  })
-  amount!: bigint;
+  // @Column_("numeric", {
+  //   transformer: marshal.bigintTransformer,
+  //   nullable: false,
+  // })
+  // amount!: bigint;
 
   @Column_("numeric", { nullable: false })
   value!: number;
