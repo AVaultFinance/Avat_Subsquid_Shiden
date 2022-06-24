@@ -33,24 +33,25 @@ interface IEvent {
 const addEvmData: IAddEvmDataItem[] = [
   {
     lpContract: wSDN_USDC_LP,
-    range: { from: 1376841, to: 1376850 },
+    // 1376841 from <= x < to
+    range: { from: 1376841, to: 1376950 },
     events: [
       {
         key: "Transfer(address,address,uint256)",
         function: tvlTransferLogsHandler,
       },
-      {
-        key: "Mint(address,uint256,uint256)",
-        function: tvlMintLogsHandler,
-      },
-      {
-        key: "Burn(address,uint256,uint256,address)",
-        function: tvlBurnLogsHandler,
-      },
-      {
-        key: "Swap(address,uint256,uint256,uint256,uint256,address)",
-        function: tvlSwapLogsHandler,
-      },
+      // {
+      //   key: "Mint(address,uint256,uint256)",
+      //   function: tvlMintLogsHandler,
+      // },
+      // {
+      //   key: "Burn(address,uint256,uint256,address)",
+      //   function: tvlBurnLogsHandler,
+      // },
+      // {
+      //   key: "Swap(address,uint256,uint256,uint256,uint256,address)",
+      //   function: tvlSwapLogsHandler,
+      // },
     ],
   },
 ];

@@ -14,6 +14,7 @@ interface ITVLChart {
 export async function tvlTransferLogsHandler(
   ctx: EvmLogHandlerContext
 ): Promise<void> {
+  console.log(ctx.substrate.block.height);
   try {
     const pairAddress = ctx.contractAddress;
     if (pairAddress === wSDN_USDC_LP) {
@@ -30,6 +31,7 @@ export async function tvlTransferLogsHandler(
         from !== "0x0000000000000000000000000000000000000000" &&
         to !== "0x0000000000000000000000000000000000000000"
       ) {
+        console.log(111);
         // // get price
         // console.log({ mint });
         // // wSDN-USDC LP

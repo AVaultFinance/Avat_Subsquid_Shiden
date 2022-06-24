@@ -12,6 +12,17 @@ export async function tvlMintLogsHandler(
     const pairAddress = ctx.contractAddress;
     if (pairAddress === wSDN_USDC_LP) {
       const mint = pair.events["Mint(address,uint256,uint256)"].decode(ctx);
+      const charts = await ctx.store.getRepository(TVLChart);
+      const chartsLength = await charts.count();
+      if (chartsLength) {
+        // const chart = await charts.find({
+        //   id: ctx.substrate.block.height.toString(),
+        // });
+        // if (chart) {
+        //   console.log(chart);
+        // }
+        console.log(mint);
+      }
     }
   } catch (e) {
     console.log("error: ", e, ctx.txHash);
