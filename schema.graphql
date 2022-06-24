@@ -1,29 +1,7 @@
-type ContractLP @entity {
-  id: ID!
-  balance: BigInt!
-  name: String
-}
-
-type Contract @entity {
-  id: ID!
-  name: String
-  symbol: String
-  totalSupply: BigInt
-}
-
-type Transfer @entity {
-  id: ID!
-  from: String!
-  to: String!
-  amount: BigInt!
-  timestamp: BigInt!
-}
-
 type TVLChart @entity {
   id: ID!
-  from: String!
-  to: String!
   currentTimestamp: BigInt!
-  amount: BigInt!
+  endTimestamp: BigInt!
   value: Float!
+  block: BigInt!
 }

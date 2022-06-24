@@ -9,7 +9,7 @@ export async function tvlIncLogsHandler(
   ctx: EvmLogHandlerContext
 ): Promise<void> {
   try {
-    const mint = pair.events["Mint(address,uint256,uint256)"].decode(ctx);
+    // const mint = pair.events["Mint(address,uint256,uint256)"].decode(ctx);
     const pairAddress = ctx.contractAddress;
     if (pairAddress === wSDN_USDC_LP) {
       const transfer =
@@ -24,16 +24,16 @@ export async function tvlIncLogsHandler(
         from !== "0x0000000000000000000000000000000000000000" &&
         to !== "0x0000000000000000000000000000000000000000"
       ) {
-        // get price
-        console.log({ mint });
-        // wSDN-USDC LP
-        // const sender = mint.sender;
-        const amount0 = Number(mint.amount0) / 1e6;
-        const amount1 = Number(mint.amount1) / 1e18;
-        const price0 = 1;
-        const price1 = amount0 / amount1;
-        const lpPrice = amount0 * price0 + amount1 * price1;
-        // const lpPrice = 1;
+        // // get price
+        // console.log({ mint });
+        // // wSDN-USDC LP
+        // // const sender = mint.sender;
+        // const amount0 = Number(mint.amount0) / 1e6;
+        // const amount1 = Number(mint.amount1) / 1e18;
+        // const price0 = 1;
+        // const price1 = amount0 / amount1;
+        // const lpPrice = amount0 * price0 + amount1 * price1;
+        const lpPrice = 1;
         // get price end ------
         const value: BigNumber = transfer.value;
         const charts = await ctx.store.getRepository(TVLChart);
@@ -62,14 +62,15 @@ export async function tvlIncLogsHandler(
           }
           // in
           if (address === "0x" && to === aKSU) {
-            const newTvlValue = tvlvalue + lastChart[0].value;
+            const newTvlValue = Number(tvlvalue) + Number(lastChart[0].value);
             chartValue.value = newTvlValue;
           } else if (address === aKSU && to === "0x") {
             // out
-            const newTvlValue = tvlvalue - lastChart[0].value;
+            const newTvlValue = Number(tvlvalue) - Number(lastChart[0].value);
             chartValue.value = newTvlValue;
           }
         }
+        console.log({ chartValue });
         await ctx.store.save(
           new TVLChart({
             id: chartValue.id,
@@ -81,6 +82,7 @@ export async function tvlIncLogsHandler(
       }
     }
   } catch (e) {
-    // console.log(ctx.txHash);
+    console.log(ctx.txHash);
+    // console.log(e);
   }
 }
