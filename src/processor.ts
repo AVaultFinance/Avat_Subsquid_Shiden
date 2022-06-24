@@ -1,9 +1,14 @@
-import { SubstrateEvmProcessor } from "@subsquid/substrate-evm-processor";
+import {
+  EvmLogHandlerContext,
+  SubstrateEvmProcessor,
+} from "@subsquid/substrate-evm-processor";
 import { lookupArchive } from "@subsquid/archive-registry";
 import { events } from "./abi/PancakePair";
 import { CHAIN_NODE, wSDN_USDC_LP } from "./constants";
-import { tvlIncLogsHandler } from "./event/tvlIncLogsHandler";
-import { tvlDecLogsHandler } from "./event/tvlDecLogsHandler";
+import { tvlTransferLogsHandler } from "./event/tvlTransferLogsHandler";
+import { tvlMintLogsHandler } from "./event/tvlMintLogsHandler";
+import { tvlBurnLogsHandler } from "./event/tvlBurnLogsHandler";
+import { tvlSwapLogsHandler } from "./event/tvlSwapLogsHandler";
 
 const processor = new SubstrateEvmProcessor("shiden-avat");
 
@@ -16,23 +21,64 @@ processor.setDataSource({
 
 processor.setTypesBundle("shiden");
 
-processor.addEvmLogHandler(
-  wSDN_USDC_LP,
+interface IAddEvmDataItem {
+  lpContract: string;
+  range: { from: number; to: number };
+  events: IEvent[];
+}
+interface IEvent {
+  function: (ctx: EvmLogHandlerContext) => Promise<void>;
+  key: string;
+}
+const addEvmData: IAddEvmDataItem[] = [
   {
-    filter: [events["Transfer(address,address,uint256)"].topic],
-    range: { from: 1471437, to: 1733149 },
+    lpContract: wSDN_USDC_LP,
+    range: { from: 1376841, to: 1376850 },
+    events: [
+      {
+        key: "Transfer(address,address,uint256)",
+        function: tvlTransferLogsHandler,
+      },
+      {
+        key: "Mint(address,uint256,uint256)",
+        function: tvlMintLogsHandler,
+      },
+      {
+        key: "Burn(address,uint256,uint256,address)",
+        function: tvlBurnLogsHandler,
+      },
+      {
+        key: "Swap(address,uint256,uint256,uint256,uint256,address)",
+        function: tvlSwapLogsHandler,
+      },
+    ],
   },
-  tvlIncLogsHandler
-);
+];
+for (let i = 0; i < addEvmData.length; i++) {
+  const item = addEvmData[i];
+  for (let j = 0; j < item.events.length; j++) {
+    const event = item.events[j];
+    processor.addEvmLogHandler(
+      item.lpContract, // 393
+      {
+        // @ts-ignore
+        filter: [events[event.key].topic],
+        // 1471437  1774944
+        range: item.range,
+      },
+      event.function
+    );
+  }
+}
 
-processor.addEvmLogHandler(
-  wSDN_USDC_LP,
-  {
-    filter: [events["Mint(address,uint256,uint256)"].topic],
-    range: { from: 1471437, to: 1733149 },
-  },
-  tvlIncLogsHandler
-);
+// processor.addEvmLogHandler(
+//   wSDN_USDC_LP,
+//   {
+//     filter: [events["Mint(address,uint256,uint256)"].topic],
+//     range: { from: 1471437, to: 1774944 },
+//   },
+//   tvlIncLogsHandler
+// );
 
 // processor.addEvmLogHandler(
 //   wSDN_USDC_LP,

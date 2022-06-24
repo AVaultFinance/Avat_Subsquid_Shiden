@@ -18,4 +18,7 @@ export class TVLChart {
 
   @Column_("numeric", {nullable: false})
   value!: number
+
+  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+  block!: bigint
 }

@@ -1,26 +1,37 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { BigNumber, ethers } from "ethers";
-import { getContractAddress } from "ethers/lib/utils";
 import * as pair from "../abi/PancakePair";
 import { aKSU, wSDN_USDC_LP } from "../constants";
 import { TVLChart } from "../model";
-
-export async function tvlIncLogsHandler(
+import { setTVLChart } from "../utils/setTVLChart";
+interface ITVLChart {
+  id: string;
+  currentTimestamp: bigint;
+  endTimestamp: bigint;
+  value: number;
+  block: bigint;
+}
+export async function tvlBurnLogsHandler(
   ctx: EvmLogHandlerContext
 ): Promise<void> {
   try {
-    // const mint = pair.events["Mint(address,uint256,uint256)"].decode(ctx);
     const pairAddress = ctx.contractAddress;
     if (pairAddress === wSDN_USDC_LP) {
+      const mint = pair.events["Mint(address,uint256,uint256)"].decode(ctx);
+      const Burn =
+        pair.events["Burn(address,uint256,uint256,address)"].decode(ctx);
+      console.log(mint, Burn);
+
       const transfer =
         pair.events["Transfer(address,address,uint256)"].decode(ctx);
       const from = transfer.from.toLowerCase();
       const to = transfer.to.toLowerCase();
 
-      // const result = await web3.eth.getCode(address);
-      // sender from user and to is vault address
+      const provider = ethers.getDefaultProvider();
+      const address = await provider.getCode(from);
       if (
-        (to === aKSU || from === aKSU) &&
+        ((address === "0x" && to === aKSU) ||
+          (address === aKSU && to === "0x")) &&
         from !== "0x0000000000000000000000000000000000000000" &&
         to !== "0x0000000000000000000000000000000000000000"
       ) {
@@ -36,23 +47,21 @@ export async function tvlIncLogsHandler(
         const lpPrice = 1;
         // get price end ------
         const value: BigNumber = transfer.value;
-        const charts = await ctx.store.getRepository(TVLChart);
+        const charts = ctx.store.getRepository(TVLChart);
         const chartsLength = await charts.count();
-        const provider = ethers.getDefaultProvider();
-        const address = await provider.getCode(from);
         const tvlvalue = value.toNumber();
-
         let chartValue = {
           id: chartsLength.toString(),
           currentTimestamp: BigInt(ctx.substrate.block.timestamp),
           endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
           value: tvlvalue,
+          block: BigInt(ctx.substrate.block.height),
         };
-        const lastChart = await charts.find({
-          id: (chartsLength - 1).toString(),
-        });
         // time
         if (chartsLength) {
+          const lastChart = await charts.find({
+            id: (chartsLength - 1).toString(),
+          });
           const diffTime =
             Number(lastChart[0].endTimestamp) -
             Number(ctx.substrate.block.timestamp);
@@ -60,8 +69,8 @@ export async function tvlIncLogsHandler(
             chartValue.id = lastChart[0].id;
             chartValue.endTimestamp = BigInt(lastChart[0].endTimestamp);
           }
-          // in
           if (address === "0x" && to === aKSU) {
+            // in
             const newTvlValue = Number(tvlvalue) + Number(lastChart[0].value);
             chartValue.value = newTvlValue;
           } else if (address === aKSU && to === "0x") {
@@ -70,19 +79,11 @@ export async function tvlIncLogsHandler(
             chartValue.value = newTvlValue;
           }
         }
-        console.log({ chartValue });
-        await ctx.store.save(
-          new TVLChart({
-            id: chartValue.id,
-            currentTimestamp: chartValue.currentTimestamp,
-            endTimestamp: chartValue.endTimestamp,
-            value: Number((chartValue.value * lpPrice).toFixed(2)),
-          })
-        );
+        await setTVLChart(ctx, chartValue, lpPrice);
       }
     }
   } catch (e) {
-    console.log(ctx.txHash);
+    console.log("error: ", e, ctx.txHash);
     // console.log(e);
   }
 }
