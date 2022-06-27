@@ -4,7 +4,7 @@ import {
 } from "@subsquid/substrate-evm-processor";
 import { lookupArchive } from "@subsquid/archive-registry";
 import { events } from "./abi/PancakePair";
-import { CHAIN_NODE, wSDN_USDC_LP } from "./constants";
+import { CHAIN_NODE, tvlAddressArr } from "./constants";
 import { tvlTransferLogsHandler } from "./event/tvlTransferLogsHandler";
 import { tvlMintLogsHandler } from "./event/tvlMintLogsHandler";
 import { tvlBurnLogsHandler } from "./event/tvlBurnLogsHandler";
@@ -22,83 +22,70 @@ processor.setDataSource({
 processor.setTypesBundle("shiden");
 
 interface IAddEvmDataItem {
-  lpContract: string;
+  contract: string;
   range: { from: number; to: number };
   events: IEvent[];
 }
 interface IEvent {
-  function: (ctx: EvmLogHandlerContext) => Promise<void>;
+  function: (ctx: EvmLogHandlerContext, i: number) => Promise<void>;
   key: string;
 }
-const addEvmData: IAddEvmDataItem[] = [
-  {
-    lpContract: wSDN_USDC_LP,
-    // 1376841 from <= x < to
-    range: { from: 1376841, to: 1376950 },
+const lpAddressArr01 = Object.keys(tvlAddressArr);
+const lpAddressArr02 = [
+  ...new Set(lpAddressArr01.map((v) => tvlAddressArr[v].lpAddress).flat(2)),
+];
+const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
+  (v: string) => {
+    return {
+      contract: v,
+      range: tvlAddressArr[v].range,
+      events: [
+        {
+          key: "Transfer(address,address,uint256)",
+          function: tvlTransferLogsHandler,
+        },
+      ],
+    };
+  }
+);
+const addSwapEvmData: IAddEvmDataItem[] = lpAddressArr02.map((v: string) => {
+  return {
+    contract: v,
+    range: tvlAddressArr[v].range,
     events: [
       {
-        key: "Transfer(address,address,uint256)",
-        function: tvlTransferLogsHandler,
+        key: "Mint(address,uint256,uint256)",
+        function: tvlMintLogsHandler,
       },
-      // {
-      //   key: "Mint(address,uint256,uint256)",
-      //   function: tvlMintLogsHandler,
-      // },
-      // {
-      //   key: "Burn(address,uint256,uint256,address)",
-      //   function: tvlBurnLogsHandler,
-      // },
-      // {
-      //   key: "Swap(address,uint256,uint256,uint256,uint256,address)",
-      //   function: tvlSwapLogsHandler,
-      // },
+      {
+        key: "Burn(address,uint256,uint256,address)",
+        function: tvlBurnLogsHandler,
+      },
+      {
+        key: "Swap(address,uint256,uint256,uint256,uint256,address)",
+        function: tvlSwapLogsHandler,
+      },
     ],
-  },
-];
+  };
+});
+const addEvmData = [...addTransferEvmData, ...addSwapEvmData];
+
 for (let i = 0; i < addEvmData.length; i++) {
   const item = addEvmData[i];
   for (let j = 0; j < item.events.length; j++) {
     const event = item.events[j];
     processor.addEvmLogHandler(
-      item.lpContract, // 393
+      item.contract, // 393
       {
         // @ts-ignore
         filter: [events[event.key].topic],
-        // 1471437  1774944
         range: item.range,
       },
-      event.function
+      async (ctx) => {
+        await event.function(ctx, i);
+      }
     );
   }
 }
-
-// processor.addEvmLogHandler(
-//   wSDN_USDC_LP,
-//   {
-//     filter: [events["Mint(address,uint256,uint256)"].topic],
-//     range: { from: 1471437, to: 1774944 },
-//   },
-//   tvlIncLogsHandler
-// );
-
-// processor.addEvmLogHandler(
-//   wSDN_USDC_LP,
-//   {
-//     filter: [events["Burn(address,uint256,uint256,address)"].topic],
-//     range: { from: 1366566 },
-//   },
-//   tvlDecLogsHandler
-// );
-
-// processor.addEvmLogHandler(
-//   wSDN_USDC_LP,
-//   {
-//     filter: [
-//       events["Swap(address,uint256,uint256,uint256,uint256,address)"].topic,
-//     ],
-//     range: { from: 1366566 },
-//   },
-//   tvlDecLogsHandler
-// );
 
 processor.run();

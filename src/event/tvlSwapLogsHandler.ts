@@ -1,80 +1,74 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
-import { BigNumber, ethers } from "ethers";
-import { getContractAddress } from "ethers/lib/utils";
+import { Repository } from "typeorm";
 import * as pair from "../abi/PancakePair";
-import { aKSU, wSDN_USDC_LP } from "../constants";
+import { tvlAddressArr } from "../constants";
 import { TVLChart } from "../model";
-import { setTVLChart } from "../utils/setTVLChart";
-
+import { setTVLChartByLpPrice } from "../utils/setTVLChart";
 export async function tvlSwapLogsHandler(
   ctx: EvmLogHandlerContext
 ): Promise<void> {
   try {
-    const pairAddress = ctx.contractAddress;
-    if (pairAddress === wSDN_USDC_LP) {
-      const mint = pair.events["Mint(address,uint256,uint256)"].decode(ctx);
-      const Burn =
-        pair.events["Burn(address,uint256,uint256,address)"].decode(ctx);
-      console.log(mint, Burn);
+    const pairAddress = ctx.contractAddress.toLowerCase();
+    const item = tvlAddressArr[pairAddress];
+    const alp_lp_index = item.lpAddress.indexOf(pairAddress);
+    const lp_symbol = item.lpAddressSymbol[alp_lp_index];
+    const mint: pair.Swap0Event =
+      pair.events[
+        "Swap(address,uint256,uint256,uint256,uint256,address)"
+      ].decode(ctx);
+    // let obj: Record<string, any> = {};
+    // for (let k in mint) {
+    //   // @ts-ignore
+    //   const value = mint[k];
+    //   if (typeof value === "string") {
+    //     obj[k] = value;
+    //   } else {
+    //     obj[k] = Number(value);
+    //   }
+    // }
+    // console.log(obj, ctx.txHash);
+    const mintBlockHeight = ctx.substrate.block.height;
+    let amount0In = 1;
+    let amount1In = 1;
+    let price0 = 1;
+    let price1 = 1;
+    if (lp_symbol.indexOf("-USDC") > -1) {
+      amount0In = Number(mint.amount0In) / 1e6;
+      amount1In = Number(mint.amount1In) / 1e6;
+    } else {
+      amount0In = Number(mint.amount0In) / 1e18;
+      amount1In = Number(mint.amount1In) / 1e18;
+    }
 
-      const transfer =
-        pair.events["Transfer(address,address,uint256)"].decode(ctx);
-      const from = transfer.from.toLowerCase();
-      const to = transfer.to.toLowerCase();
+    const amount0Out = Number(mint.amount0Out) / 1e18;
+    const amount1Out = Number(mint.amount1Out) / 1e18;
 
-      const provider = ethers.getDefaultProvider();
-      const address = await provider.getCode(from);
-      if (
-        ((address === "0x" && to === aKSU) ||
-          (address === aKSU && to === "0x")) &&
-        from !== "0x0000000000000000000000000000000000000000" &&
-        to !== "0x0000000000000000000000000000000000000000"
-      ) {
-        // // get price
-        // console.log({ mint });
-        // // wSDN-USDC LP
-        // // const sender = mint.sender;
-        // const amount0 = Number(mint.amount0) / 1e6;
-        // const amount1 = Number(mint.amount1) / 1e18;
-        // const price0 = 1;
-        // const price1 = amount0 / amount1;
-        // const lpPrice = amount0 * price0 + amount1 * price1;
-        const lpPrice = 1;
-        // get price end ------
-        const value: BigNumber = transfer.value;
-        const charts = ctx.store.getRepository(TVLChart);
-        const chartsLength = await charts.count();
-        const tvlvalue = value.toNumber();
-        let chartValue = {
-          id: chartsLength.toString(),
-          currentTimestamp: BigInt(ctx.substrate.block.timestamp),
-          endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
-          value: tvlvalue,
-          block: BigInt(ctx.substrate.block.height),
-        };
-        // time
-        if (chartsLength) {
-          const lastChart = await charts.find({
-            id: (chartsLength - 1).toString(),
-          });
-          const diffTime =
-            Number(lastChart[0].endTimestamp) -
-            Number(ctx.substrate.block.timestamp);
-          if (diffTime > 0) {
-            chartValue.id = lastChart[0].id;
-            chartValue.endTimestamp = BigInt(lastChart[0].endTimestamp);
-          }
-          if (address === "0x" && to === aKSU) {
-            // in
-            const newTvlValue = Number(tvlvalue) + Number(lastChart[0].value);
-            chartValue.value = newTvlValue;
-          } else if (address === aKSU && to === "0x") {
-            // out
-            const newTvlValue = Number(tvlvalue) - Number(lastChart[0].value);
-            chartValue.value = newTvlValue;
-          }
-        }
-        await setTVLChart(ctx, chartValue, lpPrice);
+    const amount0 = amount0In + amount1In;
+    const amount1 = amount0Out + amount1Out;
+
+    price0 = amount1 / amount0;
+    price1 = 1;
+
+    const lpPrice = amount0 * price0 + amount1 * price1;
+
+    const charts: Repository<TVLChart> = await ctx.store.getRepository(
+      TVLChart
+    );
+    const chartArr: any[] = await charts.query(`
+        select * from tvl_chart
+        where block < ${mintBlockHeight}
+        order by block
+      `);
+    const chartsLength = chartArr.length;
+    if (chartsLength) {
+      const chart = chartArr[chartsLength - 1];
+      const lpPriceArr = chart.lpPrice;
+      if (item.lpAddressSymbol.length === 1) {
+        lpPriceArr[0].price = lpPrice;
+        await setTVLChartByLpPrice(ctx, chart, lpPriceArr);
+      } else {
+        lpPriceArr[alp_lp_index].price = lpPrice;
+        await setTVLChartByLpPrice(ctx, chart, lpPriceArr);
       }
     }
   } catch (e) {

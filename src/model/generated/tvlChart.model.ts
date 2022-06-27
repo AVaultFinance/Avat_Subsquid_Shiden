@@ -1,5 +1,6 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_} from "typeorm"
 import * as marshal from "./marshal"
+import {LpPrice} from "./_lpPrice"
 
 @Entity_()
 export class TVLChart {
@@ -17,8 +18,11 @@ export class TVLChart {
   endTimestamp!: bigint
 
   @Column_("numeric", {nullable: false})
-  value!: number
+  aLpAmount!: number
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  block!: bigint
+  @Column_("jsonb", {transformer: {to: obj => obj.map((val: any) => val.toJSON()), from: obj => marshal.fromList(obj, val => new LpPrice(undefined, marshal.nonNull(val)))}, nullable: false})
+  lpPrice!: (LpPrice)[]
+
+  @Column_("integer", {nullable: false})
+  block!: number
 }

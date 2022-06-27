@@ -2,6 +2,13 @@ type TVLChart @entity {
   id: ID!
   currentTimestamp: BigInt!
   endTimestamp: BigInt!
-  value: Float!
-  block: BigInt!
+  aLpAmount: Float!
+  lpPrice: [LpPrice!]!
+  block: Int!
+}
+
+type LpPrice {
+  id: ID!
+  tokenSymbol: String!
+  price: Float!
 }

@@ -1,9 +1,9 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { BigNumber, ethers } from "ethers";
-import { getContractAddress } from "ethers/lib/utils";
 import * as pair from "../abi/PancakePair";
-import { aKSU, wSDN_USDC_LP } from "../constants";
-import { TVLChart } from "../model";
+import { tvlAddressArr } from "../constants";
+import { LpPrice, TVLChart } from "../model";
+import { setTVLChart } from "../utils/setTVLChart";
 interface ITVLChart {
   id: string;
   currentTimestamp: bigint;
@@ -12,26 +12,27 @@ interface ITVLChart {
   block: bigint;
 }
 export async function tvlTransferLogsHandler(
-  ctx: EvmLogHandlerContext
+  ctx: EvmLogHandlerContext,
+  index: number
 ): Promise<void> {
-  console.log(ctx.substrate.block.height);
   try {
-    const pairAddress = ctx.contractAddress;
-    if (pairAddress === wSDN_USDC_LP) {
+    const pairAddress = ctx.contractAddress.toLowerCase();
+    const lpAddressArr = Object.keys(tvlAddressArr);
+    if (pairAddress === lpAddressArr[index]) {
       const transfer =
         pair.events["Transfer(address,address,uint256)"].decode(ctx);
       const from = transfer.from.toLowerCase();
       const to = transfer.to.toLowerCase();
-
+      const item = tvlAddressArr[pairAddress];
+      const alp = item.aLpAddress;
       const provider = ethers.getDefaultProvider();
       const address = await provider.getCode(from);
       if (
-        ((address === "0x" && to === aKSU) ||
-          (address === aKSU && to === "0x")) &&
+        ((address === "0x" && to === alp) ||
+          (address === alp && to === "0x")) &&
         from !== "0x0000000000000000000000000000000000000000" &&
         to !== "0x0000000000000000000000000000000000000000"
       ) {
-        console.log(111);
         // // get price
         // console.log({ mint });
         // // wSDN-USDC LP
@@ -41,7 +42,6 @@ export async function tvlTransferLogsHandler(
         // const price0 = 1;
         // const price1 = amount0 / amount1;
         // const lpPrice = amount0 * price0 + amount1 * price1;
-        const lpPrice = 1;
         // get price end ------
         const value: BigNumber = transfer.value;
         const charts = ctx.store.getRepository(TVLChart);
@@ -51,8 +51,16 @@ export async function tvlTransferLogsHandler(
           id: chartsLength.toString(),
           currentTimestamp: BigInt(ctx.substrate.block.timestamp),
           endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
-          value: tvlvalue,
-          block: BigInt(ctx.substrate.block.height),
+          aLpAmount: tvlvalue,
+          block: ctx.substrate.block.height,
+          lpPrice: item.lpAddressSymbol.map(
+            (v, index) =>
+              new LpPrice({
+                id: `${index}`,
+                tokenSymbol: v,
+                price: 1,
+              })
+          ),
         };
         // time
         if (chartsLength) {
@@ -66,37 +74,23 @@ export async function tvlTransferLogsHandler(
             chartValue.id = lastChart[0].id;
             chartValue.endTimestamp = BigInt(lastChart[0].endTimestamp);
           }
-          if (address === "0x" && to === aKSU) {
+          if (address === "0x" && to === alp) {
             // in
-            const newTvlValue = Number(tvlvalue) + Number(lastChart[0].value);
-            chartValue.value = newTvlValue;
-          } else if (address === aKSU && to === "0x") {
+            const newTvlValue =
+              Number(tvlvalue) + Number(lastChart[0].aLpAmount);
+            chartValue.aLpAmount = newTvlValue;
+          } else if (address === alp && to === "0x") {
             // out
-            const newTvlValue = Number(tvlvalue) - Number(lastChart[0].value);
-            chartValue.value = newTvlValue;
+            const newTvlValue =
+              Number(tvlvalue) - Number(lastChart[0].aLpAmount);
+            chartValue.aLpAmount = newTvlValue;
           }
         }
-        await setTVLChart(ctx, chartValue, lpPrice);
+        await setTVLChart(ctx, chartValue);
       }
     }
   } catch (e) {
     console.log("error: ", e, ctx.txHash);
     // console.log(e);
   }
-}
-
-async function setTVLChart(
-  ctx: EvmLogHandlerContext,
-  chartValue: ITVLChart,
-  lpPrice: number
-) {
-  await ctx.store.save(
-    new TVLChart({
-      id: chartValue.id,
-      currentTimestamp: chartValue.currentTimestamp,
-      endTimestamp: chartValue.endTimestamp,
-      value: Number((chartValue.value * lpPrice).toFixed(2)),
-      block: chartValue.block,
-    })
-  );
 }
