@@ -48,30 +48,31 @@ const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
     };
   }
 );
-const addSwapEvmData: IAddEvmDataItem[] = lpAddressArr02.map((v: string) => {
-  return {
-    contract: v,
-    range: tvlAddressArr[v].range,
-    events: [
-      {
-        key: "Mint(address,uint256,uint256)",
-        function: tvlMintLogsHandler,
-      },
-      {
-        key: "Burn(address,uint256,uint256,address)",
-        function: tvlBurnLogsHandler,
-      },
-      {
-        key: "Swap(address,uint256,uint256,uint256,uint256,address)",
-        function: tvlSwapLogsHandler,
-      },
-    ],
-  };
-});
-const addEvmData = [...addTransferEvmData, ...addSwapEvmData];
+const addSwapEvmData: IAddEvmDataItem[] = lpAddressArr02
+  // .filter((v) => tvlAddressArr[v])
+  .map((v: string) => {
+    return {
+      contract: v,
+      range: tvlAddressArr[v]?.range ?? { from: 1837080, to: 1848980 },
+      events: [
+        {
+          key: "Mint(address,uint256,uint256)",
+          function: tvlMintLogsHandler,
+        },
+        {
+          key: "Burn(address,uint256,uint256,address)",
+          function: tvlBurnLogsHandler,
+        },
+        {
+          key: "Swap(address,uint256,uint256,uint256,uint256,address)",
+          function: tvlSwapLogsHandler,
+        },
+      ],
+    };
+  });
 
-for (let i = 0; i < addEvmData.length; i++) {
-  const item = addEvmData[i];
+for (let i = 0; i < addSwapEvmData.length; i++) {
+  const item = addSwapEvmData[i];
   for (let j = 0; j < item.events.length; j++) {
     const event = item.events[j];
     processor.addEvmLogHandler(
@@ -87,5 +88,21 @@ for (let i = 0; i < addEvmData.length; i++) {
     );
   }
 }
-
+for (let i = 0; i < addTransferEvmData.length; i++) {
+  const item = addTransferEvmData[i];
+  for (let j = 0; j < item.events.length; j++) {
+    const event = item.events[j];
+    processor.addEvmLogHandler(
+      item.contract, // 393
+      {
+        // @ts-ignore
+        filter: [events[event.key].topic],
+        range: item.range,
+      },
+      async (ctx) => {
+        await event.function(ctx, i);
+      }
+    );
+  }
+}
 processor.run();

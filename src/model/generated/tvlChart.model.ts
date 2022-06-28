@@ -1,6 +1,5 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_} from "typeorm"
 import * as marshal from "./marshal"
-import {LpPrice} from "./_lpPrice"
 
 @Entity_()
 export class TVLChart {
@@ -20,8 +19,14 @@ export class TVLChart {
   @Column_("numeric", {nullable: false})
   aLpAmount!: number
 
-  @Column_("jsonb", {transformer: {to: obj => obj.map((val: any) => val.toJSON()), from: obj => marshal.fromList(obj, val => new LpPrice(undefined, marshal.nonNull(val)))}, nullable: false})
-  lpPrice!: (LpPrice)[]
+  @Column_("text", {nullable: false})
+  aLpAddress!: string
+
+  @Column_("text", {array: true, nullable: true})
+  lpPrice!: (string | undefined | null)[] | undefined | null
+
+  @Column_("text", {nullable: true})
+  txHash!: string | undefined | null
 
   @Column_("integer", {nullable: false})
   block!: number

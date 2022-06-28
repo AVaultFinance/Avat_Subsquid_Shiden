@@ -1,44 +1,15 @@
-import { EvmLogHandlerContext, Store } from "@subsquid/substrate-evm-processor";
-import { LpPrice, TVLChart } from "../model";
-
-interface ITVLChart {
-  id: string;
-  currentTimestamp: bigint;
-  endTimestamp: bigint;
-  aLpAmount: number;
-  block: number;
-  lpPrice: LpPrice[];
-}
+import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
+import { TVLChart } from "../model";
+import { LpPrice } from "../model/generated/lpPrice.model";
+import { ILpPrice, ITVLChart } from "./types";
 
 export async function setTVLChart(
   ctx: EvmLogHandlerContext,
   chartValue: ITVLChart
 ) {
-  await ctx.store.save(
-    new TVLChart({
-      id: chartValue.id,
-      currentTimestamp: chartValue.currentTimestamp,
-      endTimestamp: chartValue.endTimestamp,
-      aLpAmount: chartValue.aLpAmount,
-      lpPrice: chartValue.lpPrice,
-      block: chartValue.block,
-    })
-  );
+  await ctx.store.save(new TVLChart(chartValue));
 }
 
-export async function setTVLChartByLpPrice(
-  ctx: EvmLogHandlerContext,
-  chartValue: ITVLChart,
-  lpPrice: LpPrice[]
-) {
-  await ctx.store.save(
-    new TVLChart({
-      id: chartValue.id,
-      currentTimestamp: chartValue.currentTimestamp,
-      endTimestamp: chartValue.endTimestamp,
-      aLpAmount: chartValue.aLpAmount,
-      lpPrice: lpPrice,
-      block: chartValue.block,
-    })
-  );
+export async function setLpPrice(ctx: EvmLogHandlerContext, lpPrice: ILpPrice) {
+  await ctx.store.save(new LpPrice(lpPrice));
 }

@@ -3,12 +3,18 @@ type TVLChart @entity {
   currentTimestamp: BigInt!
   endTimestamp: BigInt!
   aLpAmount: Float!
-  lpPrice: [LpPrice!]!
+  aLpAddress: String!
+  lpPrice: [String]
+  txHash: String
   block: Int!
 }
 
-type LpPrice {
+type LpPrice @entity {
   id: ID!
-  tokenSymbol: String!
-  price: Float!
+  lpPrice: String!
+  lpAddress: String!
+  event: String!
+  block: Int!
+  txHash: String
+  totalSupply: String
 }

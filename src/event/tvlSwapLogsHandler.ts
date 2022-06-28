@@ -1,78 +1,75 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { Repository } from "typeorm";
 import * as pair from "../abi/PancakePair";
-import { tvlAddressArr } from "../constants";
-import { TVLChart } from "../model";
-import { setTVLChartByLpPrice } from "../utils/setTVLChart";
+import { lpAddress } from "../constants";
+import { LpPrice } from "../model/generated/lpPrice.model";
+import { setLpPrice } from "../utils/setTVLChart";
 export async function tvlSwapLogsHandler(
   ctx: EvmLogHandlerContext
 ): Promise<void> {
   try {
     const pairAddress = ctx.contractAddress.toLowerCase();
-    const item = tvlAddressArr[pairAddress];
-    const alp_lp_index = item.lpAddress.indexOf(pairAddress);
-    const lp_symbol = item.lpAddressSymbol[alp_lp_index];
+    const item = lpAddress.filter((v) => v.lpAddress === pairAddress)[0];
+    const lp_symbol = item.lpSymbol;
     const mint: pair.Swap0Event =
       pair.events[
         "Swap(address,uint256,uint256,uint256,uint256,address)"
       ].decode(ctx);
-    // let obj: Record<string, any> = {};
-    // for (let k in mint) {
-    //   // @ts-ignore
-    //   const value = mint[k];
-    //   if (typeof value === "string") {
-    //     obj[k] = value;
-    //   } else {
-    //     obj[k] = Number(value);
+    const { amount0In, amount1In, amount0Out, amount1Out } = mint;
+
+    const lpPriceStore = ctx.store.getRepository(LpPrice);
+    const lpPriceStoreLength = await lpPriceStore.count();
+
+    let totalSupply = 0;
+    if (lpPriceStoreLength) {
+      const lastLpPrice = await lpPriceStore.find({
+        id: (lpPriceStoreLength - 1).toString(),
+      });
+      totalSupply = Number(lastLpPrice[0].totalSupply);
+    }
+
+    const price = ctx.store.getRepository(LpPrice);
+    const priceLength = await price.count();
+
+    await setLpPrice(ctx, {
+      id: `${priceLength}`,
+      lpPrice: `1`,
+      lpAddress: item.lpAddress,
+      block: ctx.substrate.block.height,
+      event: "swap",
+      txHash: ctx.txHash,
+      totalSupply: `${totalSupply}`,
+    });
+    // const charts: Repository<TVLChart> = await ctx.store.getRepository(
+    //   TVLChart
+    // );
+    // const chartArr: ISqlTVLChart[] = await charts.query(`
+    //     select * from tvl_chart
+    //     where block < ${mintBlockHeight}
+    //     order by block
+    //   `);
+    // const chartsLength = chartArr.length;
+    // if (chartsLength) {
+    //   const chart_params: ISqlTVLChart = chartArr[chartsLength - 1];
+    //   const chart = ISqlTVLChartUtils(chart_params);
+    //   const lpAddress = chart.aLpAddress;
+    //   const item = tvlAddressArr[lpAddress];
+    //   if (item) {
+    //     const alp_lp_index = item.lpAddress.indexOf(pairAddress);
+    //     if (alp_lp_index === 0 || alp_lp_index) {
+    //       if (chart.lpPrice && chart.lpPrice && chart.lpPrice[alp_lp_index]) {
+    //         chart.lpPrice[alp_lp_index] = lpPrice;
+    //       } else {
+    //         chart.lpPrice = item.lpAddress.map((v, index) =>
+    //           index === alp_lp_index ? lpPrice : 1
+    //         );
+    //       }
+    //       await setTVLChart(ctx, chart);
+    //     }
     //   }
     // }
-    // console.log(obj, ctx.txHash);
-    const mintBlockHeight = ctx.substrate.block.height;
-    let amount0In = 1;
-    let amount1In = 1;
-    let price0 = 1;
-    let price1 = 1;
-    if (lp_symbol.indexOf("-USDC") > -1) {
-      amount0In = Number(mint.amount0In) / 1e6;
-      amount1In = Number(mint.amount1In) / 1e6;
-    } else {
-      amount0In = Number(mint.amount0In) / 1e18;
-      amount1In = Number(mint.amount1In) / 1e18;
-    }
-
-    const amount0Out = Number(mint.amount0Out) / 1e18;
-    const amount1Out = Number(mint.amount1Out) / 1e18;
-
-    const amount0 = amount0In + amount1In;
-    const amount1 = amount0Out + amount1Out;
-
-    price0 = amount1 / amount0;
-    price1 = 1;
-
-    const lpPrice = amount0 * price0 + amount1 * price1;
-
-    const charts: Repository<TVLChart> = await ctx.store.getRepository(
-      TVLChart
-    );
-    const chartArr: any[] = await charts.query(`
-        select * from tvl_chart
-        where block < ${mintBlockHeight}
-        order by block
-      `);
-    const chartsLength = chartArr.length;
-    if (chartsLength) {
-      const chart = chartArr[chartsLength - 1];
-      const lpPriceArr = chart.lpPrice;
-      if (item.lpAddressSymbol.length === 1) {
-        lpPriceArr[0].price = lpPrice;
-        await setTVLChartByLpPrice(ctx, chart, lpPriceArr);
-      } else {
-        lpPriceArr[alp_lp_index].price = lpPrice;
-        await setTVLChartByLpPrice(ctx, chart, lpPriceArr);
-      }
-    }
   } catch (e) {
-    console.log("error: ", e, ctx.txHash);
+    console.log("Swap Error: ", e, ctx.txHash);
     // console.log(e);
   }
 }

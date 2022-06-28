@@ -1,21 +1,19 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { BigNumber, ethers } from "ethers";
+import { Repository } from "typeorm";
 import * as pair from "../abi/PancakePair";
 import { tvlAddressArr } from "../constants";
-import { LpPrice, TVLChart } from "../model";
+import { TVLChart } from "../model";
+import { LpPrice } from "../model/generated/lpPrice.model";
 import { setTVLChart } from "../utils/setTVLChart";
-interface ITVLChart {
-  id: string;
-  currentTimestamp: bigint;
-  endTimestamp: bigint;
-  value: number;
-  block: bigint;
-}
+import { ILpPrice, ISqlLpPrice, ITVLChart } from "../utils/types";
+
 export async function tvlTransferLogsHandler(
   ctx: EvmLogHandlerContext,
   index: number
 ): Promise<void> {
   try {
+    const txHash = ctx.txHash;
     const pairAddress = ctx.contractAddress.toLowerCase();
     const lpAddressArr = Object.keys(tvlAddressArr);
     if (pairAddress === lpAddressArr[index]) {
@@ -33,34 +31,20 @@ export async function tvlTransferLogsHandler(
         from !== "0x0000000000000000000000000000000000000000" &&
         to !== "0x0000000000000000000000000000000000000000"
       ) {
-        // // get price
-        // console.log({ mint });
-        // // wSDN-USDC LP
-        // // const sender = mint.sender;
-        // const amount0 = Number(mint.amount0) / 1e6;
-        // const amount1 = Number(mint.amount1) / 1e18;
-        // const price0 = 1;
-        // const price1 = amount0 / amount1;
-        // const lpPrice = amount0 * price0 + amount1 * price1;
-        // get price end ------
         const value: BigNumber = transfer.value;
         const charts = ctx.store.getRepository(TVLChart);
         const chartsLength = await charts.count();
-        const tvlvalue = value.toNumber();
-        let chartValue = {
+        const tvlvalue = Number(value) / 1e18;
+
+        const chartValue: ITVLChart = {
           id: chartsLength.toString(),
           currentTimestamp: BigInt(ctx.substrate.block.timestamp),
           endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
           aLpAmount: tvlvalue,
           block: ctx.substrate.block.height,
-          lpPrice: item.lpAddressSymbol.map(
-            (v, index) =>
-              new LpPrice({
-                id: `${index}`,
-                tokenSymbol: v,
-                price: 1,
-              })
-          ),
+          aLpAddress: pairAddress,
+          txHash: txHash,
+          lpPrice: item.lpAddress.map(() => "1"),
         };
         // time
         if (chartsLength) {
@@ -86,11 +70,32 @@ export async function tvlTransferLogsHandler(
             chartValue.aLpAmount = newTvlValue;
           }
         }
+
+        // get lp price
+        const lpPriceStore: Repository<LpPrice> = await ctx.store.getRepository(
+          LpPrice
+        );
+        const lpPriceStoreArr: ISqlLpPrice[] = await lpPriceStore.query(`
+          select * from lp_price
+          where block < ${ctx.substrate.block.height}
+          order by block
+        `);
+        if (lpPriceStoreArr && lpPriceStoreArr.length) {
+          item.lpAddress.map((vv: string, index: number) => {
+            const lpPriceP = lpPriceStoreArr.filter(
+              (v: ISqlLpPrice) => v.lp_address === vv
+            );
+            if (lpPriceP && lpPriceP.length) {
+              chartValue.lpPrice[index] =
+                lpPriceP[lpPriceP.length - 1].lp_price;
+            }
+          });
+        }
         await setTVLChart(ctx, chartValue);
       }
     }
   } catch (e) {
-    console.log("error: ", e, ctx.txHash);
+    console.log("Transfer Error: ", e, ctx.txHash);
     // console.log(e);
   }
 }
