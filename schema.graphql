@@ -1,5 +1,6 @@
 type TVLChart @entity {
   id: ID!
+  idInt: Int!
   currentTimestamp: BigInt!
   endTimestamp: BigInt!
   aLpAmount: Float!
@@ -11,10 +12,36 @@ type TVLChart @entity {
 
 type LpPrice @entity {
   id: ID!
+  idInt: Int!
   lpPrice: String!
   lpAddress: String!
   event: String!
   block: Int!
   txHash: String
+}
+
+type LpTokenAmount @entity {
+  id: ID!
+  idInt: Int!
+  token: String!
+  quoteToken: String!
+  tokenAmount: String!
+  quoteTokenAmount: String!
+  block: Int!
+  txHash: String
+  lpAddress: String!
+  event: String!
+}
+
+type LpTotalSupplyAmount @entity {
+  id: ID!
+  idInt: Int!
+  fromAddress: String
+  toAddress: String
+  block: Int!
+  txHash: String
+  lpAddress: String!
+  value: String
+  event: String!
   totalSupply: String
 }

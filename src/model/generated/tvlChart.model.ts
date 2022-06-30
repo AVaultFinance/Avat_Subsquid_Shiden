@@ -10,6 +10,9 @@ export class TVLChart {
   @PrimaryColumn_()
   id!: string
 
+  @Column_("integer", {nullable: false})
+  idInt!: number
+
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   currentTimestamp!: bigint
 

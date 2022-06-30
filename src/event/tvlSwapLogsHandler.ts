@@ -1,9 +1,10 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
-import { Repository } from "typeorm";
 import * as pair from "../abi/PancakePair";
 import { lpAddress } from "../constants";
-import { LpPrice } from "../model/generated/lpPrice.model";
-import { setLpPrice } from "../utils/setTVLChart";
+import { LpTokenAmount } from "../model/generated/lpTokenAmount.model";
+import { setLpTokenAmount } from "../utils/setTVLChart";
+import { ILpTokenAmount } from "../utils/types";
+import { getDecimal } from "../utils/utils";
 export async function tvlSwapLogsHandler(
   ctx: EvmLogHandlerContext
 ): Promise<void> {
@@ -11,63 +12,55 @@ export async function tvlSwapLogsHandler(
     const pairAddress = ctx.contractAddress.toLowerCase();
     const item = lpAddress.filter((v) => v.lpAddress === pairAddress)[0];
     const lp_symbol = item.lpSymbol;
+    const [token, quoteToken] = lp_symbol.split(" ")[0].split("-");
+    const [tokenDecimal, quoteTokenDecimal] = [
+      getDecimal(token),
+      getDecimal(quoteToken),
+    ];
+
     const mint: pair.Swap0Event =
       pair.events[
         "Swap(address,uint256,uint256,uint256,uint256,address)"
       ].decode(ctx);
-    const { amount0In, amount1In, amount0Out, amount1Out } = mint;
+    const {
+      amount0In: _amount0In,
+      amount1In: _amount1In,
+      amount0Out: _amount0Out,
+      amount1Out: _amount1Out,
+    } = mint;
+    const amount0In = Number(_amount0In) / Math.pow(10, tokenDecimal);
+    const amount1In = Number(_amount1In) / Math.pow(10, quoteTokenDecimal);
+    const amount0Out = Number(_amount0Out) / Math.pow(10, tokenDecimal);
+    const amount1Out = Number(_amount1Out) / Math.pow(10, quoteTokenDecimal);
 
-    const lpPriceStore = ctx.store.getRepository(LpPrice);
-    const lpPriceStoreLength = await lpPriceStore.count();
+    const lpTokenAmount = ctx.store.getRepository(LpTokenAmount);
+    const lpTokenAmountLength = await lpTokenAmount.count();
 
-    let totalSupply = 0;
-    if (lpPriceStoreLength) {
-      const lastLpPrice = await lpPriceStore.find({
-        id: (lpPriceStoreLength - 1).toString(),
+    let tokenAmount = 0;
+    let quoteTokenAmount = 0;
+    if (lpTokenAmountLength) {
+      const lastLpTokenAmount = await lpTokenAmount.find({
+        idInt: lpTokenAmountLength - 1,
       });
-      totalSupply = Number(lastLpPrice[0].totalSupply);
+      tokenAmount = Number(lastLpTokenAmount[0].tokenAmount);
+      quoteTokenAmount = Number(lastLpTokenAmount[0].quoteTokenAmount);
     }
 
-    const price = ctx.store.getRepository(LpPrice);
-    const priceLength = await price.count();
-
-    await setLpPrice(ctx, {
-      id: `${priceLength}`,
-      lpPrice: `1`,
-      lpAddress: item.lpAddress,
+    const lpTokenAmountParams: ILpTokenAmount = {
+      id: `${lpTokenAmountLength}`,
+      idInt: lpTokenAmountLength,
+      token: token,
+      quoteToken: quoteToken,
+      tokenAmount: `${(amount0In + amount1In + tokenAmount).toFixed(18)}`,
+      quoteTokenAmount: `${(amount0Out + amount1Out + quoteTokenAmount).toFixed(
+        2
+      )}`,
       block: ctx.substrate.block.height,
-      event: "swap",
       txHash: ctx.txHash,
-      totalSupply: `${totalSupply}`,
-    });
-    // const charts: Repository<TVLChart> = await ctx.store.getRepository(
-    //   TVLChart
-    // );
-    // const chartArr: ISqlTVLChart[] = await charts.query(`
-    //     select * from tvl_chart
-    //     where block < ${mintBlockHeight}
-    //     order by block
-    //   `);
-    // const chartsLength = chartArr.length;
-    // if (chartsLength) {
-    //   const chart_params: ISqlTVLChart = chartArr[chartsLength - 1];
-    //   const chart = ISqlTVLChartUtils(chart_params);
-    //   const lpAddress = chart.aLpAddress;
-    //   const item = tvlAddressArr[lpAddress];
-    //   if (item) {
-    //     const alp_lp_index = item.lpAddress.indexOf(pairAddress);
-    //     if (alp_lp_index === 0 || alp_lp_index) {
-    //       if (chart.lpPrice && chart.lpPrice && chart.lpPrice[alp_lp_index]) {
-    //         chart.lpPrice[alp_lp_index] = lpPrice;
-    //       } else {
-    //         chart.lpPrice = item.lpAddress.map((v, index) =>
-    //           index === alp_lp_index ? lpPrice : 1
-    //         );
-    //       }
-    //       await setTVLChart(ctx, chart);
-    //     }
-    //   }
-    // }
+      lpAddress: pairAddress,
+      event: "Swap",
+    };
+    await setLpTokenAmount(ctx, lpTokenAmountParams);
   } catch (e) {
     console.log("Swap Error: ", e, ctx.txHash);
     // console.log(e);

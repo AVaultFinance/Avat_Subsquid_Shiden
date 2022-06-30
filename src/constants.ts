@@ -1,6 +1,9 @@
 export const CHAIN_NODE = "wss://shiden.api.onfinality.io/public-ws";
 // export const wSDN-USDC LP =
 //   "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020".toLowerCase();
+
+export const address_zero =
+  "0x0000000000000000000000000000000000000000".toLowerCase();
 const KAC_wSDN_lp = {
   lpAddress: "0x456C0082DE0048EE883881fF61341177FA1FEF40".toLowerCase(),
   lpSymbol: "KAC-wSDN LP",
@@ -38,33 +41,29 @@ const JPYC_USDC_lp = {
 };
 export interface ITvlAddress {
   aLpAddress: string;
-  range: { from: number; to: number };
   lpAddress: string[];
 }
 export const tvlAddressArr: Record<string, ITvlAddress> = {
   // KAC-wSDN LP ----> aKKS
-  [KAC_wSDN_lp.lpAddress]: {
-    aLpAddress: KAC_wSDN_lp.aLpAddress,
-    range: { from: 1837080, to: 1848980 },
-    lpAddress: [
-      KAC_wSDN_lp.lpAddress, // KAC-wSDN LP
-      wSDN_USDC_lp.lpAddress, // wSDN-USDC LP
-    ],
-  },
-
-  // // wSDN-USDC LP ----> aKSU
-  // [wSDN_USDC_lp.lpAddress]: {
-  //   aLpAddress: wSDN_USDC_lp.aLpAddress,
-  //   range: { from: 1400053, to: 1401053 },
+  // [KAC_wSDN_lp.lpAddress]: {
+  //   aLpAddress: KAC_wSDN_lp.aLpAddress,
   //   lpAddress: [
+  //     KAC_wSDN_lp.lpAddress, // KAC-wSDN LP
   //     wSDN_USDC_lp.lpAddress, // wSDN-USDC LP
   //   ],
   // },
 
+  // wSDN-USDC LP ----> aKSU
+  [wSDN_USDC_lp.lpAddress]: {
+    aLpAddress: wSDN_USDC_lp.aLpAddress,
+    lpAddress: [
+      wSDN_USDC_lp.lpAddress, // wSDN-USDC LP
+    ],
+  },
+
   // // ETH-wSDN LP ----> aKES
   // [ETH_wSDN_lp.lpAddress]: {
   //   aLpAddress: ETH_wSDN_lp.aLpAddress,
-  //   range: { from: 1400053, to: 1401053 },
   //   lpAddress: [
   //     ETH_wSDN_lp.lpAddress, // ETH-wSDN LP
   //     wSDN_USDC_lp.lpAddress, // wSDN-USDC LP
@@ -74,7 +73,6 @@ export const tvlAddressArr: Record<string, ITvlAddress> = {
   // // ETH-USDC LP ----> aKEU
   // [ETH_USDC_lp.lpAddress]: {
   //   aLpAddress: ETH_USDC_lp.aLpAddress,
-  //   range: { from: 1400053, to: 1401053 },
   //   lpAddress: [
   //     ETH_USDC_lp.lpAddress, // ETH-USDC LP
   //   ],
@@ -83,7 +81,6 @@ export const tvlAddressArr: Record<string, ITvlAddress> = {
   // // BUSD-USDC LP ----> aKBU
   // [BUSD_USDC_lp.lpAddress]: {
   //   aLpAddress: BUSD_USDC_lp.aLpAddress,
-  //   range: { from: 1400053, to: 1401053 },
   //   lpAddress: [
   //     BUSD_USDC_lp.lpAddress, // BUSD-USDC LP
   //   ],
@@ -92,7 +89,6 @@ export const tvlAddressArr: Record<string, ITvlAddress> = {
   // // wSDN-JPYC LP ----> aKSJ
   // [wSDN_JPYC_lp.lpAddress]: {
   //   aLpAddress: wSDN_JPYC_lp.aLpAddress,
-  //   range: { from: 1400053, to: 1401053 },
   //   lpAddress: [
   //     wSDN_JPYC_lp.lpAddress, // wSDN-JPYC LP
   //     JPYC_USDC_lp.lpAddress, // JPYC-USDC LP
@@ -102,7 +98,6 @@ export const tvlAddressArr: Record<string, ITvlAddress> = {
   // // JPYC-USDC LP ----> aKJU
   // [JPYC_USDC_lp.lpAddress]: {
   //   aLpAddress: JPYC_USDC_lp.aLpAddress,
-  //   range: { from: 1400053, to: 1401053 },
   //   lpAddress: [
   //     JPYC_USDC_lp.lpAddress, // JPYC-USDC LP
   //   ],

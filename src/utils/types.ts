@@ -1,5 +1,6 @@
 export interface ISqlTVLChart {
   id: string;
+  id_int: number;
   current_timestamp: string;
   end_timestamp: string;
   a_lp_amount: string;
@@ -10,6 +11,7 @@ export interface ISqlTVLChart {
 }
 export interface ITVLChart {
   id: string;
+  idInt: number;
   currentTimestamp: bigint;
   endTimestamp: bigint;
   aLpAmount: number;
@@ -21,6 +23,7 @@ export interface ITVLChart {
 export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
   return {
     id: params.id,
+    idInt: params.id_int,
     currentTimestamp: BigInt(params.current_timestamp),
     endTimestamp: BigInt(params.end_timestamp),
     aLpAmount: Number(params.a_lp_amount),
@@ -33,32 +36,58 @@ export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
 
 export interface ISqlLpPrice {
   id: string;
+  id_int: number;
   lp_price: string;
   lp_address: string;
   block: number;
   event: string;
   tx_hash: string;
-  total_supply: string;
 }
 
 export interface ILpPrice {
   id: string;
+  idInt: number;
   lpPrice: string;
   lpAddress: string;
   block: number;
   event: string;
   txHash: string;
-  totalSupply: string;
 }
 
 export const ISqlLpPriceUtils = (params: ISqlLpPrice): ILpPrice => {
   return {
     id: params.id,
+    idInt: params.id_int,
     lpPrice: params.lp_price,
     lpAddress: params.lp_address,
     block: params.block,
     event: params.event,
     txHash: params.tx_hash,
-    totalSupply: params.total_supply,
   };
 };
+
+export interface ILpTotalSupplyAmount {
+  id: string;
+  idInt: number;
+  totalSupply: string;
+  fromAddress: string;
+  toAddress: string;
+  block: number;
+  txHash: string;
+  lpAddress: string;
+  value: string;
+  event: string;
+}
+
+export interface ILpTokenAmount {
+  id: string;
+  idInt: number;
+  token: string;
+  quoteToken: string;
+  tokenAmount: string;
+  quoteTokenAmount: string;
+  block: number;
+  txHash: string;
+  lpAddress: string;
+  event: string;
+}

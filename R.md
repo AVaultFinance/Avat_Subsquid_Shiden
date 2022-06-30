@@ -10,6 +10,13 @@
 
 - 1. 监听 lp 的 token0 token1 余额
 - 2. lp price
+
      - totalSupply
      - token0
      - token1
+
+     一共产生了 100 了 wsdn-usdc
+
+     - totalSupply = 100
+     - token0 = 10
+     - token1 = 10000

@@ -2,7 +2,12 @@ import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { tvlAddressArr } from "../constants";
 import { setTVLChart } from "./setTVLChart";
 import { ISqlTVLChart, ISqlTVLChartUtils } from "./types";
-
+export function getDecimal(tokenSymbol: string) {
+  return tokenSymbol.indexOf("USDC") > -1 ? 6 : 18;
+}
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 export async function setPrice(
   ctx: EvmLogHandlerContext,
   chartArr: ISqlTVLChart[],
