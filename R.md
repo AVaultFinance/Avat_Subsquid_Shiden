@@ -20,3 +20,9 @@
      - totalSupply = 100
      - token0 = 10
      - token1 = 10000
+
+  - 如果是 USDC
+    - `1257759.5744872892 = (764.570973*2)/(1215766492275232/Math.pow(10,18))`
+    - `lpprice = (quoteTokenAmount*2)/(totalSupply/Math.pow(10,18))`
+    - `0.3188772034823439 = (1257759.5744872892*(1215766492275232/Math.pow(10,18)))/(2397.697184528695775918*2)`
+    - `tokenPrice = (lpprice*(totalSupply/Math.pow(10,18)))/(tokenAmount*2)`

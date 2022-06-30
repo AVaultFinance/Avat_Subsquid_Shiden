@@ -20,6 +20,7 @@ export async function tvlMintLogsHandler(
       getDecimal(token),
       getDecimal(quoteToken),
     ];
+
     const mint = pair.events["Mint(address,uint256,uint256)"].decode(ctx);
 
     const { amount0: _amount0, amount1: _amount1 } = mint;
@@ -52,6 +53,9 @@ export async function tvlMintLogsHandler(
       event: "Mint",
     };
     await setLpTokenAmount(ctx, lpTokenAmountParams);
+
+    if (quoteToken === "USDT") {
+    }
   } catch (e) {
     console.log("Mint Error: ", e, ctx.txHash);
   }

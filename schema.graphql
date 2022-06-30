@@ -10,16 +10,6 @@ type TVLChart @entity {
   block: Int!
 }
 
-type LpPrice @entity {
-  id: ID!
-  idInt: Int!
-  lpPrice: String!
-  lpAddress: String!
-  event: String!
-  block: Int!
-  txHash: String
-}
-
 type LpTokenAmount @entity {
   id: ID!
   idInt: Int!
@@ -44,4 +34,28 @@ type LpTotalSupplyAmount @entity {
   value: String
   event: String!
   totalSupply: String
+}
+
+# get some price
+type LpPrice @entity {
+  id: ID!
+  idInt: Int!
+  lpPrice: String!
+  lpAddress: String!
+  lpSymbol: String!
+  lpPriceSymbol: String!
+  event: String!
+  block: Int!
+  txHash: String
+}
+
+type TokenPrice @entity {
+  id: ID!
+  idInt: Int!
+  tokenPrice: String!
+  tokenAddress: String!
+  tokenSymbol: String!
+  event: String!
+  block: Int!
+  txHash: String
 }

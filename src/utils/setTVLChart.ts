@@ -34,3 +34,10 @@ export async function setLpTokenAmount(
 ) {
   await ctx.store.save(new LpTokenAmount(params));
 }
+
+// export async function setTokenPrice(
+//   ctx: EvmLogHandlerContext,
+//   params: ITokenPrice
+// ) {
+//   await ctx.store.save(new LpTokenAmount(params));
+// }

@@ -29,10 +29,17 @@ export async function tvlSwapLogsHandler(
       amount1Out: _amount1Out,
     } = mint;
     const amount0In = Number(_amount0In) / Math.pow(10, tokenDecimal);
-    const amount1In = Number(_amount1In) / Math.pow(10, quoteTokenDecimal);
     const amount0Out = Number(_amount0Out) / Math.pow(10, tokenDecimal);
+    const amount1In = Number(_amount1In) / Math.pow(10, quoteTokenDecimal);
     const amount1Out = Number(_amount1Out) / Math.pow(10, quoteTokenDecimal);
-
+    // console.log(
+    //   "Swap: ",
+    //   ctx.txHash,
+    //   amount0In,
+    //   amount0Out,
+    //   amount1In,
+    //   amount1Out
+    // );
     const lpTokenAmount = ctx.store.getRepository(LpTokenAmount);
     const lpTokenAmountLength = await lpTokenAmount.count();
 
@@ -44,6 +51,15 @@ export async function tvlSwapLogsHandler(
       });
       tokenAmount = Number(lastLpTokenAmount[0].tokenAmount);
       quoteTokenAmount = Number(lastLpTokenAmount[0].quoteTokenAmount);
+
+      if (amount0In === 0) {
+        tokenAmount = tokenAmount - amount0Out;
+        quoteTokenAmount = quoteTokenAmount + amount1In;
+      }
+      if (amount0Out === 0) {
+        tokenAmount = tokenAmount + amount0In;
+        quoteTokenAmount = quoteTokenAmount - amount1Out;
+      }
     }
 
     const lpTokenAmountParams: ILpTokenAmount = {
@@ -51,10 +67,8 @@ export async function tvlSwapLogsHandler(
       idInt: lpTokenAmountLength,
       token: token,
       quoteToken: quoteToken,
-      tokenAmount: `${(amount0In + amount1In + tokenAmount).toFixed(18)}`,
-      quoteTokenAmount: `${(amount0Out + amount1Out + quoteTokenAmount).toFixed(
-        2
-      )}`,
+      tokenAmount: `${tokenAmount.toFixed(18)}`,
+      quoteTokenAmount: `${quoteTokenAmount.toFixed(18)}`,
       block: ctx.substrate.block.height,
       txHash: ctx.txHash,
       lpAddress: pairAddress,

@@ -34,38 +34,6 @@ export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
   };
 };
 
-export interface ISqlLpPrice {
-  id: string;
-  id_int: number;
-  lp_price: string;
-  lp_address: string;
-  block: number;
-  event: string;
-  tx_hash: string;
-}
-
-export interface ILpPrice {
-  id: string;
-  idInt: number;
-  lpPrice: string;
-  lpAddress: string;
-  block: number;
-  event: string;
-  txHash: string;
-}
-
-export const ISqlLpPriceUtils = (params: ISqlLpPrice): ILpPrice => {
-  return {
-    id: params.id,
-    idInt: params.id_int,
-    lpPrice: params.lp_price,
-    lpAddress: params.lp_address,
-    block: params.block,
-    event: params.event,
-    txHash: params.tx_hash,
-  };
-};
-
 export interface ILpTotalSupplyAmount {
   id: string;
   idInt: number;
@@ -91,3 +59,52 @@ export interface ILpTokenAmount {
   lpAddress: string;
   event: string;
 }
+
+export interface ITokenPrice {
+  id: string;
+  idInt: number;
+  tokenPrice: string;
+  tokenAddress: string;
+  tokenSymbol: string;
+  event: string;
+  block: number;
+  txHash: string;
+}
+
+export interface ISqlLpPrice {
+  id: string;
+  id_int: number;
+  lp_price: string;
+  lp_address: string;
+  lp_symbol: string;
+  lp_price_symbol: string;
+  event: string;
+  block: number;
+  tx_hash: string;
+}
+
+export interface ILpPrice {
+  id: string;
+  idInt: number;
+  lpPrice: string;
+  lpAddress: string;
+  lpSymbol: string;
+  lpPriceSymbol: string;
+  event: string;
+  block: number;
+  txHash: string;
+}
+
+export const ISqlLpPriceUtils = (params: ISqlLpPrice): ILpPrice => {
+  return {
+    id: params.id,
+    idInt: params.id_int,
+    lpPrice: params.lp_price,
+    lpAddress: params.lp_address,
+    lpSymbol: params.lp_symbol,
+    lpPriceSymbol: params.lp_price_symbol,
+    event: params.event,
+    block: params.block,
+    txHash: params.tx_hash,
+  };
+};
