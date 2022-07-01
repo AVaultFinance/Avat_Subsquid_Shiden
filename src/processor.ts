@@ -37,19 +37,19 @@ const lpAddressArr02 = [
 // 573700   1554486
 const range = { from: 573700 };
 // const range = { from: 74002, to: 1848200 };
-// const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
-//   (v: string) => {
-//     return {
-//       contract: v,
-//       events: [
-//         {
-//           key: "Transfer(address,address,uint256)",
-//           function: tvlTransferChartLogsHandler,
-//         },
-//       ],
-//     };
-//   }
-// );
+const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
+  (v: string) => {
+    return {
+      contract: v,
+      events: [
+        {
+          key: "Transfer(address,address,uint256)",
+          function: tvlTransferChartLogsHandler,
+        },
+      ],
+    };
+  }
+);
 const addSwapEvmData: IAddEvmDataItem[] = lpAddressArr02.map((v: string) => {
   return {
     contract: v,
@@ -66,15 +66,15 @@ const addSwapEvmData: IAddEvmDataItem[] = lpAddressArr02.map((v: string) => {
         key: "Swap(address,uint256,uint256,uint256,uint256,address)",
         function: tvlSwapLogsHandler,
       },
-      // {
-      //   key: "Transfer(address,address,uint256)",
-      //   function: tvlTransferLogsHandler,
-      // },
+      {
+        key: "Transfer(address,address,uint256)",
+        function: tvlTransferLogsHandler,
+      },
     ],
   };
 });
-const evmArr = [...addSwapEvmData];
-// const evmArr = [...addSwapEvmData, ...addTransferEvmData];
+// const evmArr = [...addSwapEvmData];
+const evmArr = [...addSwapEvmData, ...addTransferEvmData];
 for (let i = 0; i < evmArr.length; i++) {
   const item = evmArr[i];
   for (let j = 0; j < item.events.length; j++) {

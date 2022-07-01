@@ -12,14 +12,14 @@ export async function tvlTransferChartLogsHandler(
 ): Promise<void> {
   try {
     const txHash = ctx.txHash;
-    const pairAddress = ctx.contractAddress.toLowerCase();
+    const lpAddress = ctx.contractAddress.toLowerCase();
     const lpAddressArr = Object.keys(tvlAddressArr);
-    if (pairAddress === lpAddressArr[index]) {
+    if (lpAddress === lpAddressArr[index]) {
       const transfer =
         pair.events["Transfer(address,address,uint256)"].decode(ctx);
       const from = transfer.from.toLowerCase();
       const to = transfer.to.toLowerCase();
-      const item = tvlAddressArr[pairAddress];
+      const item = tvlAddressArr[lpAddress];
       const alp = item.aLpAddress;
       const provider = ethers.getDefaultProvider();
       const address = await provider.getCode(from);
@@ -41,7 +41,7 @@ export async function tvlTransferChartLogsHandler(
           endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
           aLpAmount: tvlvalue,
           block: ctx.substrate.block.height,
-          aLpAddress: pairAddress,
+          aLpAddress: lpAddress,
           txHash: txHash,
           lpPrice: item.lpAddress.map(() => "1"),
         };

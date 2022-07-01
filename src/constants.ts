@@ -1,7 +1,7 @@
 export const CHAIN_NODE = "wss://shiden.api.onfinality.io/public-ws";
 // export const wSDN-USDC LP =
 //   "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020".toLowerCase();
-
+export const stable_symbol = "USDC";
 export const address_zero =
   "0x0000000000000000000000000000000000000000".toLowerCase();
 const KAC_wSDN_lp = {

@@ -25,11 +25,11 @@ export class TVLChart {
   @Column_("text", {nullable: false})
   aLpAddress!: string
 
-  @Column_("text", {array: true, nullable: true})
-  lpPrice!: (string | undefined | null)[] | undefined | null
+  @Column_("text", {array: true, nullable: false})
+  lpPrice!: (string)[]
 
-  @Column_("text", {nullable: true})
-  txHash!: string | undefined | null
+  @Column_("text", {nullable: false})
+  txHash!: string
 
   @Column_("integer", {nullable: false})
   block!: number

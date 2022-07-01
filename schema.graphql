@@ -5,8 +5,8 @@ type TVLChart @entity {
   endTimestamp: BigInt!
   aLpAmount: Float!
   aLpAddress: String!
-  lpPrice: [String]
-  txHash: String
+  lpPrice: [String!]!
+  txHash: String!
   block: Int!
 }
 
@@ -18,7 +18,7 @@ type LpTokenAmount @entity {
   tokenAmount: String!
   quoteTokenAmount: String!
   block: Int!
-  txHash: String
+  txHash: String!
   lpAddress: String!
   event: String!
 }
@@ -26,14 +26,14 @@ type LpTokenAmount @entity {
 type LpTotalSupplyAmount @entity {
   id: ID!
   idInt: Int!
-  fromAddress: String
-  toAddress: String
+  fromAddress: String!
+  toAddress: String!
   block: Int!
-  txHash: String
+  txHash: String!
   lpAddress: String!
-  value: String
+  value: String!
   event: String!
-  totalSupply: String
+  totalSupply: String!
 }
 
 # get some price
@@ -46,7 +46,7 @@ type LpPrice @entity {
   lpPriceSymbol: String!
   event: String!
   block: Int!
-  txHash: String
+  txHash: String!
 }
 
 type TokenPrice @entity {
@@ -57,5 +57,5 @@ type TokenPrice @entity {
   tokenSymbol: String!
   event: String!
   block: Int!
-  txHash: String
+  txHash: String!
 }

@@ -11,7 +11,7 @@ export function sleep(ms: number) {
 export async function setPrice(
   ctx: EvmLogHandlerContext,
   chartArr: ISqlTVLChart[],
-  pairAddress: string,
+  lpAddress: string,
   lpPrice: number
 ) {
   const chartsLength = chartArr.length;
@@ -21,7 +21,7 @@ export async function setPrice(
     const lpAddress = chart.aLpAddress;
     const item = tvlAddressArr[lpAddress];
     if (item) {
-      const alp_lp_index = item.lpAddress.indexOf(pairAddress);
+      const alp_lp_index = item.lpAddress.indexOf(lpAddress);
       if (alp_lp_index === 0 || alp_lp_index) {
         if (chart.lpPrice && chart.lpPrice && chart.lpPrice[alp_lp_index]) {
           chart.lpPrice[alp_lp_index] = `${lpPrice}`;

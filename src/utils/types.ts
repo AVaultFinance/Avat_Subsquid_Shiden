@@ -60,17 +60,6 @@ export interface ILpTokenAmount {
   event: string;
 }
 
-export interface ITokenPrice {
-  id: string;
-  idInt: number;
-  tokenPrice: string;
-  tokenAddress: string;
-  tokenSymbol: string;
-  event: string;
-  block: number;
-  txHash: string;
-}
-
 export interface ISqlLpPrice {
   id: string;
   id_int: number;

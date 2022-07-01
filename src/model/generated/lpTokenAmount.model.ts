@@ -27,8 +27,8 @@ export class LpTokenAmount {
   @Column_("integer", {nullable: false})
   block!: number
 
-  @Column_("text", {nullable: true})
-  txHash!: string | undefined | null
+  @Column_("text", {nullable: false})
+  txHash!: string
 
   @Column_("text", {nullable: false})
   lpAddress!: string

@@ -1,8 +1,8 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_} from "typeorm"
 
 @Entity_()
-export class LpPrice {
-  constructor(props?: Partial<LpPrice>) {
+export class TokenPrice {
+  constructor(props?: Partial<TokenPrice>) {
     Object.assign(this, props)
   }
 
@@ -13,16 +13,13 @@ export class LpPrice {
   idInt!: number
 
   @Column_("text", {nullable: false})
-  lpPrice!: string
+  tokenPrice!: string
 
   @Column_("text", {nullable: false})
-  lpAddress!: string
+  tokenAddress!: string
 
   @Column_("text", {nullable: false})
-  lpSymbol!: string
-
-  @Column_("text", {nullable: false})
-  lpPriceSymbol!: string
+  tokenSymbol!: string
 
   @Column_("text", {nullable: false})
   event!: string

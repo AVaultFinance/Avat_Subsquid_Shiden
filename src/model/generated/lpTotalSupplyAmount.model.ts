@@ -12,27 +12,27 @@ export class LpTotalSupplyAmount {
   @Column_("integer", {nullable: false})
   idInt!: number
 
-  @Column_("text", {nullable: true})
-  fromAddress!: string | undefined | null
+  @Column_("text", {nullable: false})
+  fromAddress!: string
 
-  @Column_("text", {nullable: true})
-  toAddress!: string | undefined | null
+  @Column_("text", {nullable: false})
+  toAddress!: string
 
   @Column_("integer", {nullable: false})
   block!: number
 
-  @Column_("text", {nullable: true})
-  txHash!: string | undefined | null
+  @Column_("text", {nullable: false})
+  txHash!: string
 
   @Column_("text", {nullable: false})
   lpAddress!: string
 
-  @Column_("text", {nullable: true})
-  value!: string | undefined | null
+  @Column_("text", {nullable: false})
+  value!: string
 
   @Column_("text", {nullable: false})
   event!: string
 
-  @Column_("text", {nullable: true})
-  totalSupply!: string | undefined | null
+  @Column_("text", {nullable: false})
+  totalSupply!: string
 }

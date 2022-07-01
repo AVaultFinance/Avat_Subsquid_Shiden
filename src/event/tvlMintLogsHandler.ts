@@ -1,10 +1,9 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import * as pair from "../abi/PancakePair";
 import { lpAddress } from "../constants";
-import { LpTotalSupplyAmount } from "../model";
-import { LpTokenAmount } from "../model/generated/lpTokenAmount.model";
+import { setLpPriceByParams } from "../store/lpPrice";
+import { getLpTokenAmountParams } from "../store/lpTokenAmount";
 import { setLpTokenAmount } from "../utils/setTVLChart";
-import { ILpTokenAmount } from "../utils/types";
 import { getDecimal } from "../utils/utils";
 
 export async function tvlMintLogsHandler(
@@ -13,6 +12,7 @@ export async function tvlMintLogsHandler(
   try {
     const block = ctx.substrate.block.height;
     const pairAddress = ctx.contractAddress.toLowerCase();
+    const txHash = ctx.txHash;
     const item = lpAddress.filter((v) => v.lpAddress === pairAddress)[0];
     const lp_symbol = item.lpSymbol;
     const [token, quoteToken] = lp_symbol.split(" ")[0].split("-");
@@ -27,35 +27,36 @@ export async function tvlMintLogsHandler(
     const amount0 = Number(_amount0) / Math.pow(10, tokenDecimal);
     const amount1 = Number(_amount1) / Math.pow(10, quoteTokenDecimal);
     // console.log(ctx.txHash, amount0, amount1, tokenDecimal, quoteTokenDecimal);
-    const lpTokenAmount = ctx.store.getRepository(LpTokenAmount);
-    const lpTokenAmountLength = await lpTokenAmount.count();
 
-    let tokenAmount = 0;
-    let quoteTokenAmount = 0;
-    if (lpTokenAmountLength) {
-      const lastLpTokenAmount = await lpTokenAmount.find({
-        idInt: lpTokenAmountLength - 1,
-      });
-      tokenAmount = Number(lastLpTokenAmount[0].tokenAmount);
-      quoteTokenAmount = Number(lastLpTokenAmount[0].quoteTokenAmount);
-    }
-
-    const lpTokenAmountParams: ILpTokenAmount = {
-      id: `${lpTokenAmountLength}`,
-      idInt: lpTokenAmountLength,
-      token: token,
-      quoteToken: quoteToken,
-      tokenAmount: `${(amount0 + tokenAmount).toFixed(18)}`,
-      quoteTokenAmount: `${(amount1 + quoteTokenAmount).toFixed(18)}`,
-      block: block,
-      txHash: ctx.txHash,
+    const lpTokenAmountParams = await getLpTokenAmountParams({
+      ctx,
+      token,
+      quoteToken,
+      block,
+      txHash,
       lpAddress: pairAddress,
-      event: "Mint",
-    };
+    });
+
+    let tokenAmount = Number(lpTokenAmountParams.tokenAmount);
+    let quoteTokenAmount = Number(lpTokenAmountParams.quoteTokenAmount);
+    lpTokenAmountParams.tokenAmount = `${(amount0 + tokenAmount).toFixed(18)}`;
+    lpTokenAmountParams.quoteTokenAmount = `${(
+      amount1 + quoteTokenAmount
+    ).toFixed(18)}`;
+    lpTokenAmountParams.event = "Mint";
+
     await setLpTokenAmount(ctx, lpTokenAmountParams);
 
-    if (quoteToken === "USDT") {
-    }
+    await setLpPriceByParams({
+      ctx,
+      lpAddress: pairAddress,
+      lpSymbol: lp_symbol,
+      lpPriceSymbol: quoteToken,
+      block,
+      txHash,
+      quoteTokenAmount: lpTokenAmountParams.quoteTokenAmount,
+      event: "Mint",
+    });
   } catch (e) {
     console.log("Mint Error: ", e, ctx.txHash);
   }
