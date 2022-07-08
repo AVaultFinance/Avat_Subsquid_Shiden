@@ -16,9 +16,6 @@ export class TokenPrice {
   tokenPrice!: string
 
   @Column_("text", {nullable: false})
-  tokenAddress!: string
-
-  @Column_("text", {nullable: false})
   tokenSymbol!: string
 
   @Column_("text", {nullable: false})

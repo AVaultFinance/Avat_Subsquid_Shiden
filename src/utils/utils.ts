@@ -35,3 +35,15 @@ export async function setPrice(
     }
   }
 }
+
+export function symbolFormat(params: string) {
+  return params.toLowerCase() === "wastr"
+    ? "astr"
+    : params.toLowerCase() === "weth"
+    ? "eth"
+    : params.toLowerCase() === "wsdn"
+    ? "sdn"
+    : params.toLowerCase() === "wbtc"
+    ? "btc"
+    : params.toLowerCase();
+}

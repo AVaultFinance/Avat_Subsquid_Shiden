@@ -3,6 +3,7 @@ import * as pair from "../abi/PancakePair";
 import { lpAddress } from "../constants";
 import { setLpPriceByParams } from "../store/lpPrice";
 import { getLpTokenAmountParams } from "../store/lpTokenAmount";
+import { setTokenPriceByParams } from "../store/tokenPrice";
 import { setLpTokenAmount } from "../utils/setTVLChart";
 import { getDecimal } from "../utils/utils";
 
@@ -47,7 +48,7 @@ export async function tvlMintLogsHandler(
 
     await setLpTokenAmount(ctx, lpTokenAmountParams);
 
-    await setLpPriceByParams({
+    const result = await setLpPriceByParams({
       ctx,
       lpAddress: pairAddress,
       lpSymbol: lp_symbol,
@@ -55,6 +56,18 @@ export async function tvlMintLogsHandler(
       block,
       txHash,
       quoteTokenAmount: lpTokenAmountParams.quoteTokenAmount,
+      event: "Mint",
+    });
+
+    await setTokenPriceByParams({
+      lpPrice: result.lpPrice,
+      quoteTokenSymbol: quoteToken,
+      tokenSymbol: token,
+      tokenAmount: lpTokenAmountParams.tokenAmount,
+      totalSupply: result.totalSupply,
+      ctx,
+      block,
+      txHash,
       event: "Mint",
     });
   } catch (e) {

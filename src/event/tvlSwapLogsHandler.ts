@@ -4,6 +4,7 @@ import { lpAddress } from "../constants";
 import { LpTokenAmount } from "../model/generated/lpTokenAmount.model";
 import { setLpPriceByParams } from "../store/lpPrice";
 import { getLpTokenAmountParams } from "../store/lpTokenAmount";
+import { setTokenPriceByParams } from "../store/tokenPrice";
 import { setLpTokenAmount } from "../utils/setTVLChart";
 import { ILpTokenAmount } from "../utils/types";
 import { getDecimal } from "../utils/utils";
@@ -74,7 +75,7 @@ export async function tvlSwapLogsHandler(
 
     await setLpTokenAmount(ctx, lpTokenAmountParams);
 
-    await setLpPriceByParams({
+    const result = await setLpPriceByParams({
       ctx,
       lpAddress: pairAddress,
       lpSymbol: lp_symbol,
@@ -82,6 +83,17 @@ export async function tvlSwapLogsHandler(
       block,
       txHash,
       quoteTokenAmount: lpTokenAmountParams.quoteTokenAmount,
+      event: "Swap",
+    });
+    await setTokenPriceByParams({
+      lpPrice: result.lpPrice,
+      quoteTokenSymbol: quoteToken,
+      tokenSymbol: token,
+      tokenAmount: lpTokenAmountParams.tokenAmount,
+      totalSupply: result.totalSupply,
+      ctx,
+      block,
+      txHash,
       event: "Swap",
     });
   } catch (e) {

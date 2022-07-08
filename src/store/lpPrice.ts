@@ -105,4 +105,8 @@ export async function setLpPriceByParams({
   lpPriceParams.event = event;
   lpPriceParams.lpPrice = lpPrice;
   await setLpPrice(ctx, lpPriceParams);
+  return {
+    lpPrice: lpPrice,
+    totalSupply: lpTotalSupplyAmount.totalSupply,
+  };
 }

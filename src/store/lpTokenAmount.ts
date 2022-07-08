@@ -4,14 +4,16 @@ import { ILpTokenAmount } from "../utils/types";
 
 export async function getLpTokenAmount({
   ctx,
+  block,
 }: {
   ctx: EvmLogHandlerContext;
+  block: number;
 }): Promise<ILpTokenAmount> {
   const store = ctx.store.getRepository(LpTokenAmount);
   const storeLen = await store.count();
   if (storeLen) {
     const lastStore = await store.find({
-      idInt: storeLen - 1,
+      block: block,
     });
     return lastStore[0];
   }

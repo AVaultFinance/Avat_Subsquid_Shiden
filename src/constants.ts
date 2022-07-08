@@ -44,19 +44,25 @@ export interface ITvlAddress {
   lpAddress: string[];
 }
 export const tvlAddressArr: Record<string, ITvlAddress> = {
-  // KAC-wSDN LP ----> aKKS
-  // [KAC_wSDN_lp.lpAddress]: {
-  //   aLpAddress: KAC_wSDN_lp.aLpAddress,
+  // // wSDN-USDC LP ----> aKSU
+  // [wSDN_USDC_lp.lpAddress]: {
+  //   aLpAddress: wSDN_USDC_lp.aLpAddress,
   //   lpAddress: [
-  //     KAC_wSDN_lp.lpAddress, // KAC-wSDN LP
   //     wSDN_USDC_lp.lpAddress, // wSDN-USDC LP
   //   ],
   // },
-
-  // wSDN-USDC LP ----> aKSU
-  [wSDN_USDC_lp.lpAddress]: {
-    aLpAddress: wSDN_USDC_lp.aLpAddress,
+  // // JPYC-USDC LP ----> aKJU
+  // [JPYC_USDC_lp.lpAddress]: {
+  //   aLpAddress: JPYC_USDC_lp.aLpAddress,
+  //   lpAddress: [
+  //     JPYC_USDC_lp.lpAddress, // JPYC-USDC LP
+  //   ],
+  // },
+  // KAC-wSDN LP ----> aKKS
+  [KAC_wSDN_lp.lpAddress]: {
+    aLpAddress: KAC_wSDN_lp.aLpAddress,
     lpAddress: [
+      KAC_wSDN_lp.lpAddress, // KAC-wSDN LP
       wSDN_USDC_lp.lpAddress, // wSDN-USDC LP
     ],
   },
@@ -91,14 +97,6 @@ export const tvlAddressArr: Record<string, ITvlAddress> = {
   //   aLpAddress: wSDN_JPYC_lp.aLpAddress,
   //   lpAddress: [
   //     wSDN_JPYC_lp.lpAddress, // wSDN-JPYC LP
-  //     JPYC_USDC_lp.lpAddress, // JPYC-USDC LP
-  //   ],
-  // },
-
-  // // JPYC-USDC LP ----> aKJU
-  // [JPYC_USDC_lp.lpAddress]: {
-  //   aLpAddress: JPYC_USDC_lp.aLpAddress,
-  //   lpAddress: [
   //     JPYC_USDC_lp.lpAddress, // JPYC-USDC LP
   //   ],
   // },

@@ -10,6 +10,7 @@ import {
 } from "../store/lpPrice";
 import { getLpTokenAmountParams } from "../store/lpTokenAmount";
 import { getLpTotalSupplyAmount } from "../store/lpTotalSupplyAmount";
+import { setTokenPriceByParams } from "../store/tokenPrice";
 import { setLpTokenAmount } from "../utils/setTVLChart";
 import { ILpTokenAmount } from "../utils/types";
 import { getDecimal } from "../utils/utils";
@@ -64,7 +65,7 @@ export async function tvlBurnLogsHandler(
     //   event: "Burn",
     // };
     await setLpTokenAmount(ctx, lpTokenAmountParams);
-    await setLpPriceByParams({
+    const result = await setLpPriceByParams({
       ctx,
       lpAddress: pairAddress,
       lpSymbol: lp_symbol,
@@ -72,6 +73,17 @@ export async function tvlBurnLogsHandler(
       block,
       txHash,
       quoteTokenAmount: lpTokenAmountParams.quoteTokenAmount,
+      event: "Burn",
+    });
+    await setTokenPriceByParams({
+      lpPrice: result.lpPrice,
+      quoteTokenSymbol: quoteToken,
+      tokenSymbol: token,
+      tokenAmount: lpTokenAmountParams.tokenAmount,
+      totalSupply: result.totalSupply,
+      ctx,
+      block,
+      txHash,
       event: "Burn",
     });
   } catch (e) {

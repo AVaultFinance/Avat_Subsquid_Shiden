@@ -34,8 +34,8 @@ const lpAddressArr01 = Object.keys(tvlAddressArr);
 const lpAddressArr02 = [
   ...new Set(lpAddressArr01.map((v) => tvlAddressArr[v].lpAddress).flat(2)),
 ];
-// 573700   1554486
-const range = { from: 573700 };
+// 534888   1554486
+const range = { from: 534888, to: 549370 };
 // const range = { from: 74002, to: 1848200 };
 const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
   (v: string) => {
@@ -79,11 +79,14 @@ for (let i = 0; i < evmArr.length; i++) {
   const item = evmArr[i];
   for (let j = 0; j < item.events.length; j++) {
     const event = item.events[j];
+    console.log(event);
     processor.addEvmLogHandler(
       item.contract,
       {
-        // @ts-ignore
-        filter: [events[event.key].topic],
+        filter: [
+          // @ts-ignore
+          events[event.key].topic,
+        ],
         range: range,
       },
       async (ctx) => {
