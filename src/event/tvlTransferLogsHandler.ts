@@ -27,9 +27,9 @@ export async function tvlTransferLogsHandler(
     const lp_symbol = itemLp.lpSymbol.toLowerCase();
 
     const mint = pair.events["Transfer(address,address,uint256)"].decode(ctx);
-    const { from, to, value: _value } = mint;
-    const fromAddress = from.toLowerCase();
-    const toAddress = to.toLowerCase();
+    const { from: _from, to: _to, value: _value } = mint;
+    const fromAddress = _from.toLowerCase();
+    const toAddress = _to.toLowerCase();
     const value = Number(_value) / Math.pow(10, 18);
     let lpTotalSupplyAmountParams = await getLpTotalSupplyAmountParams({
       ctx,
@@ -68,7 +68,7 @@ export async function tvlTransferLogsHandler(
       lpTotalSupplyAmountParams.event = event;
       await setLpTotalSupplyAmount(ctx, lpTotalSupplyAmountParams);
     }
-    if (toAddress === address_zero && from.toLowerCase() === pairAddress) {
+    if (toAddress === address_zero && fromAddress === pairAddress) {
       lpTotalSupply = lpTotalSupply - value;
       lpTotalSupplyAmountParams.totalSupply = `${lpTotalSupply.toFixed(18)}`;
       if (event === "TransferMint") {
@@ -87,13 +87,13 @@ export async function tvlTransferLogsHandler(
     // ---------------aLp function---------------
     const aLpAddress = itemLp.aLpAddress;
     const provider = ethers.getDefaultProvider();
-    const address = await provider.getCode(from);
+    const address = await provider.getCode(fromAddress);
     // alp transfer
     if (
-      ((address === "0x" && to === aLpAddress) ||
-        (address === aLpAddress && to === "0x")) &&
-      from !== address_zero &&
-      to !== address_zero
+      ((address === "0x" && toAddress === aLpAddress) ||
+        (address === aLpAddress && toAddress === "0x")) &&
+      fromAddress !== address_zero &&
+      toAddress !== address_zero
     ) {
       const store = ctx.store.getRepository(TVLChart);
       const chartsLength = await store.count();
@@ -137,11 +137,11 @@ export async function tvlTransferLogsHandler(
           chartValue.id = lastStore.id;
           chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
         }
-        if (address === "0x" && to === aLpAddress) {
+        if (address === "0x" && toAddress === aLpAddress) {
           // in
           const newTvlValue = value + Number(lastStore.aLpAmount);
           chartValue.aLpAmount = newTvlValue.toFixed(8);
-        } else if (address === aLpAddress && to === "0x") {
+        } else if (address === aLpAddress && toAddress === "0x") {
           // out
           const newTvlValue = value - Number(lastStore.aLpAmount);
           chartValue.aLpAmount = newTvlValue.toFixed(8);
