@@ -19,14 +19,20 @@ export class TVLChart {
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   endTimestamp!: bigint
 
-  @Column_("numeric", {nullable: false})
-  aLpAmount!: number
+  @Column_("text", {nullable: false})
+  totalALpAmountUsd!: string
+
+  @Column_("text", {nullable: false})
+  aLpAmount!: string
+
+  @Column_("text", {nullable: false})
+  aLpAmountUsd!: string
 
   @Column_("text", {nullable: false})
   aLpAddress!: string
 
-  @Column_("text", {array: true, nullable: false})
-  lpPrice!: (string)[]
+  @Column_("text", {nullable: false})
+  lpPrice!: string
 
   @Column_("text", {nullable: false})
   txHash!: string

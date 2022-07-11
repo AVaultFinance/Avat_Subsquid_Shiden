@@ -1,11 +1,15 @@
+import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
+import { TVLChart } from "../model";
 export interface ISqlTVLChart {
   id: string;
   id_int: number;
   current_timestamp: string;
   end_timestamp: string;
+  total_a_lp_amount_usd: string;
   a_lp_amount: string;
+  a_lp_amount_usd: string;
   a_lp_address: string;
-  lp_price: string[];
+  lp_price: string;
   tx_hash: string;
   block: number;
 }
@@ -14,9 +18,11 @@ export interface ITVLChart {
   idInt: number;
   currentTimestamp: bigint;
   endTimestamp: bigint;
-  aLpAmount: number;
+  totalALpAmountUsd: string;
+  aLpAmount: string;
+  aLpAmountUsd: string;
   aLpAddress: string;
-  lpPrice: string[];
+  lpPrice: string;
   txHash: string;
   block: number;
 }
@@ -26,10 +32,19 @@ export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
     idInt: params.id_int,
     currentTimestamp: BigInt(params.current_timestamp),
     endTimestamp: BigInt(params.end_timestamp),
-    aLpAmount: Number(params.a_lp_amount),
+    totalALpAmountUsd: params.a_lp_amount_usd,
+    aLpAmount: params.a_lp_amount,
+    aLpAmountUsd: params.a_lp_amount_usd,
     aLpAddress: params.a_lp_address,
     lpPrice: params.lp_price,
     txHash: params.tx_hash,
     block: params.block,
   };
 };
+
+export async function setTVLChart(
+  ctx: EvmLogHandlerContext,
+  chartValue: ITVLChart
+) {
+  await ctx.store.save(new TVLChart(chartValue));
+}

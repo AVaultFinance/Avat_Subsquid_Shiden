@@ -15,7 +15,7 @@ interface ISqlLpPrice {
   tx_hash: string;
 }
 
-interface ILpPrice {
+export interface ILpPrice {
   id: string;
   idInt: number;
   lpPrice: string;
@@ -38,6 +38,38 @@ const ISqlLpPriceUtils = (params: ISqlLpPrice): ILpPrice => {
     txHash: params.tx_hash,
   };
 };
+export async function getLpPrice({
+  ctx,
+  lpSymbol,
+}: {
+  ctx: EvmLogHandlerContext;
+  lpSymbol: string;
+}): Promise<ILpPrice> {
+  const store = ctx.store.getRepository(LpPrice);
+  const storeLen = await store.count();
+  if (storeLen) {
+    const storeArr: ISqlLpPrice[] = await store.query(
+      `
+        SELECT * from lp_price
+        where lp_symbol='${lpSymbol}'
+      `
+    );
+    if (storeArr && storeArr.length) {
+      const lastStore = ISqlLpPriceUtils(storeArr[storeArr.length - 1]);
+      return lastStore;
+    }
+  }
+  return {
+    id: "0",
+    idInt: 0,
+    lpPrice: "1",
+    event: "",
+    lpAddress: "",
+    lpSymbol: lpSymbol,
+    block: 0,
+    txHash: "",
+  };
+}
 
 export async function getLpPriceParams({
   ctx,
@@ -153,18 +185,6 @@ export async function setLpPriceByParams({
     ctx,
     lpAddress,
   });
-  if (
-    lpAddress === "0xE2c19EB0f91c80275cc254f90Ed0f18F26650ec5".toLowerCase()
-  ) {
-    console.log(2222, {
-      quoteTokenAmount,
-      totalSupply: lpTotalSupplyAmount.totalSupply,
-      quoteTokenSymbol: quoteTokenSymbol,
-      lpAddress: lpAddress,
-      event: event,
-      lpTotalSupplyAmount: lpTotalSupplyAmount,
-    });
-  }
   const lpPrice = await calcLpPrice({
     ctx: ctx,
     totalSupply: lpTotalSupplyAmount.totalSupply,

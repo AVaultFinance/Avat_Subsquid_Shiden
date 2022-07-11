@@ -1,11 +1,19 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
+import { ethers } from "ethers";
 import * as pair from "../abi/PancakePair";
 import { address_zero, lpAddress } from "../constants";
-import { getLpPriceParams } from "../store/lpPrice";
+import { TVLChart } from "../model";
+import { getLpPrice, getLpPriceParams, ILpPrice } from "../store/lpPrice";
 import {
   getLpTotalSupplyAmountParams,
   setLpTotalSupplyAmount,
 } from "../store/lpTotalSupplyAmount";
+import {
+  ISqlTVLChart,
+  ISqlTVLChartUtils,
+  ITVLChart,
+  setTVLChart,
+} from "../store/tvlChart";
 
 export async function tvlTransferLogsHandler(
   ctx: EvmLogHandlerContext
@@ -17,7 +25,6 @@ export async function tvlTransferLogsHandler(
 
     const itemLp = lpAddress.filter((v) => v.lpAddress === pairAddress)[0];
     const lp_symbol = itemLp.lpSymbol.toLowerCase();
-    const quoteToken = itemLp.quoteToken;
 
     const mint = pair.events["Transfer(address,address,uint256)"].decode(ctx);
     const { from, to, value: _value } = mint;
@@ -75,6 +82,78 @@ export async function tvlTransferLogsHandler(
       lpPriceParams.event = "TransferBurn";
       lpTotalSupplyAmountParams.event = event;
       await setLpTotalSupplyAmount(ctx, lpTotalSupplyAmountParams);
+    }
+
+    // ---------------aLp function---------------
+    const aLpAddress = itemLp.aLpAddress;
+    const provider = ethers.getDefaultProvider();
+    const address = await provider.getCode(from);
+    // alp transfer
+    if (
+      ((address === "0x" && to === aLpAddress) ||
+        (address === aLpAddress && to === "0x")) &&
+      from !== address_zero &&
+      to !== address_zero
+    ) {
+      const store = ctx.store.getRepository(TVLChart);
+      const chartsLength = await store.count();
+
+      const storeArr: ISqlTVLChart[] = await store.query(
+        `
+          SELECT * from tvl_chart
+          where a_lp_address='${aLpAddress}'
+        `
+      );
+      const lpPrice: ILpPrice = await getLpPrice({
+        ctx,
+        lpSymbol: lp_symbol,
+      });
+      const storeArrLen = storeArr.length;
+      const chartValue: ITVLChart = {
+        id: storeArrLen.toString(),
+        idInt: storeArrLen,
+        currentTimestamp: BigInt(ctx.substrate.block.timestamp),
+        endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
+        aLpAmount: value.toFixed(8),
+        aLpAmountUsd: (value * Number(lpPrice.lpPrice)).toFixed(8),
+        block: ctx.substrate.block.height,
+        aLpAddress: aLpAddress,
+        txHash: txHash,
+        lpPrice: lpPrice.lpPrice,
+        totalALpAmountUsd: "0",
+      };
+      if (chartsLength) {
+        const lastChart = await store.find({
+          idInt: chartsLength - 1,
+        });
+        chartValue.totalALpAmountUsd = lastChart[0].totalALpAmountUsd;
+      }
+      if (storeArr && storeArr.length) {
+        const lastStore = ISqlTVLChartUtils(storeArr[storeArr.length - 1]);
+        const diffTime =
+          Number(lastStore.endTimestamp) -
+          Number(ctx.substrate.block.timestamp);
+        if (diffTime > 0) {
+          chartValue.id = lastStore.id;
+          chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
+        }
+        if (address === "0x" && to === aLpAddress) {
+          // in
+          const newTvlValue = value + Number(lastStore.aLpAmount);
+          chartValue.aLpAmount = newTvlValue.toFixed(8);
+        } else if (address === aLpAddress && to === "0x") {
+          // out
+          const newTvlValue = value - Number(lastStore.aLpAmount);
+          chartValue.aLpAmount = newTvlValue.toFixed(8);
+        }
+      }
+      chartValue.aLpAmountUsd = (
+        Number(chartValue.aLpAmount) * Number(lpPrice.lpPrice)
+      ).toFixed(8);
+      chartValue.totalALpAmountUsd = (
+        Number(chartValue.totalALpAmountUsd) + Number(chartValue.aLpAmountUsd)
+      ).toFixed(8);
+      await setTVLChart(ctx, chartValue);
     }
   } catch (e) {
     console.log("Transfer Error: ", e, ctx.txHash);

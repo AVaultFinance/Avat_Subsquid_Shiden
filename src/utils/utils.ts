@@ -1,7 +1,4 @@
-import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { stable_symbol } from "../constants";
-import { setTVLChart } from "./setTVLChart";
-import { ISqlTVLChart, ISqlTVLChartUtils } from "./types";
 export function getDecimal(tokenSymbol: string) {
   return tokenSymbol.indexOf(stable_symbol) > -1 ? 6 : 18;
 }

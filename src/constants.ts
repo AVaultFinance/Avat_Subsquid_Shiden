@@ -180,12 +180,12 @@ export interface ITvlAddress {
 
 export const lpAddress = [
   wSDN_USDC_lp,
-  // ETH_USDC_lp,
-  // BUSD_USDC_lp,
-  // JPYC_USDC_lp,
+  ETH_USDC_lp,
+  BUSD_USDC_lp,
+  JPYC_USDC_lp,
   KAC_wSDN_lp,
-  // ETH_wSDN_lp,
-  // wSDN_JPYC_lp,
+  ETH_wSDN_lp,
+  wSDN_JPYC_lp,
 ];
 // lpTokenAmounts
 // KAC-wSDN LP  Mint(token0,token1)  Mint(SDN, KAC)
