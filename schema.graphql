@@ -43,7 +43,6 @@ type LpPrice @entity {
   lpPrice: String!
   lpAddress: String!
   lpSymbol: String!
-  lpPriceSymbol: String!
   event: String!
   block: Int!
   txHash: String!

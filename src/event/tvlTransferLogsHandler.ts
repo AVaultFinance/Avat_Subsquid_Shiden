@@ -1,13 +1,11 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import * as pair from "../abi/PancakePair";
-import { address_zero, lpAddress, stable_symbol } from "../constants";
-import { calcLpPrice, getLpPriceParams, setLpPrice } from "../store/lpPrice";
-import { getLpTokenAmount } from "../store/lpTokenAmount";
+import { address_zero, lpAddress } from "../constants";
+import { getLpPriceParams } from "../store/lpPrice";
 import {
   getLpTotalSupplyAmountParams,
   setLpTotalSupplyAmount,
 } from "../store/lpTotalSupplyAmount";
-import { setTokenPriceByParams } from "../store/tokenPrice";
 
 export async function tvlTransferLogsHandler(
   ctx: EvmLogHandlerContext
@@ -18,8 +16,8 @@ export async function tvlTransferLogsHandler(
     const txHash = ctx.txHash;
 
     const itemLp = lpAddress.filter((v) => v.lpAddress === pairAddress)[0];
-    const lp_symbol = itemLp.lpSymbol;
-    const [token, quoteToken] = lp_symbol.split(" ")[0].split("-");
+    const lp_symbol = itemLp.lpSymbol.toLowerCase();
+    const quoteToken = itemLp.quoteToken;
 
     const mint = pair.events["Transfer(address,address,uint256)"].decode(ctx);
     const { from, to, value: _value } = mint;
@@ -39,11 +37,9 @@ export async function tvlTransferLogsHandler(
       ctx,
       lpAddress: pairAddress,
       lpSymbol: lp_symbol,
-      lpPriceSymbol: quoteToken,
       block,
       txHash,
     });
-    const quoteTokenAmount = await getLpTokenAmount({ ctx, block });
 
     let len = lpTotalSupplyAmountParams.idInt;
     let lpTotalSupply = Number(lpTotalSupplyAmountParams.totalSupply);
@@ -64,38 +60,9 @@ export async function tvlTransferLogsHandler(
       lpPriceParams.event = "TransferMint";
       lpTotalSupplyAmountParams.event = event;
       await setLpTotalSupplyAmount(ctx, lpTotalSupplyAmountParams);
-      // ------lpPrice------
-      const lpPrice = calcLpPrice({
-        totalSupply: lpTotalSupplyAmountParams.totalSupply,
-        quoteTokenAmount: quoteTokenAmount.quoteTokenAmount,
-      });
-      lpPriceParams.lpPrice = lpPrice;
-      await setLpPrice(ctx, lpPriceParams);
-      // ------tokenPrice------
-      await setTokenPriceByParams({
-        lpPrice,
-        quoteTokenSymbol: quoteToken,
-        tokenSymbol: token,
-        tokenAmount: quoteTokenAmount.tokenAmount,
-        totalSupply: lpTotalSupplyAmountParams.totalSupply,
-        ctx,
-        block,
-        txHash,
-        event: event,
-      });
     }
     if (toAddress === address_zero && from.toLowerCase() === pairAddress) {
       lpTotalSupply = lpTotalSupply - value;
-      console.log(
-        "lpTotalSupplyAmountParams.totalSupply: ",
-        lpTotalSupplyAmountParams.totalSupply
-      );
-      console.log("value: ", value);
-      console.log("lpTotalSupply: ", lpTotalSupply.toFixed(18));
-      console.log(
-        "quoteTokenAmount.quoteTokenAmount: ",
-        quoteTokenAmount.quoteTokenAmount
-      );
       lpTotalSupplyAmountParams.totalSupply = `${lpTotalSupply.toFixed(18)}`;
       if (event === "TransferMint") {
         len = len + 1;
@@ -108,24 +75,6 @@ export async function tvlTransferLogsHandler(
       lpPriceParams.event = "TransferBurn";
       lpTotalSupplyAmountParams.event = event;
       await setLpTotalSupplyAmount(ctx, lpTotalSupplyAmountParams);
-      const lpPrice = calcLpPrice({
-        totalSupply: lpTotalSupplyAmountParams.totalSupply,
-        quoteTokenAmount: quoteTokenAmount.quoteTokenAmount,
-      });
-      lpPriceParams.lpPrice = lpPrice;
-      await setLpPrice(ctx, lpPriceParams);
-      // ------tokenPrice------
-      await setTokenPriceByParams({
-        lpPrice,
-        quoteTokenSymbol: quoteToken,
-        tokenSymbol: token,
-        tokenAmount: quoteTokenAmount.tokenAmount,
-        totalSupply: lpTotalSupplyAmountParams.totalSupply,
-        ctx,
-        block,
-        txHash,
-        event: event,
-      });
     }
   } catch (e) {
     console.log("Transfer Error: ", e, ctx.txHash);

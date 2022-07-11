@@ -130,7 +130,6 @@ export async function setTokenPrice(
 
 export async function setTokenPriceByParams({
   lpPrice,
-  quoteTokenSymbol,
   tokenSymbol,
   tokenAmount,
   totalSupply,
@@ -140,7 +139,6 @@ export async function setTokenPriceByParams({
   event,
 }: {
   lpPrice: string;
-  quoteTokenSymbol: string;
   tokenSymbol: string;
   tokenAmount: string;
   totalSupply: string;
@@ -150,7 +148,6 @@ export async function setTokenPriceByParams({
   event: string;
 }) {
   const _tokenSymbol = symbolFormat(tokenSymbol);
-  const _quoteTokenSymbol = symbolFormat(quoteTokenSymbol);
   // ------tokenPrice------
   const tokenPriceParams = await getTokenPriceParams({
     ctx,
@@ -164,18 +161,34 @@ export async function setTokenPriceByParams({
     totalSupply: totalSupply,
   });
   tokenPriceParams.event = event;
-  if (_quoteTokenSymbol === stable_symbol) {
-    await setTokenPrice(ctx, tokenPriceParams);
-  } else {
-    const lastQuotePrice = await getTokenPrice({
-      ctx,
-      symbol: _quoteTokenSymbol,
-    });
-    if (lastQuotePrice) {
-      tokenPriceParams.tokenPrice = (
-        Number(tokenPriceParams.tokenPrice) * Number(lastQuotePrice.tokenPrice)
-      ).toFixed(2);
-      await setTokenPrice(ctx, tokenPriceParams);
-    }
+  // --------------fixed some----------
+  const lastQuotePrice = await getTokenPrice({
+    ctx,
+    symbol: _tokenSymbol,
+  });
+
+  if (
+    lastQuotePrice &&
+    Number(lastQuotePrice.tokenPrice) !== 0 &&
+    Math.abs(
+      Number(lastQuotePrice.tokenPrice) - Number(tokenPriceParams.tokenPrice)
+    ) > 30
+  ) {
+    return;
   }
+  // if (_quoteTokenSymbol === stable_symbol) {
+  // console.log({ tokenPriceParams });
+  await setTokenPrice(ctx, tokenPriceParams);
+  // } else {
+  //   const lastQuotePrice = await getTokenPrice({
+  //     ctx,
+  //     symbol: _quoteTokenSymbol,
+  //   });
+  //   if (lastQuotePrice) {
+  //     tokenPriceParams.tokenPrice = (
+  //       Number(tokenPriceParams.tokenPrice) * Number(lastQuotePrice.tokenPrice)
+  //     ).toFixed(18);
+  //     await setTokenPrice(ctx, tokenPriceParams);
+  //   }
+  // }
 }

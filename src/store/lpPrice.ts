@@ -1,40 +1,79 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
+import { stable_symbol } from "../constants";
 import { LpPrice } from "../model";
-import { ILpPrice } from "../utils/types";
 import { getLpTotalSupplyAmount } from "./lpTotalSupplyAmount";
+import { getTokenPrice } from "./tokenPrice";
+
+interface ISqlLpPrice {
+  id: string;
+  id_int: number;
+  lp_price: string;
+  lp_address: string;
+  lp_symbol: string;
+  event: string;
+  block: number;
+  tx_hash: string;
+}
+
+interface ILpPrice {
+  id: string;
+  idInt: number;
+  lpPrice: string;
+  lpAddress: string;
+  lpSymbol: string;
+  event: string;
+  block: number;
+  txHash: string;
+}
+
+const ISqlLpPriceUtils = (params: ISqlLpPrice): ILpPrice => {
+  return {
+    id: params.id,
+    idInt: params.id_int,
+    lpPrice: params.lp_price,
+    lpAddress: params.lp_address,
+    lpSymbol: params.lp_symbol,
+    event: params.event,
+    block: params.block,
+    txHash: params.tx_hash,
+  };
+};
 
 export async function getLpPriceParams({
   ctx,
   lpAddress,
   lpSymbol,
-  lpPriceSymbol,
   block,
   txHash,
 }: {
   ctx: EvmLogHandlerContext;
   lpAddress: string;
   lpSymbol: string;
-  lpPriceSymbol: string;
   block: number;
   txHash: string;
 }): Promise<ILpPrice> {
   const store = ctx.store.getRepository(LpPrice);
   const storeLen = await store.count();
   if (storeLen) {
-    const lastStore = await store.find({
-      idInt: storeLen - 1,
-    });
-    return {
-      ...lastStore[0],
-      event: "",
-      id: `${storeLen}`,
-      idInt: storeLen,
-      lpAddress: lpAddress,
-      lpSymbol: lpSymbol,
-      lpPriceSymbol: lpPriceSymbol,
-      block: block,
-      txHash: txHash,
-    };
+    const storeArr: ISqlLpPrice[] = await store.query(
+      `
+        SELECT * from lp_price
+        where lp_symbol='${lpSymbol}'
+      `
+    );
+    if (storeArr && storeArr.length) {
+      const lastStore = ISqlLpPriceUtils(storeArr[storeArr.length - 1]);
+      return {
+        ...lastStore,
+        event: "",
+        id: `${storeLen}`,
+        idInt: storeLen,
+        lpAddress: lpAddress,
+        lpSymbol: lpSymbol,
+        block: block,
+        txHash: txHash,
+      };
+    }
   }
   return {
     id: "0",
@@ -43,23 +82,37 @@ export async function getLpPriceParams({
     event: "",
     lpAddress: lpAddress,
     lpSymbol: lpSymbol,
-    lpPriceSymbol: lpPriceSymbol,
     block: block,
     txHash: txHash,
   };
 }
 
-export function calcLpPrice({
+export async function calcLpPrice({
+  ctx,
   quoteTokenAmount,
   totalSupply,
+  quoteTokenSymbol,
 }: {
+  ctx: EvmLogHandlerContext;
   quoteTokenAmount: string;
   totalSupply: string;
+  quoteTokenSymbol: string;
 }) {
   const _quoteTokenAmount = Number(quoteTokenAmount);
   const _totalSupply = Number(totalSupply);
-  const lpPrice = (_quoteTokenAmount * 2) / _totalSupply;
-  return lpPrice.toFixed(18);
+  let lpPrice = (_quoteTokenAmount * 2) / _totalSupply;
+  if (quoteTokenSymbol === stable_symbol) {
+    return lpPrice.toFixed(18);
+  } else {
+    const lastQuotePrice = await getTokenPrice({
+      ctx,
+      symbol: quoteTokenSymbol,
+    });
+    if (lastQuotePrice) {
+      lpPrice = Number(lpPrice) * Number(lastQuotePrice.tokenPrice);
+      return lpPrice.toFixed(18);
+    }
+  }
 }
 
 export async function setLpPrice(ctx: EvmLogHandlerContext, lpPrice: ILpPrice) {
@@ -73,40 +126,59 @@ export async function setLpPriceByParams({
   ctx,
   lpAddress,
   lpSymbol,
-  lpPriceSymbol,
   block,
   txHash,
   quoteTokenAmount,
   event,
+  quoteTokenSymbol,
 }: {
   ctx: EvmLogHandlerContext;
   lpAddress: string;
   lpSymbol: string;
-  lpPriceSymbol: string;
   block: number;
   txHash: string;
   quoteTokenAmount: string;
   event: string;
+  quoteTokenSymbol: string;
 }) {
   // setLpPrice
   let lpPriceParams = await getLpPriceParams({
     ctx,
     lpAddress,
     lpSymbol,
-    lpPriceSymbol,
     block,
     txHash,
   });
-  const lpTotalSupplyAmount = await getLpTotalSupplyAmount({ ctx });
-  const lpPrice = calcLpPrice({
+  const lpTotalSupplyAmount = await getLpTotalSupplyAmount({
+    ctx,
+    lpAddress,
+  });
+  if (
+    lpAddress === "0xE2c19EB0f91c80275cc254f90Ed0f18F26650ec5".toLowerCase()
+  ) {
+    console.log(2222, {
+      quoteTokenAmount,
+      totalSupply: lpTotalSupplyAmount.totalSupply,
+      quoteTokenSymbol: quoteTokenSymbol,
+      lpAddress: lpAddress,
+      event: event,
+      lpTotalSupplyAmount: lpTotalSupplyAmount,
+    });
+  }
+  const lpPrice = await calcLpPrice({
+    ctx: ctx,
     totalSupply: lpTotalSupplyAmount.totalSupply,
     quoteTokenAmount: quoteTokenAmount,
+    quoteTokenSymbol: quoteTokenSymbol,
   });
-  lpPriceParams.event = event;
-  lpPriceParams.lpPrice = lpPrice;
-  await setLpPrice(ctx, lpPriceParams);
-  return {
-    lpPrice: lpPrice,
-    totalSupply: lpTotalSupplyAmount.totalSupply,
-  };
+
+  if (lpPrice) {
+    lpPriceParams.event = event;
+    lpPriceParams.lpPrice = lpPrice;
+    await setLpPrice(ctx, lpPriceParams);
+    return {
+      lpPrice: lpPrice,
+      totalSupply: lpTotalSupplyAmount.totalSupply,
+    };
+  }
 }

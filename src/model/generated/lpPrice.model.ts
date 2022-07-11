@@ -22,9 +22,6 @@ export class LpPrice {
   lpSymbol!: string
 
   @Column_("text", {nullable: false})
-  lpPriceSymbol!: string
-
-  @Column_("text", {nullable: false})
   event!: string
 
   @Column_("integer", {nullable: false})
