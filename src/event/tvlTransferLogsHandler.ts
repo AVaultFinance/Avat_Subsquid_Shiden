@@ -136,18 +136,27 @@ export async function tvlTransferLogsHandler(
           // in
           const newTvlValue = value + Number(lastStore.aLpAmount);
           chartValue.aLpAmount = newTvlValue.toFixed(8);
+          chartValue.aLpAmountUsd = (
+            Number(chartValue.aLpAmount) * Number(lpPrice.lpPrice)
+          ).toFixed(8);
+          chartValue.totalALpAmountUsd = (
+            Number(chartValue.totalALpAmountUsd) +
+            Number(chartValue.aLpAmountUsd)
+          ).toFixed(8);
         } else if (address === aLpAddress && toAddress === "0x") {
           // out
           const newTvlValue = value - Number(lastStore.aLpAmount);
           chartValue.aLpAmount = newTvlValue.toFixed(8);
+          chartValue.aLpAmountUsd = (
+            Number(chartValue.aLpAmount) * Number(lpPrice.lpPrice)
+          ).toFixed(8);
+          chartValue.totalALpAmountUsd = (
+            Number(chartValue.totalALpAmountUsd) -
+            Number(chartValue.aLpAmountUsd)
+          ).toFixed(8);
         }
       }
-      chartValue.aLpAmountUsd = (
-        Number(chartValue.aLpAmount) * Number(lpPrice.lpPrice)
-      ).toFixed(8);
-      chartValue.totalALpAmountUsd = (
-        Number(chartValue.totalALpAmountUsd) + Number(chartValue.aLpAmountUsd)
-      ).toFixed(8);
+
       await setTVLChart(ctx, chartValue);
     }
   } catch (e) {
