@@ -12,6 +12,7 @@ export interface ISqlTVLChart {
   lp_price: string;
   tx_hash: string;
   block: number;
+  event: string;
 }
 export interface ITVLChart {
   id: string;
@@ -25,6 +26,7 @@ export interface ITVLChart {
   lpPrice: string;
   txHash: string;
   block: number;
+  event: string;
 }
 export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
   return {
@@ -39,6 +41,7 @@ export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
     lpPrice: params.lp_price,
     txHash: params.tx_hash,
     block: params.block,
+    event: params.event,
   };
 };
 

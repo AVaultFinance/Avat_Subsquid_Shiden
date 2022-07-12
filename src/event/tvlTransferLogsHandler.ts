@@ -87,11 +87,12 @@ export async function tvlTransferLogsHandler(
     // ---------------aLp function---------------
     const aLpAddress = itemLp.aLpAddress;
     const provider = ethers.getDefaultProvider();
-    const address = await provider.getCode(fromAddress);
+    const fromAddressCode = await provider.getCode(fromAddress);
+    const toAddressCode = await provider.getCode(fromAddress);
     // alp transfer
     if (
-      ((address === "0x" && toAddress === aLpAddress) ||
-        (address === aLpAddress && toAddress === "0x")) &&
+      ((fromAddressCode === "0x" && toAddress === aLpAddress) ||
+        (fromAddress === aLpAddress && toAddressCode === "0x")) &&
       fromAddress !== address_zero &&
       toAddress !== address_zero
     ) {
@@ -119,6 +120,7 @@ export async function tvlTransferLogsHandler(
         txHash: txHash,
         lpPrice: lpPrice.lpPrice,
         totalALpAmountUsd: "0",
+        event: "",
       };
 
       if (chartsLength) {
@@ -141,7 +143,7 @@ export async function tvlTransferLogsHandler(
         //   chartValue.idInt = lastStore.idInt;
         //   chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
         // }
-        if (address === "0x" && toAddress === aLpAddress) {
+        if (fromAddressCode === "0x" && toAddress === aLpAddress) {
           // in
           const newTvlValue = value + Number(lastStore.aLpAmount);
           chartValue.aLpAmount = newTvlValue.toFixed(8);
@@ -152,8 +154,9 @@ export async function tvlTransferLogsHandler(
             Number(chartValue.totalALpAmountUsd) +
             Number(chartValue.aLpAmountUsd)
           ).toFixed(8);
+          chartValue.event = "in";
           await setTVLChart(ctx, chartValue);
-        } else if (address === aLpAddress && toAddress === "0x") {
+        } else if (fromAddress === aLpAddress && toAddressCode === "0x") {
           // out
           const newTvlValue = value - Number(lastStore.aLpAmount);
           chartValue.aLpAmount = newTvlValue.toFixed(8);
@@ -164,6 +167,8 @@ export async function tvlTransferLogsHandler(
             Number(chartValue.totalALpAmountUsd) -
             Number(chartValue.aLpAmountUsd)
           ).toFixed(8);
+          chartValue.event = "out";
+          await setTVLChart(ctx, chartValue);
         }
       } else {
         await setTVLChart(ctx, chartValue);

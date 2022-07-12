@@ -39,4 +39,7 @@ export class TVLChart {
 
   @Column_("integer", {nullable: false})
   block!: number
+
+  @Column_("text", {nullable: false})
+  event!: string
 }
