@@ -118,7 +118,7 @@ export async function tvlTransferLogsHandler(
         aLpAddress: aLpAddress,
         txHash: txHash,
         lpPrice: lpPrice.lpPrice,
-        totalALpAmountUsd: (value * Number(lpPrice.lpPrice)).toFixed(8),
+        totalALpAmountUsd: "0",
       };
 
       if (chartsLength) {
@@ -126,19 +126,21 @@ export async function tvlTransferLogsHandler(
           idInt: chartsLength - 1,
         });
         chartValue.totalALpAmountUsd = lastChart[0].totalALpAmountUsd;
+      } else {
+        chartValue.totalALpAmountUsd = chartValue.aLpAmountUsd;
+        console.log("22222", chartValue.totalALpAmountUsd);
       }
 
       if (storeArr && storeArr.length) {
         const lastStore = ISqlTVLChartUtils(storeArr[storeArr.length - 1]);
-        chartValue.totalALpAmountUsd = lastStore.totalALpAmountUsd;
-        const diffTime =
-          Number(lastStore.endTimestamp) -
-          Number(ctx.substrate.block.timestamp);
-        if (diffTime > 0) {
-          chartValue.id = lastStore.id;
-          chartValue.idInt = lastStore.idInt;
-          chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
-        }
+        // const diffTime =
+        //   Number(lastStore.endTimestamp) -
+        //   Number(ctx.substrate.block.timestamp);
+        // if (diffTime > 0) {
+        //   chartValue.id = lastStore.id;
+        //   chartValue.idInt = lastStore.idInt;
+        //   chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
+        // }
         if (address === "0x" && toAddress === aLpAddress) {
           // in
           const newTvlValue = value + Number(lastStore.aLpAmount);
