@@ -127,8 +127,6 @@ export async function tvlTransferLogsHandler(
           idInt: chartsLength - 1,
         });
         chartValue.totalALpAmountUsd = lastChart[0].totalALpAmountUsd;
-      } else {
-        chartValue.totalALpAmountUsd = chartValue.aLpAmountUsd;
       }
 
       if (storeArr && storeArr.length) {
@@ -154,7 +152,8 @@ export async function tvlTransferLogsHandler(
           ).toFixed(18);
           chartValue.event = "in";
           await setTVLChart(ctx, chartValue);
-        } else if (fromAddress === aLpAddress && toAddressCode === "0x") {
+        }
+        if (fromAddress === aLpAddress && toAddressCode === "0x") {
           // out
           // const newTvlValue = Number(lastStore.aLpAmount) - value;
           // chartValue.aLpAmount = newTvlValue.toFixed(18);
@@ -169,6 +168,9 @@ export async function tvlTransferLogsHandler(
           await setTVLChart(ctx, chartValue);
         }
       } else {
+        chartValue.totalALpAmountUsd = (
+          Number(chartValue.totalALpAmountUsd) + Number(chartValue.aLpAmountUsd)
+        ).toFixed(18);
         await setTVLChart(ctx, chartValue);
       }
     }
