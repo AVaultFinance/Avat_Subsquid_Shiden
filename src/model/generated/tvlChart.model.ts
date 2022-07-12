@@ -16,9 +16,6 @@ export class TVLChart {
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   currentTimestamp!: bigint
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-  endTimestamp!: bigint
-
   @Column_("text", {nullable: false})
   totalALpAmountUsd!: string
 

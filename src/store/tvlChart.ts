@@ -18,7 +18,6 @@ export interface ITVLChart {
   id: string;
   idInt: number;
   currentTimestamp: bigint;
-  endTimestamp: bigint;
   totalALpAmountUsd: string;
   aLpAmount: string;
   aLpAmountUsd: string;
@@ -33,7 +32,6 @@ export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
     id: params.id,
     idInt: params.id_int,
     currentTimestamp: BigInt(params.current_timestamp),
-    endTimestamp: BigInt(params.end_timestamp),
     totalALpAmountUsd: params.total_a_lp_amount_usd,
     aLpAmount: params.a_lp_amount,
     aLpAmountUsd: params.a_lp_amount_usd,

@@ -2,7 +2,6 @@ type TVLChart @entity {
   id: ID!
   idInt: Int!
   currentTimestamp: BigInt!
-  endTimestamp: BigInt!
   totalALpAmountUsd: String!
   aLpAmount: String!
   aLpAmountUsd: String!
