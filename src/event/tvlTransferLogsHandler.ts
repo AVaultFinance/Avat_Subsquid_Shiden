@@ -150,6 +150,7 @@ export async function tvlTransferLogsHandler(
             Number(chartValue.totalALpAmountUsd) +
             Number(chartValue.aLpAmountUsd)
           ).toFixed(8);
+          await setTVLChart(ctx, chartValue);
         } else if (address === aLpAddress && toAddress === "0x") {
           // out
           const newTvlValue = value - Number(lastStore.aLpAmount);
@@ -162,9 +163,9 @@ export async function tvlTransferLogsHandler(
             Number(chartValue.aLpAmountUsd)
           ).toFixed(8);
         }
+      } else {
+        await setTVLChart(ctx, chartValue);
       }
-
-      await setTVLChart(ctx, chartValue);
     }
   } catch (e) {
     console.log("Transfer Error: ", e, ctx.txHash);
