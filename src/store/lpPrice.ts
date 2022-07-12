@@ -3,7 +3,7 @@ import { stable_symbol } from "../constants";
 import { LpPrice } from "../model";
 import { getLpTotalSupplyAmount } from "./lpTotalSupplyAmount";
 import { getTokenPrice } from "./tokenPrice";
-
+import LPPrice from "./lpPrice.json";
 interface ISqlLpPrice {
   id: string;
   id_int: number;
@@ -60,14 +60,10 @@ export async function getLpPrice({
     }
   }
   return {
-    id: "0",
-    idInt: 0,
-    lpPrice: "1",
-    event: "",
-    lpAddress: "",
-    lpSymbol: lpSymbol,
-    block: 0,
-    txHash: "",
+    // @ts-ignore
+    ...LPPrice[lpSymbol],
+    id: `${storeLen}`,
+    idInt: storeLen,
   };
 }
 
@@ -108,10 +104,10 @@ export async function getLpPriceParams({
     }
   }
   return {
-    id: "0",
-    idInt: 0,
-    lpPrice: "0",
-    event: "",
+    // @ts-ignore
+    ...LPPrice[lpSymbol],
+    id: `${storeLen}`,
+    idInt: storeLen,
     lpAddress: lpAddress,
     lpSymbol: lpSymbol,
     block: block,

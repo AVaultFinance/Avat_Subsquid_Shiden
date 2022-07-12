@@ -1,6 +1,6 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { LpTotalSupplyAmount } from "../model";
-import { string } from "../model/generated/marshal";
+import LPTotalSupplyAmount from "./lpTotalSupplyAmount.json";
 interface ISqlLpTotalSupplyAmount {
   id: string;
   id_int: number;
@@ -63,16 +63,10 @@ export async function getLpTotalSupplyAmount({
     }
   }
   return {
-    id: "0",
-    idInt: 0,
-    totalSupply: "0",
-    event: "",
-    value: "0",
-    block: 0,
-    txHash: "",
-    lpAddress: "",
-    fromAddress: "",
-    toAddress: "",
+    // @ts-ignore
+    ...LPTotalSupplyAmount[lpAddress],
+    id: `${storeLen}`,
+    idInt: storeLen,
   };
 }
 export async function getLpTotalSupplyAmountParams({
@@ -122,10 +116,10 @@ export async function getLpTotalSupplyAmountParams({
     }
   }
   return {
-    id: "0",
-    idInt: 0,
-    totalSupply: "0",
-    event: "",
+    // @ts-ignore
+    ...LPTotalSupplyAmount[lpAddress],
+    id: `${storeLen}`,
+    idInt: storeLen,
     value: value,
     block: block,
     txHash: txHash,

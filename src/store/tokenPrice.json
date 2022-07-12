@@ -1,0 +1,47 @@
+{
+  "busd": {
+    "block": 1300000,
+    "event": "Swap",
+    "id": "0",
+    "idInt": 0,
+    "tokenPrice": "0.976616839201725706",
+    "tokenSymbol": "busd",
+    "txHash": "0xc1012a0ffa572c3ac2366464061fefab0792409794ef5223506dff105cd17b77"
+  },
+  "sdn": {
+    "block": 1300000,
+    "event": "Swap",
+    "id": "0",
+    "idInt": 0,
+    "tokenPrice": "0.689081827020359139",
+    "tokenSymbol": "sdn",
+    "txHash": "0xc1012a0ffa572c3ac2366464061fefab0792409794ef5223506dff105cd17b77"
+  },
+  "kac": {
+    "block": 1300000,
+    "event": "Swap",
+    "id": "0",
+    "idInt": 0,
+    "tokenPrice": "0.037247286329365595",
+    "tokenSymbol": "kac",
+    "txHash": "0xb86e3f7155f124c5ea37c4a2f3e2b808534c97a7d1df149233c42b83a0733493"
+  },
+  "jpyc": {
+    "block": 1300000,
+    "event": "Swap",
+    "id": "0",
+    "idInt": 0,
+    "tokenPrice": "0.008355597383658960",
+    "tokenSymbol": "jpyc",
+    "txHash": "0x7ab544f1c5eec252f1ab47b6455d849d0b57c94e253ea00b9e7b7ef2064e2001"
+  },
+  "eth": {
+    "block": 1300000,
+    "event": "Swap",
+    "id": "0",
+    "idInt": 0,
+    "tokenPrice": "2551",
+    "tokenSymbol": "eth",
+    "txHash": "0x7ab544f1c5eec252f1ab47b6455d849d0b57c94e253ea00b9e7b7ef2064e2001"
+  }
+}

@@ -1,5 +1,6 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { LpTokenAmount } from "../model";
+import LPTokenAmount from "./lpTokenAmount.json";
 interface ILpTokenAmount {
   id: string;
   idInt: number;
@@ -107,12 +108,10 @@ export async function getLpTokenAmountParams({
     }
   }
   return {
-    id: "0",
-    idInt: 0,
-    tokenAmount: "0",
-    quoteTokenAmount: "0",
-
-    event: "",
+    // @ts-ignore
+    ...LPTokenAmount[lpAddress],
+    id: `${storeLen}`,
+    idInt: storeLen,
     token: token,
     quoteToken: quoteToken,
     block: block,

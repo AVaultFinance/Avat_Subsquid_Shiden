@@ -36,7 +36,8 @@ interface IEvent {
 // ];
 // 534888   1554486
 // const range = { from: 534888, to: 549370 };
-const range = { from: 74002 };
+// wSDN-USDC aLp 1366566
+const range = { from: 1300000 };
 // const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
 //   (v: string) => {
 //     return {

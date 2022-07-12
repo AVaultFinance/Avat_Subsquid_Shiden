@@ -1,0 +1,86 @@
+{
+  "0x8644e9ac84273ca0609f2a2b09b2ed2a5ad2e9dd": {
+    "block": 1300000,
+    "event": "TransferMint",
+    "fromAddress": "0x0000000000000000000000000000000000000000",
+    "id": "0",
+    "idInt": 0,
+    "lpAddress": "0x8644e9ac84273ca0609f2a2b09b2ed2a5ad2e9dd",
+    "toAddress": "0xa8898afc67bb36ac63dc7f0ae4dd437e9065b924",
+    "totalSupply": "0.008392443991085123",
+    "txHash": "0x942169cab90c6c8bad5ff608dde20796c0522c9e61b98e3e1e8dc6edd42ce2fe",
+    "value": "0.000001097023600317"
+  },
+  "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020": {
+    "block": 1300000,
+    "event": "TransferMint",
+    "fromAddress": "0x0000000000000000000000000000000000000000",
+    "id": "0",
+    "idInt": 0,
+    "lpAddress": "0xdb9a42e1165ba2fc479e1f2c1ce939807dbe6020",
+    "toAddress": "0xa8898afc67bb36ac63dc7f0ae4dd437e9065b924",
+    "totalSupply": "0.012638666204674879",
+    "txHash": "0x6ce39857c2097444bdd7f216cb00359abf369c37bc936edcd0eb9665cf12023b",
+    "value": "0.000026215171017867"
+  },
+  "0x456c0082de0048ee883881ff61341177fa1fef40": {
+    "block": 1300000,
+    "event": "TransferMint",
+    "fromAddress": "0x0000000000000000000000000000000000000000",
+    "id": "0",
+    "idInt": 0,
+    "lpAddress": "0x456c0082de0048ee883881ff61341177fa1fef40",
+    "toAddress": "0xa8898afc67bb36ac63dc7f0ae4dd437e9065b924",
+    "totalSupply": "110182.260019687091698870",
+    "txHash": "0x4988a11e6c6545991e8f267cdeb3cec5418d76ea806e8e7e5e057a4743a99e92",
+    "value": "0.922134193356027865"
+  },
+  "0xeb2c6d3f1bbe9da50a0272e80faa89354630de88": {
+    "block": 1300000,
+    "event": "TransferMint",
+    "fromAddress": "0x0000000000000000000000000000000000000000",
+    "id": "0",
+    "idInt": 0,
+    "lpAddress": "0xeb2c6d3f1bbe9da50a0272e80faa89354630de88",
+    "toAddress": "0xa8898afc67bb36ac63dc7f0ae4dd437e9065b924",
+    "totalSupply": "19.414912870971811287",
+    "txHash": "0xbeb01e533131b412e8d2377c4ebf6abf90096700937b8f28719a0f872d671c53",
+    "value": "0.000980383686134571"
+  },
+  "0xcfb0e95a3a68e3574c73a3c6985d56b7c03b6348": {
+    "block": 1300000,
+    "event": "TransferMint",
+    "fromAddress": "0x0000000000000000000000000000000000000000",
+    "id": "0",
+    "idInt": 0,
+    "lpAddress": "0xcfb0e95a3a68e3574c73a3c6985d56b7c03b6348",
+    "toAddress": "0xa8898afc67bb36ac63dc7f0ae4dd437e9065b924",
+    "totalSupply": "0.000021749093720900",
+    "txHash": "0x13a672dc928d5b7c7b8b9426ddb7a695fd9f4793449262a8c4e9fa690705292d",
+    "value": "0.000000001467875074"
+  },
+  "0x1ba530cf929ea5bc7f1af241495c97331ddb4f70": {
+    "block": 1300000,
+    "event": "TransferMint",
+    "fromAddress": "0x0000000000000000000000000000000000000000",
+    "id": "0",
+    "idInt": 0,
+    "lpAddress": "0x1ba530cf929ea5bc7f1af241495c97331ddb4f70",
+    "toAddress": "0xa8898afc67bb36ac63dc7f0ae4dd437e9065b924",
+    "totalSupply": "224965.665219586837338284",
+    "txHash": "0x73df8a785211f96956164e043d516f661c00b538b3dacbbd6ef883541bf41a43",
+    "value": "44.957962404751832253"
+  },
+  "0xe2c19eb0f91c80275cc254f90ed0f18f26650ec5": {
+    "block": 1300000,
+    "event": "TransferMint",
+    "fromAddress": "0x0000000000000000000000000000000000000000",
+    "id": "0",
+    "idInt": 0,
+    "lpAddress": "0xe2c19eb0f91c80275cc254f90ed0f18f26650ec5",
+    "toAddress": "0xa8898afc67bb36ac63dc7f0ae4dd437e9065b924",
+    "totalSupply": "0.000775367762911755",
+    "txHash": "0xe3dd1ac142ee43634dc872b0268593088140c0cd80eac2d7780f1a90dee217b8",
+    "value": "0.000000052123067509"
+  }
+}

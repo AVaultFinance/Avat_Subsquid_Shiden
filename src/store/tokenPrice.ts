@@ -1,8 +1,7 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
-import { stable_symbol } from "../constants";
 import { TokenPrice } from "../model";
 import { symbolFormat } from "../utils/utils";
-
+import TokenPriceJSON from "./tokenPrice.json";
 export interface ITokenPrice {
   id: string;
   idInt: number;
@@ -41,16 +40,21 @@ export async function getTokenPrice({
       return ISqlTokenPriceUtils(storeArr[storeArr.length - 1]);
     }
   }
-
   return {
-    id: "0",
-    idInt: 0,
-    tokenPrice: "0",
-    tokenSymbol: "",
-    event: "",
-    block: 0,
-    txHash: "",
+    // @ts-ignore
+    ...TokenPriceJSON[tokenSymbol],
+    id: `${len}`,
+    idInt: len,
   };
+  // return {
+  //   id: "0",
+  //   idInt: 0,
+  //   tokenPrice: "0",
+  //   tokenSymbol: "",
+  //   event: "",
+  //   block: 0,
+  //   txHash: "",
+  // };
 }
 const ISqlTokenPriceUtils = (params: ISqlTokenPrice): ITokenPrice => {
   return {
@@ -91,12 +95,21 @@ async function getTokenPriceParams({
       txHash: txHash,
     };
   }
+  // return {
+  //   id: "0",
+  //   idInt: 0,
+  //   event: "",
+  //   tokenPrice: "0",
+  //   tokenSymbol: tokenSymbol,
+  //   block: block,
+  //   txHash: txHash,
+  // };
   return {
-    id: "0",
-    idInt: 0,
-    event: "",
-    tokenPrice: "0",
-    tokenSymbol: tokenSymbol,
+    // @ts-ignore
+    ...TokenPriceJSON[tokenSymbol],
+    id: `${storeLen}`,
+    idInt: storeLen,
+    tokenSymbol: symbolFormat(tokenSymbol),
     block: block,
     txHash: txHash,
   };
@@ -167,15 +180,6 @@ export async function setTokenPriceByParams({
     symbol: _tokenSymbol,
   });
 
-  if (
-    lastQuotePrice &&
-    Number(lastQuotePrice.tokenPrice) !== 0 &&
-    Math.abs(
-      Number(lastQuotePrice.tokenPrice) - Number(tokenPriceParams.tokenPrice)
-    ) > 30
-  ) {
-    return;
-  }
   // if (_quoteTokenSymbol === stable_symbol) {
   // console.log({ tokenPriceParams });
   await setTokenPrice(ctx, tokenPriceParams);

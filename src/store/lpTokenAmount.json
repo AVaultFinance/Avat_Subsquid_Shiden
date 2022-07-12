@@ -1,0 +1,86 @@
+{
+  "0x8644e9ac84273ca0609f2a2b09b2ed2a5ad2e9dd": {
+    "id": "0",
+    "block": 1300000,
+    "event": "Swap",
+    "idInt": 0,
+    "quoteToken": "usdc",
+    "lpAddress": "0x8644e9ac84273ca0609f2a2b09b2ed2a5ad2e9dd",
+    "quoteTokenAmount": "8440.278799000047001755",
+    "tokenAmount": "8642.364600122013143846",
+    "token": "busd",
+    "txHash": "0xc1012a0ffa572c3ac2366464061fefab0792409794ef5223506dff105cd17b77"
+  },
+  "0xdb9a42e1165ba2fc479e1f2c1ce939807dbe6020": {
+    "id": "0",
+    "block": 1300000,
+    "event": "Swap",
+    "idInt": 0,
+    "quoteToken": "usdc",
+    "lpAddress": "0xdb9a42e1165ba2fc479e1f2c1ce939807dbe6020",
+    "quoteTokenAmount": "11201.820475999929840327",
+    "tokenAmount": "16256.154257379606860923",
+    "token": "sdn",
+    "txHash": "0xc1012a0ffa572c3ac2366464061fefab0792409794ef5223506dff105cd17b77"
+  },
+  "0x456c0082de0048ee883881ff61341177fa1fef40": {
+    "id": "0",
+    "block": 1300000,
+    "event": "Swap",
+    "idInt": 0,
+    "quoteToken": "sdn",
+    "lpAddress": "0x456c0082de0048ee883881ff61341177fa1fef40",
+    "quoteTokenAmount": "26977.678550219367025420",
+    "tokenAmount": "494612.576837616332340986",
+    "token": "kac",
+    "txHash": "0xb86e3f7155f124c5ea37c4a2f3e2b808534c97a7d1df149233c42b83a0733493"
+  },
+  "0xeb2c6d3f1bbe9da50a0272e80faa89354630de88": {
+    "id": "0",
+    "block": 1300000,
+    "event": "Swap",
+    "idInt": 0,
+    "quoteToken": "sdn",
+    "lpAddress": "0xeb2c6d3f1bbe9da50a0272e80faa89354630de88",
+    "quoteTokenAmount": "1222.667649739935086473",
+    "tokenAmount": "0.316733131507525079",
+    "token": "eth",
+    "txHash": "0x0e597bf38cc3719743b46f770e285d152b1881bcf4267d179a487516fc45b629"
+  },
+  "0xcfb0e95a3a68e3574c73a3c6985d56b7c03b6348": {
+    "id": "0",
+    "block": 1300000,
+    "event": "Swap",
+    "idInt": 0,
+    "quoteToken": "usdc",
+    "lpAddress": "0xcfb0e95a3a68e3574c73a3c6985d56b7c03b6348",
+    "quoteTokenAmount": "1157.424985999994532904",
+    "tokenAmount": "0.438407864983151319",
+    "token": "eth",
+    "txHash": "0x5f51fc457449fe2f2a0e09828281ba4ab33ccae8f28aa426349c6f2a4e38dd28"
+  },
+  "0x1ba530cf929ea5bc7f1af241495c97331ddb4f70": {
+    "id": "0",
+    "block": 1300000,
+    "event": "Swap",
+    "idInt": 0,
+    "quoteToken": "jpyc",
+    "lpAddress": "0x1ba530cf929ea5bc7f1af241495c97331ddb4f70",
+    "quoteTokenAmount": "2053778.138943482888862491",
+    "tokenAmount": "25007.034777319473505486",
+    "token": "sdn",
+    "txHash": "0xc09337066c97f7827295f0275a6f71cc7d238fe357765a6ad31431b72c43955c"
+  },
+  "0xe2c19eb0f91c80275cc254f90ed0f18f26650ec5": {
+    "id": "0",
+    "block": 1300000,
+    "event": "Swap",
+    "idInt": 0,
+    "quoteToken": "usdc",
+    "lpAddress": "0xe2c19eb0f91c80275cc254f90ed0f18f26650ec5",
+    "quoteTokenAmount": "12660.905862999961755122",
+    "tokenAmount": "1515260.403494416037574410",
+    "token": "jpyc",
+    "txHash": "0x7ab544f1c5eec252f1ab47b6455d849d0b57c94e253ea00b9e7b7ef2064e2001"
+  }
+}
