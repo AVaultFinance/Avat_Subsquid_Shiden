@@ -118,7 +118,7 @@ export async function tvlTransferLogsHandler(
         aLpAddress: aLpAddress,
         txHash: txHash,
         lpPrice: lpPrice.lpPrice,
-        totalALpAmountUsd: "0",
+        totalALpAmountUsd: (value * Number(lpPrice.lpPrice)).toFixed(8),
       };
 
       if (chartsLength) {
