@@ -28,6 +28,7 @@ export async function tvlTransferLogsHandler(
 
     const mint = pair.events["Transfer(address,address,uint256)"].decode(ctx);
     const { from: _from, to: _to, value: _value } = mint;
+
     const fromAddress = _from.toLowerCase();
     const toAddress = _to.toLowerCase();
     const value = Number(_value) / Math.pow(10, 18);
@@ -88,13 +89,14 @@ export async function tvlTransferLogsHandler(
     const aLpAddress = itemLp.aLpAddress;
     const provider = ethers.getDefaultProvider();
     const fromAddressCode = await provider.getCode(fromAddress);
-    const toAddressCode = await provider.getCode(fromAddress);
+    const toAddressCode = await provider.getCode(toAddress);
+    // if (block === 1366731) {
+    //   console.log(block, _from, _to, fromAddressCode, toAddressCode);
+    // }
     // alp transfer
     if (
-      ((fromAddressCode === "0x" && toAddress === aLpAddress) ||
-        (fromAddress === aLpAddress && toAddressCode === "0x")) &&
-      fromAddress !== address_zero &&
-      toAddress !== address_zero
+      (fromAddressCode === "0x" && toAddress === aLpAddress) ||
+      (fromAddress === aLpAddress && toAddressCode === "0x")
     ) {
       const store = ctx.store.getRepository(TVLChart);
       const chartsLength = await store.count();

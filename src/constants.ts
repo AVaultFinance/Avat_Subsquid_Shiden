@@ -40,7 +40,7 @@ const tokens = {
 const KAC_wSDN_lp = {
   lpSymbol: "kac-wsdn lp",
   lpAddress: "0x456C0082DE0048EE883881fF61341177FA1FEF40".toLowerCase(),
-  aLpAddress: "0x9A6080753a35dCd8e77102aE83A93170A831393e".toLowerCase(),
+  aLpAddress: "0x9a6080753a35dcd8e77102ae83a93170a831393e".toLowerCase(),
   token: tokens.kac.symbol,
   tokenAddress: tokens.kac.address,
   tokenDecimals: tokens.kac.decimals,
