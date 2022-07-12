@@ -121,6 +121,13 @@ export async function tvlTransferLogsHandler(
         totalALpAmountUsd: "0",
       };
 
+      if (chartsLength) {
+        const lastChart = await store.find({
+          idInt: chartsLength - 1,
+        });
+        chartValue.totalALpAmountUsd = lastChart[0].totalALpAmountUsd;
+      }
+
       if (storeArr && storeArr.length) {
         const lastStore = ISqlTVLChartUtils(storeArr[storeArr.length - 1]);
         chartValue.totalALpAmountUsd = lastStore.totalALpAmountUsd;
