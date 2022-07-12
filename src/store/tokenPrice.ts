@@ -42,7 +42,7 @@ export async function getTokenPrice({
   }
   return {
     // @ts-ignore
-    ...TokenPriceJSON[tokenSymbol],
+    ...TokenPriceJSON[symbolFormat(symbol)],
     id: `${len}`,
     idInt: len,
   };

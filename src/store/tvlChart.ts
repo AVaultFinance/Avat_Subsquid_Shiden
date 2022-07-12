@@ -32,7 +32,7 @@ export const ISqlTVLChartUtils = (params: ISqlTVLChart): ITVLChart => {
     idInt: params.id_int,
     currentTimestamp: BigInt(params.current_timestamp),
     endTimestamp: BigInt(params.end_timestamp),
-    totalALpAmountUsd: params.a_lp_amount_usd,
+    totalALpAmountUsd: params.total_a_lp_amount_usd,
     aLpAmount: params.a_lp_amount,
     aLpAmountUsd: params.a_lp_amount_usd,
     aLpAddress: params.a_lp_address,

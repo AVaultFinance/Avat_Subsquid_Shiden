@@ -1,86 +1,86 @@
 {
   "0x8644e9ac84273ca0609f2a2b09b2ed2a5ad2e9dd": {
-    "id": "0",
-    "block": 1300000,
+    "block": 1366000,
     "event": "Swap",
+    "id": "0",
     "idInt": 0,
-    "quoteToken": "usdc",
     "lpAddress": "0x8644e9ac84273ca0609f2a2b09b2ed2a5ad2e9dd",
-    "quoteTokenAmount": "8440.278799000047001755",
-    "tokenAmount": "8642.364600122013143846",
+    "quoteToken": "usdc",
     "token": "busd",
-    "txHash": "0xc1012a0ffa572c3ac2366464061fefab0792409794ef5223506dff105cd17b77"
+    "quoteTokenAmount": "6940.872432000047410838",
+    "tokenAmount": "6805.604450480093873921",
+    "txHash": "0x8fd4b7e66d3378626798d482a56aead349ba0bd02b48cd78afd4571565a32cda"
   },
   "0xdb9a42e1165ba2fc479e1f2c1ce939807dbe6020": {
-    "id": "0",
-    "block": 1300000,
+    "block": 1366000,
     "event": "Swap",
+    "id": "0",
     "idInt": 0,
-    "quoteToken": "usdc",
     "lpAddress": "0xdb9a42e1165ba2fc479e1f2c1ce939807dbe6020",
-    "quoteTokenAmount": "11201.820475999929840327",
-    "tokenAmount": "16256.154257379606860923",
+    "quoteToken": "usdc",
     "token": "sdn",
-    "txHash": "0xc1012a0ffa572c3ac2366464061fefab0792409794ef5223506dff105cd17b77"
+    "quoteTokenAmount": "11540.452078999911464052",
+    "tokenAmount": "14228.179896808263947605",
+    "txHash": "0x5f638d8eb4aa7d5ab907bb773e6bff11be719f9d6e566845e3d05940c5c06d41"
   },
   "0x456c0082de0048ee883881ff61341177fa1fef40": {
-    "id": "0",
-    "block": 1300000,
+    "block": 1366000,
     "event": "Swap",
+    "id": "0",
     "idInt": 0,
-    "quoteToken": "sdn",
     "lpAddress": "0x456c0082de0048ee883881ff61341177fa1fef40",
-    "quoteTokenAmount": "26977.678550219367025420",
-    "tokenAmount": "494612.576837616332340986",
+    "quoteToken": "sdn",
     "token": "kac",
-    "txHash": "0xb86e3f7155f124c5ea37c4a2f3e2b808534c97a7d1df149233c42b83a0733493"
+    "quoteTokenAmount": "23024.505591920235019643",
+    "tokenAmount": "467529.863099361362401396",
+    "txHash": "0xb5937f9dabbd0045d4d2f06bc020fc1609b05521eb84c6d6743bcd1194c7c2ba"
   },
   "0xeb2c6d3f1bbe9da50a0272e80faa89354630de88": {
+    "block": 1366000,
+    "event": "Mint",
     "id": "0",
-    "block": 1300000,
-    "event": "Swap",
     "idInt": 0,
-    "quoteToken": "sdn",
     "lpAddress": "0xeb2c6d3f1bbe9da50a0272e80faa89354630de88",
-    "quoteTokenAmount": "1222.667649739935086473",
-    "tokenAmount": "0.316733131507525079",
+    "quoteToken": "sdn",
     "token": "eth",
-    "txHash": "0x0e597bf38cc3719743b46f770e285d152b1881bcf4267d179a487516fc45b629"
+    "quoteTokenAmount": "1230.580306387023256320",
+    "tokenAmount": "0.322442154003741210",
+    "txHash": "0x20eef6e5bdada25c466073ad3dc1a8b347b2e5dc586012ec82b89e5b1e1634df"
   },
   "0xcfb0e95a3a68e3574c73a3c6985d56b7c03b6348": {
-    "id": "0",
-    "block": 1300000,
+    "block": 1366000,
     "event": "Swap",
+    "id": "0",
     "idInt": 0,
-    "quoteToken": "usdc",
     "lpAddress": "0xcfb0e95a3a68e3574c73a3c6985d56b7c03b6348",
-    "quoteTokenAmount": "1157.424985999994532904",
-    "tokenAmount": "0.438407864983151319",
+    "quoteToken": "usdc",
     "token": "eth",
-    "txHash": "0x5f51fc457449fe2f2a0e09828281ba4ab33ccae8f28aa426349c6f2a4e38dd28"
+    "quoteTokenAmount": "1252.595675999994000449",
+    "tokenAmount": "0.405231906441632594",
+    "txHash": "0x5f638d8eb4aa7d5ab907bb773e6bff11be719f9d6e566845e3d05940c5c06d41"
   },
   "0x1ba530cf929ea5bc7f1af241495c97331ddb4f70": {
-    "id": "0",
-    "block": 1300000,
+    "block": 1366000,
     "event": "Swap",
+    "id": "0",
     "idInt": 0,
-    "quoteToken": "jpyc",
     "lpAddress": "0x1ba530cf929ea5bc7f1af241495c97331ddb4f70",
-    "quoteTokenAmount": "2053778.138943482888862491",
-    "tokenAmount": "25007.034777319473505486",
+    "quoteToken": "jpyc",
     "token": "sdn",
-    "txHash": "0xc09337066c97f7827295f0275a6f71cc7d238fe357765a6ad31431b72c43955c"
+    "quoteTokenAmount": "2220248.161037373822182417",
+    "tokenAmount": "23148.353614698316960130",
+    "txHash": "0xc005f705311e0e0b5883c6c937d8199a425d6ce7dfb097b6cd3ecfb7ab1e4ffd"
   },
   "0xe2c19eb0f91c80275cc254f90ed0f18f26650ec5": {
-    "id": "0",
-    "block": 1300000,
+    "block": 1366000,
     "event": "Swap",
+    "id": "0",
     "idInt": 0,
-    "quoteToken": "usdc",
     "lpAddress": "0xe2c19eb0f91c80275cc254f90ed0f18f26650ec5",
-    "quoteTokenAmount": "12660.905862999961755122",
-    "tokenAmount": "1515260.403494416037574410",
+    "quoteToken": "usdc",
     "token": "jpyc",
-    "txHash": "0x7ab544f1c5eec252f1ab47b6455d849d0b57c94e253ea00b9e7b7ef2064e2001"
+    "quoteTokenAmount": "9576.910939999945185264",
+    "tokenAmount": "1172688.586674547987058759",
+    "txHash": "0x69d652de3a80ac816cedac7358a91151a799267e3d67c7210681838cd2b1bfab"
   }
 }

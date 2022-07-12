@@ -97,7 +97,6 @@ export async function tvlTransferLogsHandler(
     ) {
       const store = ctx.store.getRepository(TVLChart);
       const chartsLength = await store.count();
-
       const storeArr: ISqlTVLChart[] = await store.query(
         `
           SELECT * from tvl_chart
@@ -108,10 +107,9 @@ export async function tvlTransferLogsHandler(
         ctx,
         lpSymbol: lp_symbol,
       });
-      const storeArrLen = storeArr.length;
       const chartValue: ITVLChart = {
-        id: storeArrLen.toString(),
-        idInt: storeArrLen,
+        id: chartsLength.toString(),
+        idInt: chartsLength,
         currentTimestamp: BigInt(ctx.substrate.block.timestamp),
         endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
         aLpAmount: value.toFixed(8),
@@ -122,19 +120,16 @@ export async function tvlTransferLogsHandler(
         lpPrice: lpPrice.lpPrice,
         totalALpAmountUsd: "0",
       };
-      if (chartsLength) {
-        const lastChart = await store.find({
-          idInt: chartsLength - 1,
-        });
-        chartValue.totalALpAmountUsd = lastChart[0].totalALpAmountUsd;
-      }
+
       if (storeArr && storeArr.length) {
         const lastStore = ISqlTVLChartUtils(storeArr[storeArr.length - 1]);
+        chartValue.totalALpAmountUsd = lastStore.totalALpAmountUsd;
         const diffTime =
           Number(lastStore.endTimestamp) -
           Number(ctx.substrate.block.timestamp);
         if (diffTime > 0) {
           chartValue.id = lastStore.id;
+          chartValue.idInt = lastStore.idInt;
           chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
         }
         if (address === "0x" && toAddress === aLpAddress) {
