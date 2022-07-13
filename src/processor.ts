@@ -10,8 +10,10 @@ import { tvlMintLogsHandler } from "./event/tvlMintLogsHandler";
 import { tvlBurnLogsHandler } from "./event/tvlBurnLogsHandler";
 import { tvlTransferLogsHandler } from "./event/tvlTransferLogsHandler";
 import { tvlSwapLogsHandler } from "./event/tvlSwapLogsHandler";
+import Web3 from "web3";
 
 const processor = new SubstrateEvmProcessor("shiden-avat");
+const web3 = new Web3("https://astar.api.onfinality.io/public"); //以太坊正式网络节点地址
 
 processor.setBatchSize(500);
 
@@ -27,7 +29,7 @@ interface IAddEvmDataItem {
   events: IEvent[];
 }
 interface IEvent {
-  function: (ctx: EvmLogHandlerContext, i: number) => Promise<void>;
+  function: (ctx: EvmLogHandlerContext, i: any) => Promise<void>;
   key: string;
 }
 // const lpAddressArr01 = Object.keys(tvlAddressArr);
@@ -38,7 +40,7 @@ interface IEvent {
 // const range = { from: 534888, to: 549370 };
 // wSDN-USDC aLp 1366566
 // 1366000
-const range = { from: 1366000 };
+const range = { from: 1366731 };
 // const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
 //   (v: string) => {
 //     return {
@@ -91,7 +93,7 @@ for (let i = 0; i < evmArr.length; i++) {
         range: range,
       },
       async (ctx) => {
-        await event.function(ctx, i);
+        await event.function(ctx, web3);
       }
     );
   }

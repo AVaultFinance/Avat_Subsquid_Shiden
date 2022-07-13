@@ -1,5 +1,5 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
-import { ethers } from "ethers";
+import Web3 from "web3";
 import * as pair from "../abi/PancakePair";
 import { address_zero, lpAddress } from "../constants";
 import { TVLChart } from "../model";
@@ -8,15 +8,11 @@ import {
   getLpTotalSupplyAmountParams,
   setLpTotalSupplyAmount,
 } from "../store/lpTotalSupplyAmount";
-import {
-  ISqlTVLChart,
-  ISqlTVLChartUtils,
-  ITVLChart,
-  setTVLChart,
-} from "../store/tvlChart";
+import { ISqlTVLChart, ITVLChart, setTVLChart } from "../store/tvlChart";
 
 export async function tvlTransferLogsHandler(
-  ctx: EvmLogHandlerContext
+  ctx: EvmLogHandlerContext,
+  web3: Web3
 ): Promise<void> {
   try {
     const pairAddress = ctx.contractAddress.toLowerCase();
@@ -28,7 +24,6 @@ export async function tvlTransferLogsHandler(
 
     const mint = pair.events["Transfer(address,address,uint256)"].decode(ctx);
     const { from: _from, to: _to, value: _value } = mint;
-
     const fromAddress = _from.toLowerCase();
     const toAddress = _to.toLowerCase();
     const value = Number(_value) / Math.pow(10, 18);
@@ -87,16 +82,18 @@ export async function tvlTransferLogsHandler(
 
     // ---------------aLp function---------------
     const aLpAddress = itemLp.aLpAddress;
-    const provider = ethers.getDefaultProvider();
-    const fromAddressCode = await provider.getCode(fromAddress);
-    const toAddressCode = await provider.getCode(toAddress);
+    const fromAddressCode = await web3.eth.getCode(fromAddress);
+    const toAddressCode = await web3.eth.getCode(fromAddress);
     // if (block === 1366731) {
     //   console.log(block, _from, _to, fromAddressCode, toAddressCode);
     // }
+
     // alp transfer
     if (
-      (fromAddressCode === "0x" && toAddress === aLpAddress) ||
-      (fromAddress === aLpAddress && toAddressCode === "0x")
+      ((fromAddressCode === "0x" && toAddress === aLpAddress) ||
+        (fromAddress === aLpAddress && toAddressCode === "0x")) &&
+      fromAddress !== address_zero &&
+      toAddress !== address_zero
     ) {
       const store = ctx.store.getRepository(TVLChart);
       const chartsLength = await store.count();
@@ -154,8 +151,7 @@ export async function tvlTransferLogsHandler(
           ).toFixed(18);
           chartValue.event = "in";
           await setTVLChart(ctx, chartValue);
-        }
-        if (fromAddress === aLpAddress && toAddressCode === "0x") {
+        } else if (fromAddress === aLpAddress && toAddressCode === "0x") {
           // out
           // const newTvlValue = Number(lastStore.aLpAmount) - value;
           // chartValue.aLpAmount = newTvlValue.toFixed(18);
