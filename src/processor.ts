@@ -10,7 +10,6 @@ import { tvlMintLogsHandler } from "./event/tvlMintLogsHandler";
 import { tvlBurnLogsHandler } from "./event/tvlBurnLogsHandler";
 import { tvlTransferLogsHandler } from "./event/tvlTransferLogsHandler";
 import { tvlSwapLogsHandler } from "./event/tvlSwapLogsHandler";
-import Web3 from "web3";
 
 const processor = new SubstrateEvmProcessor("shiden-avat");
 
