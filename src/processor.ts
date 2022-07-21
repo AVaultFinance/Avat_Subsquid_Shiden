@@ -13,7 +13,6 @@ import { tvlSwapLogsHandler } from "./event/tvlSwapLogsHandler";
 import Web3 from "web3";
 
 const processor = new SubstrateEvmProcessor("shiden-avat");
-const web3 = new Web3("https://astar.api.onfinality.io/public"); //以太坊正式网络节点地址
 
 processor.setBatchSize(500);
 
@@ -29,7 +28,7 @@ interface IAddEvmDataItem {
   events: IEvent[];
 }
 interface IEvent {
-  function: (ctx: EvmLogHandlerContext, i: any) => Promise<void>;
+  function: (ctx: EvmLogHandlerContext) => Promise<void>;
   key: string;
 }
 // const lpAddressArr01 = Object.keys(tvlAddressArr);
@@ -93,7 +92,7 @@ for (let i = 0; i < evmArr.length; i++) {
         range: range,
       },
       async (ctx) => {
-        await event.function(ctx, web3);
+        await event.function(ctx);
       }
     );
   }

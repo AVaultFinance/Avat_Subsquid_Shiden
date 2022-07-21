@@ -11,8 +11,7 @@ import {
 import { ISqlTVLChart, ITVLChart, setTVLChart } from "../store/tvlChart";
 
 export async function tvlTransferLogsHandler(
-  ctx: EvmLogHandlerContext,
-  web3: Web3
+  ctx: EvmLogHandlerContext
 ): Promise<void> {
   try {
     const pairAddress = ctx.contractAddress.toLowerCase();
@@ -82,6 +81,7 @@ export async function tvlTransferLogsHandler(
 
     // ---------------aLp function---------------
     const aLpAddress = itemLp.aLpAddress;
+    const web3 = new Web3("https://astar.api.onfinality.io/public"); //以太坊正式网络节点地址
     const fromAddressCode = await web3.eth.getCode(fromAddress);
     const toAddressCode = await web3.eth.getCode(fromAddress);
     // if (block === 1366731) {
