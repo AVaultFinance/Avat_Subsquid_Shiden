@@ -87,9 +87,8 @@ export async function getLpPrice({
     }
   }
   return {
-    id: "0",
-    idInt: 0,
-
+    id: `${storeLen}`,
+    idInt: storeLen,
     token0Price: "1",
     token0Address: token0Address,
     token0Symbol: token0Symbol,
@@ -158,8 +157,8 @@ export async function getLpPriceParams({
     }
   }
   return {
-    id: "0",
-    idInt: 0,
+    id: `${storeLen}`,
+    idInt: storeLen,
 
     token0Price: "1",
     token0Address: token0Address,
@@ -170,7 +169,7 @@ export async function getLpPriceParams({
     token1Symbol: token1Symbol,
 
     lpPrice: "1",
-    lpAddress: "",
+    lpAddress: lpAddress,
     lpSymbol: lpSymbol,
     event: "",
     block: 0,

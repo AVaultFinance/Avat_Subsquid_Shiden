@@ -38,7 +38,7 @@ const tokens = {
   },
 };
 const KAC_wSDN_lp = {
-  lpSymbol: "KAC-wSDN LP".toLowerCase(),
+  lpSymbol: "kac-wsdn lp",
   lpAddress: "0x456C0082DE0048EE883881fF61341177FA1FEF40".toLowerCase(),
   aLpAddress: "0x9A6080753a35dCd8e77102aE83A93170A831393e".toLowerCase(),
   token0Symbol: tokens.kac.symbol,
@@ -49,7 +49,7 @@ const KAC_wSDN_lp = {
   token1Decimals: tokens.sdn.decimals,
 };
 const wSDN_USDC_lp = {
-  lpSymbol: "wSDN-USDC LP".toLowerCase(),
+  lpSymbol: "wsdn-usdc lp",
   aLpAddress: "0xc5b8D0eC15984653A7554878eE9b4212EA059Fd2".toLowerCase(),
   lpAddress: "0xdB9a42E1165bA2fc479e1f2C1ce939807dbe6020".toLowerCase(),
   token0Symbol: tokens.sdn.symbol,
@@ -60,7 +60,7 @@ const wSDN_USDC_lp = {
   token1Decimals: tokens.usdc.decimals,
 };
 const ETH_wSDN_lp = {
-  lpSymbol: "ETH-wSDN LP".toLowerCase(),
+  lpSymbol: "eth-wsdn lp",
   aLpAddress: "0x0Aaf347F50b766cA85dB70f9e2B0E178E9a16F4D".toLowerCase(),
   lpAddress: "0xeb2C6d3F1bbe9DA50A0272E80fAA89354630DE88".toLowerCase(),
   token0Symbol: tokens.eth.symbol,
@@ -71,7 +71,7 @@ const ETH_wSDN_lp = {
   token1Decimals: tokens.sdn.decimals,
 };
 const ETH_USDC_lp = {
-  lpSymbol: "ETH-USDC LP".toLowerCase(),
+  lpSymbol: "eth-usdc lp",
   aLpAddress: "0xCA9b609b7a0Bc46CcF744B2e0261B9Afd14f81C0".toLowerCase(),
   lpAddress: "0xcfb0e95a3A68E3574C73a3C6985D56B7c03b6348".toLowerCase(),
   token0Symbol: tokens.eth.symbol,
@@ -82,7 +82,7 @@ const ETH_USDC_lp = {
   token1Decimals: tokens.usdc.decimals,
 };
 const BUSD_USDC_lp = {
-  lpSymbol: "BUSD-USDC LP".toLowerCase(),
+  lpSymbol: "busd-usdc lp",
   aLpAddress: "0x8fcbe72710185dd34a8bBBA1Cc05eB2628945FEC".toLowerCase(),
   lpAddress: "0x8644e9AC84273cA0609F2A2B09b2ED2A5aD2e9DD".toLowerCase(),
   token0Symbol: tokens.busd.symbol,
@@ -93,7 +93,7 @@ const BUSD_USDC_lp = {
   token1Decimals: tokens.usdc.decimals,
 };
 const wSDN_JPYC_lp = {
-  lpSymbol: "wSDN-JPYC LP".toLowerCase(),
+  lpSymbol: "wsdn-jpyc lp",
   aLpAddress: "0x5167E12139Ee4b2F6590F3C95E56B29d408a9048".toLowerCase(),
   lpAddress: "0x1Ba530cf929ea5bc7f1Af241495C97331Ddb4f70".toLowerCase(),
   token0Symbol: tokens.sdn.symbol,
@@ -104,7 +104,7 @@ const wSDN_JPYC_lp = {
   token1Decimals: tokens.jpyc.decimals,
 };
 const JPYC_USDC_lp = {
-  lpSymbol: "JPYC-USDC LP".toLowerCase(),
+  lpSymbol: "jpyc-usdc lp",
   aLpAddress: "0x9d03BfE2e0BEDA103f1961A8595bF5d8b1F6FD18".toLowerCase(),
   lpAddress: "0xe2c19eb0f91c80275cc254f90ed0f18f26650ec5".toLowerCase(),
   token0Symbol: tokens.jpyc.symbol,

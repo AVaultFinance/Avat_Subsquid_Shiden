@@ -12,8 +12,8 @@
     "lint": "npm run lint:prod -- --fix",
     "typegen": "npx squid-evm-typegen --abi=src/abi/lpToken.json --output=src/abi/lpToken.ts",
     "lint:prod": "eslint . --ext .ts --ignore-path .gitignore --max-warnings 0",
-    "release:dev": "sqd squid:release AvatSubsquidShiden@v0 --source https://github.com/AVaultFinance/Avat_Subsquid_Shiden.git#dev -v",
-    "release:main": "sqd squid:release AvatSubsquidShiden@v0 --source https://github.com/AVaultFinance/Avat_Subsquid_Shiden.git#main -v"
+    "release:dev": "sqd squid:release AvatSubsquidShiden@v0 --source https://github.com/AVaultFinance/Avat_Subsquid_Shiden.git#dev",
+    "release:main": "sqd squid:release AvatSubsquidShiden@v0 --source https://github.com/AVaultFinance/Avat_Subsquid_Shiden.git#main"
   },
   "dependencies": {
     "@ethersproject/abi": "^5.6.1",
@@ -26,7 +26,8 @@
     "dotenv": "^16.0.0",
     "ethers": "^5.6.4",
     "pg": "^8.7.3",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "web3": "^1.7.4"
   },
   "devDependencies": {
     "@subsquid/evm-typegen": "^0.1.0",

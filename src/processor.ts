@@ -27,7 +27,7 @@ interface IAddEvmDataItem {
   events: IEvent[];
 }
 interface IEvent {
-  function: (ctx: EvmLogHandlerContext, i: number) => Promise<void>;
+  function: (ctx: EvmLogHandlerContext) => Promise<void>;
   key: string;
 }
 // const lpAddressArr01 = Object.keys(tvlAddressArr);
@@ -35,8 +35,10 @@ interface IEvent {
 //   ...new Set(lpAddressArr01.map((v) => tvlAddressArr[v].lpAddress).flat(2)),
 // ];
 // 534888   1554486
-// const range = { from: 534888, to: 549370 };
-const range = { from: 74002 };
+const range = { from: 534888 };
+// wSDN-USDC aLp 1366566
+// 1366000
+// const range = { from: 1366731 };
 // const addTransferEvmData: IAddEvmDataItem[] = lpAddressArr01.map(
 //   (v: string) => {
 //     return {
@@ -89,7 +91,7 @@ for (let i = 0; i < evmArr.length; i++) {
         range: range,
       },
       async (ctx) => {
-        await event.function(ctx, i);
+        await event.function(ctx);
       }
     );
   }

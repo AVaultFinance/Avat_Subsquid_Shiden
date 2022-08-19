@@ -2,7 +2,6 @@ type TVLChart @entity {
   id: ID!
   idInt: Int!
   currentTimestamp: BigInt!
-  endTimestamp: BigInt!
   totalALpAmountUsd: String!
   aLpAmount: String!
   aLpAmountUsd: String!
@@ -10,6 +9,7 @@ type TVLChart @entity {
   lpPrice: String!
   txHash: String!
   block: Int!
+  event: String!
 }
 
 type LpTokenAmount @entity {

@@ -1,5 +1,5 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
-import { ethers } from "ethers";
+import Web3 from "web3";
 import * as pair from "../abi/PancakePair";
 import { address_zero, lpAddress } from "../constants";
 import { TVLChart } from "../model";
@@ -8,12 +8,7 @@ import {
   getLpTotalSupplyAmountParams,
   setLpTotalSupplyAmount,
 } from "../store/lpTotalSupplyAmount";
-import {
-  ISqlTVLChart,
-  ISqlTVLChartUtils,
-  ITVLChart,
-  setTVLChart,
-} from "../store/tvlChart";
+import { ISqlTVLChart, ITVLChart, setTVLChart } from "../store/tvlChart";
 
 export async function tvlTransferLogsHandler(
   ctx: EvmLogHandlerContext
@@ -32,9 +27,9 @@ export async function tvlTransferLogsHandler(
     const token1Address = itemLp.token1Address;
 
     const mint = pair.events["Transfer(address,address,uint256)"].decode(ctx);
-    const { from, to, value: _value } = mint;
-    const fromAddress = from.toLowerCase();
-    const toAddress = to.toLowerCase();
+    const { from: _from, to: _to, value: _value } = mint;
+    const fromAddress = _from.toLowerCase();
+    const toAddress = _to.toLowerCase();
     const value = Number(_value) / Math.pow(10, 18);
     let lpTotalSupplyAmountParams = await getLpTotalSupplyAmountParams({
       ctx,
@@ -77,7 +72,7 @@ export async function tvlTransferLogsHandler(
       lpTotalSupplyAmountParams.event = event;
       await setLpTotalSupplyAmount(ctx, lpTotalSupplyAmountParams);
     }
-    if (toAddress === address_zero && from.toLowerCase() === pairAddress) {
+    if (toAddress === address_zero && fromAddress === pairAddress) {
       lpTotalSupply = lpTotalSupply - value;
       lpTotalSupplyAmountParams.totalSupply = `${lpTotalSupply.toFixed(18)}`;
       if (event === "TransferMint") {
@@ -95,18 +90,22 @@ export async function tvlTransferLogsHandler(
 
     // ---------------aLp function---------------
     const aLpAddress = itemLp.aLpAddress;
-    const provider = ethers.getDefaultProvider();
-    const address = await provider.getCode(from);
+    const web3 = new Web3("https://evm.shiden.astar.network"); //以太坊正式网络节点地址
+    const fromAddressCode = await web3.eth.getCode(fromAddress);
+    const toAddressCode = await web3.eth.getCode(fromAddress);
+    // if (block === 1366731) {
+    //   console.log(block, _from, _to, fromAddressCode, toAddressCode);
+    // }
+
     // alp transfer
     if (
-      ((address === "0x" && to === aLpAddress) ||
-        (address === aLpAddress && to === "0x")) &&
-      from !== address_zero &&
-      to !== address_zero
+      ((fromAddressCode === "0x" && toAddress === aLpAddress) ||
+        (fromAddress === aLpAddress && toAddressCode === "0x")) &&
+      fromAddress !== address_zero &&
+      toAddress !== address_zero
     ) {
       const store = ctx.store.getRepository(TVLChart);
       const chartsLength = await store.count();
-
       const storeArr: ISqlTVLChart[] = await store.query(
         `
           SELECT * from tvl_chart
@@ -122,52 +121,70 @@ export async function tvlTransferLogsHandler(
         lpAddress: pairAddress,
         lpSymbol: lp_symbol,
       });
-      const storeArrLen = storeArr.length;
       const chartValue: ITVLChart = {
-        id: storeArrLen.toString(),
-        idInt: storeArrLen,
+        id: chartsLength.toString(),
+        idInt: chartsLength,
         currentTimestamp: BigInt(ctx.substrate.block.timestamp),
-        endTimestamp: BigInt(ctx.substrate.block.timestamp + 21600 * 1000),
-        aLpAmount: value.toFixed(8),
-        aLpAmountUsd: (value * Number(lpPrice.lpPrice)).toFixed(8),
+        aLpAmount: value.toFixed(18),
+        aLpAmountUsd: (value * Number(lpPrice.lpPrice)).toFixed(18),
         block: ctx.substrate.block.height,
         aLpAddress: aLpAddress,
         txHash: txHash,
         lpPrice: lpPrice.lpPrice,
         totalALpAmountUsd: "0",
+        event: "",
       };
+
       if (chartsLength) {
         const lastChart = await store.find({
           idInt: chartsLength - 1,
         });
         chartValue.totalALpAmountUsd = lastChart[0].totalALpAmountUsd;
       }
+
       if (storeArr && storeArr.length) {
-        const lastStore = ISqlTVLChartUtils(storeArr[storeArr.length - 1]);
-        const diffTime =
-          Number(lastStore.endTimestamp) -
-          Number(ctx.substrate.block.timestamp);
-        if (diffTime > 0) {
-          chartValue.id = lastStore.id;
-          chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
-        }
-        if (address === "0x" && to === aLpAddress) {
+        // const lastStore = ISqlTVLChartUtils(storeArr[storeArr.length - 1]);
+        // const diffTime =
+        //   Number(lastStore.endTimestamp) -
+        //   Number(ctx.substrate.block.timestamp);
+        // if (diffTime > 0) {
+        //   chartValue.id = lastStore.id;
+        //   chartValue.idInt = lastStore.idInt;
+        //   chartValue.endTimestamp = BigInt(lastStore.endTimestamp);
+        // }
+        if (fromAddressCode === "0x" && toAddress === aLpAddress) {
           // in
-          const newTvlValue = value + Number(lastStore.aLpAmount);
-          chartValue.aLpAmount = newTvlValue.toFixed(8);
-        } else if (address === aLpAddress && to === "0x") {
+          // const newTvlValue = value + Number(lastStore.aLpAmount);
+          // chartValue.aLpAmount = newTvlValue.toFixed(18);
+          // chartValue.aLpAmountUsd = (
+          //   Number(chartValue.aLpAmount) * Number(lpPrice.lpPrice)
+          // ).toFixed(18);
+          chartValue.totalALpAmountUsd = (
+            Number(chartValue.totalALpAmountUsd) +
+            Number(chartValue.aLpAmountUsd)
+          ).toFixed(18);
+          chartValue.event = "in";
+          await setTVLChart(ctx, chartValue);
+        } else if (fromAddress === aLpAddress && toAddressCode === "0x") {
           // out
-          const newTvlValue = value - Number(lastStore.aLpAmount);
-          chartValue.aLpAmount = newTvlValue.toFixed(8);
+          // const newTvlValue = Number(lastStore.aLpAmount) - value;
+          // chartValue.aLpAmount = newTvlValue.toFixed(18);
+          // chartValue.aLpAmountUsd = (
+          //   Number(chartValue.aLpAmount) * Number(lpPrice.lpPrice)
+          // ).toFixed(18);
+          chartValue.totalALpAmountUsd = (
+            Number(chartValue.totalALpAmountUsd) -
+            Number(chartValue.aLpAmountUsd)
+          ).toFixed(18);
+          chartValue.event = "out";
+          await setTVLChart(ctx, chartValue);
         }
+      } else {
+        chartValue.totalALpAmountUsd = (
+          Number(chartValue.totalALpAmountUsd) + Number(chartValue.aLpAmountUsd)
+        ).toFixed(18);
+        await setTVLChart(ctx, chartValue);
       }
-      chartValue.aLpAmountUsd = (
-        Number(chartValue.aLpAmount) * Number(lpPrice.lpPrice)
-      ).toFixed(8);
-      chartValue.totalALpAmountUsd = (
-        Number(chartValue.totalALpAmountUsd) + Number(chartValue.aLpAmountUsd)
-      ).toFixed(8);
-      await setTVLChart(ctx, chartValue);
     }
   } catch (e) {
     console.log("Transfer Error: ", e, ctx.txHash);
