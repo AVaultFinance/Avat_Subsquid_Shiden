@@ -4,9 +4,11 @@ interface ILpTokenAmount {
   id: string;
   idInt: number;
   token0Symbol: string;
-  token1Symbol: string;
   token0Amount: string;
+  token0Address: string;
   token1Amount: string;
+  token1Address: string;
+  token1Symbol: string;
   block: number;
   txHash: string;
   lpAddress: string;
@@ -17,9 +19,11 @@ interface ISqlLpTokenAmount {
   id: string;
   id_int: number;
   token0_symbol: string;
-  token1_symbol: string;
   token0_amount: string;
+  token0_address: string;
+  token1_symbol: string;
   token1_amount: string;
+  token1_address: string;
   block: number;
   tx_hash: string;
   lp_address: string;
@@ -30,9 +34,11 @@ const ISqlTokenPriceUtils = (params: ISqlLpTokenAmount): ILpTokenAmount => {
     id: params.id,
     idInt: params.id_int,
     token0Symbol: params.token0_symbol,
-    token1Symbol: params.token1_symbol,
     token0Amount: params.token0_amount,
+    token0Address: params.token0_address,
     token1Amount: params.token1_amount,
+    token1Symbol: params.token1_symbol,
+    token1Address: params.token1_address,
     block: params.block,
     txHash: params.tx_hash,
     lpAddress: params.lp_address,
@@ -71,14 +77,18 @@ const ISqlTokenPriceUtils = (params: ISqlLpTokenAmount): ILpTokenAmount => {
 export async function getLpTokenAmountParams({
   ctx,
   token0Symbol,
+  token0Address,
   token1Symbol,
+  token1Address,
   block,
   txHash,
   lpAddress,
 }: {
   ctx: EvmLogHandlerContext;
   token0Symbol: string;
+  token0Address: string;
   token1Symbol: string;
+  token1Address: string;
   block: number;
   txHash: string;
   lpAddress: string;
@@ -111,13 +121,15 @@ export async function getLpTokenAmountParams({
     id: `${storeLen}`,
     idInt: storeLen,
     token0Amount: "",
-    token1Amount: "",
-    event: "",
     token0Symbol: token0Symbol,
+    token0Address: token0Address,
+    token1Amount: "",
     token1Symbol: token1Symbol,
+    token1Address: token1Address,
     block: block,
     txHash: txHash,
     lpAddress: lpAddress,
+    event: "",
   };
 }
 export async function setLpTokenAmount(

@@ -58,7 +58,9 @@ export async function tvlSwapLogsHandler(
     const lpTokenAmountParams = await getLpTokenAmountParams({
       ctx,
       token0Symbol,
+      token0Address,
       token1Symbol,
+      token1Address,
       block,
       txHash,
       lpAddress: pairAddress,

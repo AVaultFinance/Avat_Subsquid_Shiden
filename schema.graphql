@@ -15,10 +15,12 @@ type TVLChart @entity {
 type LpTokenAmount @entity {
   id: ID!
   idInt: Int!
-  token: String!
-  token1: String!
-  tokenAmount: String!
+  token0Amount: String!
+  token0Symbol: String!
+  token0Address: String!
+  token1Symbol: String!
   token1Amount: String!
+  token1Address: String!
   block: Int!
   txHash: String!
   lpAddress: String!

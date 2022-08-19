@@ -13,16 +13,22 @@ export class LpTokenAmount {
   idInt!: number
 
   @Column_("text", {nullable: false})
-  token!: string
+  token0Amount!: string
 
   @Column_("text", {nullable: false})
-  token1!: string
+  token0Symbol!: string
 
   @Column_("text", {nullable: false})
-  tokenAmount!: string
+  token0Address!: string
+
+  @Column_("text", {nullable: false})
+  token1Symbol!: string
 
   @Column_("text", {nullable: false})
   token1Amount!: string
+
+  @Column_("text", {nullable: false})
+  token1Address!: string
 
   @Column_("integer", {nullable: false})
   block!: number

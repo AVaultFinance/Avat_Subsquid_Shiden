@@ -38,7 +38,9 @@ export async function tvlMintLogsHandler(
     const lpTokenAmountParams = await getLpTokenAmountParams({
       ctx,
       token0Symbol,
+      token0Address,
       token1Symbol,
+      token1Address,
       block,
       txHash,
       lpAddress: pairAddress,
