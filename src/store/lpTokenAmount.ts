@@ -108,10 +108,11 @@ export async function getLpTokenAmountParams({
     }
   }
   return {
-    // @ts-ignore
-    ...LPTokenAmount[lpAddress],
     id: `${storeLen}`,
     idInt: storeLen,
+    token0Amount: "",
+    token1Amount: "",
+    event: "",
     token0Symbol: token0Symbol,
     token1Symbol: token1Symbol,
     block: block,

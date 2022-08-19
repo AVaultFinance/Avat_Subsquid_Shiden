@@ -115,8 +115,8 @@ export async function getLpTotalSupplyAmountParams({
     }
   }
   return {
-    // @ts-ignore
-    ...LPTotalSupplyAmount[lpAddress],
+    totalSupply: "",
+    event: "",
     id: `${storeLen}`,
     idInt: storeLen,
     value: value,
