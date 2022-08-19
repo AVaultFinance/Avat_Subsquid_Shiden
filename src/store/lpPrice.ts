@@ -333,6 +333,8 @@ export async function setLpPriceByParams({
   if (lpPrice) {
     lpPriceParams.event = event;
     lpPriceParams.lpPrice = lpPrice;
+    lpPriceParams.token0Price = token0Price;
+    lpPriceParams.token1Price = token1Price;
     await setLpPrice(ctx, lpPriceParams);
     return {
       lpPrice: lpPrice,
