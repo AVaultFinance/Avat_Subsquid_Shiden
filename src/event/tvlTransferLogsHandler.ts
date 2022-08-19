@@ -26,6 +26,11 @@ export async function tvlTransferLogsHandler(
     const itemLp = lpAddress.filter((v) => v.lpAddress === pairAddress)[0];
     const lp_symbol = itemLp.lpSymbol.toLowerCase();
 
+    const token0Symbol = itemLp.token0Symbol;
+    const token0Address = itemLp.token0Address;
+    const token1Symbol = itemLp.token1Symbol;
+    const token1Address = itemLp.token1Address;
+
     const mint = pair.events["Transfer(address,address,uint256)"].decode(ctx);
     const { from, to, value: _value } = mint;
     const fromAddress = from.toLowerCase();
@@ -42,6 +47,10 @@ export async function tvlTransferLogsHandler(
     });
     let lpPriceParams = await getLpPriceParams({
       ctx,
+      token0Symbol,
+      token0Address,
+      token1Symbol,
+      token1Address,
       lpAddress: pairAddress,
       lpSymbol: lp_symbol,
       block,
@@ -106,6 +115,11 @@ export async function tvlTransferLogsHandler(
       );
       const lpPrice: ILpPrice = await getLpPrice({
         ctx,
+        token0Symbol,
+        token0Address,
+        token1Symbol,
+        token1Address,
+        lpAddress: pairAddress,
         lpSymbol: lp_symbol,
       });
       const storeArrLen = storeArr.length;

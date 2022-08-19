@@ -16,13 +16,13 @@ export class LpTokenAmount {
   token!: string
 
   @Column_("text", {nullable: false})
-  quoteToken!: string
+  token1!: string
 
   @Column_("text", {nullable: false})
   tokenAmount!: string
 
   @Column_("text", {nullable: false})
-  quoteTokenAmount!: string
+  token1Amount!: string
 
   @Column_("integer", {nullable: false})
   block!: number

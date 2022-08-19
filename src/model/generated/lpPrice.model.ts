@@ -13,10 +13,28 @@ export class LpPrice {
   idInt!: number
 
   @Column_("text", {nullable: false})
-  lpPrice!: string
+  token0Address!: string
+
+  @Column_("text", {nullable: false})
+  token0Price!: string
+
+  @Column_("text", {nullable: false})
+  token0Symbol!: string
+
+  @Column_("text", {nullable: false})
+  token1Address!: string
+
+  @Column_("text", {nullable: false})
+  token1Price!: string
+
+  @Column_("text", {nullable: false})
+  token1Symbol!: string
 
   @Column_("text", {nullable: false})
   lpAddress!: string
+
+  @Column_("text", {nullable: false})
+  lpPrice!: string
 
   @Column_("text", {nullable: false})
   lpSymbol!: string

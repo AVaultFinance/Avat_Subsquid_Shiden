@@ -1,6 +1,5 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import { LpTotalSupplyAmount } from "../model";
-import { string } from "../model/generated/marshal";
 interface ISqlLpTotalSupplyAmount {
   id: string;
   id_int: number;

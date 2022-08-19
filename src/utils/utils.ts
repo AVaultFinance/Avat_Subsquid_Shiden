@@ -1,6 +1,6 @@
 import { stable_symbol } from "../constants";
-export function getDecimal(tokenSymbol: string) {
-  return tokenSymbol.indexOf(stable_symbol) > -1 ? 6 : 18;
+export function getDecimal(token0: string) {
+  return token0.indexOf(stable_symbol) > -1 ? 6 : 18;
 }
 export function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

@@ -3,22 +3,23 @@ import { LpTokenAmount } from "../model";
 interface ILpTokenAmount {
   id: string;
   idInt: number;
-  token: string;
-  quoteToken: string;
-  tokenAmount: string;
-  quoteTokenAmount: string;
+  token0Symbol: string;
+  token1Symbol: string;
+  token0Amount: string;
+  token1Amount: string;
   block: number;
   txHash: string;
   lpAddress: string;
   event: string;
 }
+// todo
 interface ISqlLpTokenAmount {
   id: string;
   id_int: number;
-  token: string;
-  quote_token: string;
-  token_amount: string;
-  quote_token_amount: string;
+  token0_symbol: string;
+  token1_symbol: string;
+  token0_amount: string;
+  token1_amount: string;
   block: number;
   tx_hash: string;
   lp_address: string;
@@ -28,10 +29,10 @@ const ISqlTokenPriceUtils = (params: ISqlLpTokenAmount): ILpTokenAmount => {
   return {
     id: params.id,
     idInt: params.id_int,
-    token: params.token,
-    quoteToken: params.quote_token,
-    tokenAmount: params.token_amount,
-    quoteTokenAmount: params.quote_token_amount,
+    token0Symbol: params.token0_symbol,
+    token1Symbol: params.token1_symbol,
+    token0Amount: params.token0_amount,
+    token1Amount: params.token1_amount,
     block: params.block,
     txHash: params.tx_hash,
     lpAddress: params.lp_address,
@@ -57,9 +58,9 @@ const ISqlTokenPriceUtils = (params: ISqlLpTokenAmount): ILpTokenAmount => {
 //     id: "0",
 //     idInt: 0,
 //     token: "",
-//     quoteToken: "",
+//     token1: "",
 //     tokenAmount: "",
-//     quoteTokenAmount: "",
+//     token1Amount: "",
 //     block: 0,
 //     txHash: "",
 //     lpAddress: "",
@@ -69,15 +70,15 @@ const ISqlTokenPriceUtils = (params: ISqlLpTokenAmount): ILpTokenAmount => {
 
 export async function getLpTokenAmountParams({
   ctx,
-  token,
-  quoteToken,
+  token0Symbol,
+  token1Symbol,
   block,
   txHash,
   lpAddress,
 }: {
   ctx: EvmLogHandlerContext;
-  token: string;
-  quoteToken: string;
+  token0Symbol: string;
+  token1Symbol: string;
   block: number;
   txHash: string;
   lpAddress: string;
@@ -98,8 +99,8 @@ export async function getLpTokenAmountParams({
         event: "",
         id: `${storeLen}`,
         idInt: storeLen,
-        token: token,
-        quoteToken: quoteToken,
+        token0Symbol: token0Symbol,
+        token1Symbol: token1Symbol,
         block: block,
         txHash: txHash,
         lpAddress: lpAddress,
@@ -109,12 +110,12 @@ export async function getLpTokenAmountParams({
   return {
     id: "0",
     idInt: 0,
-    tokenAmount: "0",
-    quoteTokenAmount: "0",
+    token0Amount: "0",
+    token1Amount: "0",
 
     event: "",
-    token: token,
-    quoteToken: quoteToken,
+    token0Symbol: token0Symbol,
+    token1Symbol: token1Symbol,
     block: block,
     txHash: txHash,
     lpAddress: lpAddress,

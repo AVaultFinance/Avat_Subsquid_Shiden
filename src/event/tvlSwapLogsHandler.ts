@@ -1,12 +1,11 @@
 import { EvmLogHandlerContext } from "@subsquid/substrate-evm-processor";
 import * as pair from "../abi/PancakePair";
-import { lpAddress, stable_symbol } from "../constants";
+import { lpAddress } from "../constants";
 import { setLpPriceByParams } from "../store/lpPrice";
 import {
   getLpTokenAmountParams,
   setLpTokenAmount,
 } from "../store/lpTokenAmount";
-import { setTokenPriceByParams } from "../store/tokenPrice";
 export async function tvlSwapLogsHandler(
   ctx: EvmLogHandlerContext
 ): Promise<void> {
@@ -16,12 +15,12 @@ export async function tvlSwapLogsHandler(
     const pairAddress = ctx.contractAddress.toLowerCase();
     const item = lpAddress.filter((v) => v.lpAddress === pairAddress)[0];
     const lp_symbol = item.lpSymbol.toLowerCase();
-    const token = item.token;
-    const tokenAddress = item.tokenAddress;
-    const quoteToken = item.quoteToken;
-    const quoteTokenAddress = item.quoteTokenAddress;
-    const tokenDecimal = item.tokenDecimals;
-    const quoteTokenDecimal = item.quoteTokenDecimals;
+    const token0Symbol = item.token0Symbol;
+    const token0Address = item.token0Address;
+    const token1Symbol = item.token1Symbol;
+    const token1Address = item.token1Address;
+    const token0Decimals = item.token0Decimals;
+    const token1Decimals = item.token1Decimals;
 
     const mint: pair.Swap0Event =
       pair.events[
@@ -34,16 +33,16 @@ export async function tvlSwapLogsHandler(
       amount1Out: _amount1Out,
     } = mint;
 
-    let amount0In = Number(_amount0In) / Math.pow(10, tokenDecimal);
-    let amount0Out = Number(_amount0Out) / Math.pow(10, tokenDecimal);
-    let amount1In = Number(_amount1In) / Math.pow(10, quoteTokenDecimal);
-    let amount1Out = Number(_amount1Out) / Math.pow(10, quoteTokenDecimal);
+    let amount0In = Number(_amount0In) / Math.pow(10, token0Decimals);
+    let amount0Out = Number(_amount0Out) / Math.pow(10, token0Decimals);
+    let amount1In = Number(_amount1In) / Math.pow(10, token1Decimals);
+    let amount1Out = Number(_amount1Out) / Math.pow(10, token1Decimals);
 
-    if (tokenAddress > quoteTokenAddress) {
-      amount0In = Number(_amount1In) / Math.pow(10, quoteTokenDecimal);
-      amount0Out = Number(_amount1Out) / Math.pow(10, quoteTokenDecimal);
-      amount1In = Number(_amount0In) / Math.pow(10, tokenDecimal);
-      amount1Out = Number(_amount0Out) / Math.pow(10, tokenDecimal);
+    if (token0Address > token1Address) {
+      amount0In = Number(_amount1In) / Math.pow(10, token1Decimals);
+      amount0Out = Number(_amount1Out) / Math.pow(10, token1Decimals);
+      amount1In = Number(_amount0In) / Math.pow(10, token0Decimals);
+      amount1Out = Number(_amount0Out) / Math.pow(10, token0Decimals);
     }
     // console.log(
     //   "Swap: ",
@@ -58,53 +57,59 @@ export async function tvlSwapLogsHandler(
 
     const lpTokenAmountParams = await getLpTokenAmountParams({
       ctx,
-      token,
-      quoteToken,
+      token0Symbol,
+      token1Symbol,
       block,
       txHash,
       lpAddress: pairAddress,
     });
 
-    let tokenAmount = Number(lpTokenAmountParams.tokenAmount);
-    let quoteTokenAmount = Number(lpTokenAmountParams.quoteTokenAmount);
+    let tokenAmount = Number(lpTokenAmountParams.token0Amount);
+    let token1Amount = Number(lpTokenAmountParams.token1Amount);
 
     if (amount0In === 0) {
       tokenAmount = tokenAmount - amount0Out;
-      quoteTokenAmount = quoteTokenAmount + amount1In;
+      token1Amount = token1Amount + amount1In;
     }
     if (amount0Out === 0) {
       tokenAmount = tokenAmount + amount0In;
-      quoteTokenAmount = quoteTokenAmount - amount1Out;
+      token1Amount = token1Amount - amount1Out;
     }
 
-    lpTokenAmountParams.tokenAmount = `${tokenAmount.toFixed(18)}`;
-    lpTokenAmountParams.quoteTokenAmount = `${quoteTokenAmount.toFixed(18)}`;
+    lpTokenAmountParams.token0Amount = `${tokenAmount.toFixed(18)}`;
+    lpTokenAmountParams.token1Amount = `${token1Amount.toFixed(18)}`;
     lpTokenAmountParams.event = "Swap";
 
     await setLpTokenAmount(ctx, lpTokenAmountParams);
 
-    const result = await setLpPriceByParams({
+    await setLpPriceByParams({
       ctx,
       lpAddress: pairAddress,
       lpSymbol: lp_symbol,
       block,
       txHash,
-      quoteTokenAmount: lpTokenAmountParams.quoteTokenAmount,
-      event: "Swap",
-      quoteTokenSymbol: quoteToken,
+      token0Amount: lpTokenAmountParams.token0Amount,
+      token0Decimals,
+      token0Symbol,
+      token0Address,
+      token1Amount: lpTokenAmountParams.token1Amount,
+      token1Decimals,
+      token1Symbol,
+      token1Address,
+      event: "Burn",
     });
-    if (result) {
-      await setTokenPriceByParams({
-        lpPrice: result.lpPrice,
-        tokenSymbol: token,
-        tokenAmount: lpTokenAmountParams.tokenAmount,
-        totalSupply: result.totalSupply,
-        ctx,
-        block,
-        txHash,
-        event: "Swap",
-      });
-    }
+    // if (result) {
+    //   await setTokenPriceByParams({
+    //     lpPrice: result.lpPrice,
+    //     token0: token0,
+    //     tokenAmount: lpTokenAmountParams.tokenAmount,
+    //     totalSupply: result.totalSupply,
+    //     ctx,
+    //     block,
+    //     txHash,
+    //     event: "Swap",
+    //   });
+    // }
   } catch (e) {
     console.log("Swap Error: ", e, ctx.txHash);
     // console.log(e);

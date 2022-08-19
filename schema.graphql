@@ -16,9 +16,9 @@ type LpTokenAmount @entity {
   id: ID!
   idInt: Int!
   token: String!
-  quoteToken: String!
+  token1: String!
   tokenAmount: String!
-  quoteTokenAmount: String!
+  token1Amount: String!
   block: Int!
   txHash: String!
   lpAddress: String!
@@ -42,20 +42,26 @@ type LpTotalSupplyAmount @entity {
 type LpPrice @entity {
   id: ID!
   idInt: Int!
-  lpPrice: String!
+  token0Address: String!
+  token0Price: String!
+  token0Symbol: String!
+  token1Address: String!
+  token1Price: String!
+  token1Symbol: String!
   lpAddress: String!
+  lpPrice: String!
   lpSymbol: String!
   event: String!
   block: Int!
   txHash: String!
 }
 
-type TokenPrice @entity {
-  id: ID!
-  idInt: Int!
-  tokenPrice: String!
-  tokenSymbol: String!
-  event: String!
-  block: Int!
-  txHash: String!
-}
+# type TokenPrice @entity {
+#   id: ID!
+#   idInt: Int!
+#   tokenPrice: String!
+#   token0: String!
+#   event: String!
+#   block: Int!
+#   txHash: String!
+# }
